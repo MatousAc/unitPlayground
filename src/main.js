@@ -1,8 +1,17 @@
-import './app.css'
-import App from './App.svelte'
+import './css/main.css'
+import Playground from './Playground.svelte'
 
-const app = new App({
-  target: document.getElementById('app')
-})
+// let playground = new Playground({
+//   target: document.getElementById("base")
+// })
 
-export default app
+// export default playground
+
+let bases = document.getElementsByClassName('base')
+let playgrounds = Array.from(bases).forEach(base => {
+  return new Playground({
+    target: base
+  })
+});
+
+export default playgrounds

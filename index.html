@@ -2,12 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/src/assets/playgroundWhite.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Svelte</title>
+    <title>Unit Playground</title>
+    <style>
+      /* temporary style to see how our playgrounds hook in */
+      body {
+        width: 90vw;
+        height: 90vh;
+        margin: 5vh 5vw;
+      }
+    </style>
+
   </head>
   <body>
-    <div id="app"></div>
+    <div class="base"></div>
+    <!-- <div class="base"></div> -->
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

@@ -1,0 +1,36 @@
+.base {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  margin: 1em;
+}
+
+.maths {
+  display: absolute;
+  width: fit-content;
+}
+
+.fillParent {
+  width: 100%;
+  height: 100%;
+}
+
+.fitContent {
+  width: fit-content;
+  height: fit-content;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
