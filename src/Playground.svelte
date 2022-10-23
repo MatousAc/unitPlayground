@@ -7,7 +7,6 @@
   }
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div on:click={createEquation} class="playground fillParent">
   <Draggable>
     <Equation/>

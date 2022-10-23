@@ -15,5 +15,8 @@
     "mathjax": "^3.2.2",
     "js-quantities": "^1.7.6",
     "@neodrag/svelte": "^1.2.4"
+  },
+  "settings": {
+    "svelte3/ignore-warnings": "({ code }) => code === 'a11y-no-onchange'"
   }
 }
