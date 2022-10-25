@@ -1,0 +1,52 @@
+let units = [
+	{
+		"name":"kilogram",
+		"abbreviation":"kg"
+	},
+	{
+		"name":"meter",
+		"abbreviation":"m"
+	},
+	{
+		"name":"second",
+		"abbreviation":"s"
+	},
+	{
+		"name":"newton",
+		"abbreviation":"N"
+	},
+	{
+		"name":"joule",
+		"abbreviation":"J"
+	},
+	{
+		"name":"electron volt",
+		"abbreviation":"eV"
+	},
+	{
+		"name":"inch",
+		"abbreviation":"in"
+	},
+	{
+		"name":"kilometer",
+		"abbreviation":"km"
+	},
+	{
+		"name":"candela",
+		"abbreviation":"cd"
+	},
+	{
+		"name":"mole",
+		"abbreviation":"mol"
+	},
+	{
+		"name":"ampere",
+		"abbreviation":"A"
+	},
+	{
+		"name":"kelvin",
+		"abbreviation":"K"
+	}
+]
+
+export default units

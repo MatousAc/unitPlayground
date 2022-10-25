@@ -1,6 +1,7 @@
 <script>
   import Equation from './components/Equation.svelte'
   
+  let playground;
   let createEquation = (e) => { 
     console.log("playground clicked")
     new Equation({
@@ -9,14 +10,17 @@
           x:e.offsetX,
           y:e.offsetY
         },
-        target: e.target
+        target: playground
       }
     )
   }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div on:click={createEquation} class="playground fillParent">
+<div 
+bind:this={playground}
+on:click={createEquation}
+class="playground fillParent">
 
 </div>
 
