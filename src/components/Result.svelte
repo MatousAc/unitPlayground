@@ -1,16 +1,22 @@
 <script>
   import engine from "../js/computeEngine"
+  import { getContext } from 'svelte';
+  import eqKey, { getResultUnits } from "../js/equation.js"
+  
+  const eq = getContext(eqKey)
+  $: left = $eq.left;
+  $: right = $eq.right;
 
-  export let inVal;
-  export let outVal;
-  console.log("inVal: ", inVal);
-  $: mathJSON = JSON.stringify(engine.parse(inVal).json);
-  console.log(mathJSON);
-  let resultUnits = '';
+  $: mathJSON = engine.parse($eq.left).json;
+  
+  // eq.subscribe(val => {
+  //   console.log(left);
+  //   console.log(mathJSON);
+  // })
+  $: resultUnits = getResultUnits(mathJSON);
 </script>
 
-<math-field 
-	readonly>
+<math-field>
 	{resultUnits}
 </math-field>
 

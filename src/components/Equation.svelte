@@ -3,9 +3,17 @@
   import Input from "./Input.svelte"
   import Result from "./Result.svelte"
   import Row from "./Row.svelte"
+  import {writable} from 'svelte/store';
+  import {onDestroy, setContext} from 'svelte';
+  import eqKey from "../js/equation.js"
 
-  let inVal = '';
-  let outVal;
+  let eqVal = writable({
+    left: '',
+    right: ''
+  });
+
+  setContext(eqKey, eqVal);
+  
   let equation;
   export let x, y
   let initPosition = {
@@ -26,7 +34,7 @@ use:draggable={{
   position: initPosition
 }}>
   <Row>
-    <Input inVal/><Result inVal outVal/>
+    <Input/><Result/>
   </Row>
 </div>
 

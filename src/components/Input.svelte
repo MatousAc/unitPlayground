@@ -1,12 +1,15 @@
 <script>
   import { isMobile, macros } from "../js/helpers"
 	import { onMount } from 'svelte';
-  import { setContext } from 'svelte';
+  import { getContext } from 'svelte';
+  import eqKey from "../js/equation.js"
   
-  export let inVal;
-	let input;
+  const eq = getContext(eqKey)
+  $: left = $eq.left;
+  $: right = $eq.right;
 
-	onMount(() => {
+  let input;
+  onMount(() => {
 		input.setOptions({
 			macros: macros
 		})
@@ -14,9 +17,12 @@
 	})
 
 	let feedback = () => {
-    inVal = input.value;
-		console.log(inVal);
+    $eq = {
+      left: input.value,
+      right: right
+    }
 	}
+  
 </script>
 
 <math-field 
