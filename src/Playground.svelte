@@ -1,6 +1,7 @@
 <script>
+  import engine from "./js/computeEngine";
   import Equation from './components/Equation.svelte'
-  
+
   let playground;
   let createEquation = (e) => { 
     console.log("playground clicked")

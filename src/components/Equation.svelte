@@ -4,22 +4,18 @@
   import Result from "./Result.svelte"
   import Row from "./Row.svelte"
 
+  let inVal = '';
+  let outVal;
   let equation;
   export let x, y
   let initPosition = {
     x:x - 10, y:y - 25
   }
 
-  let handleClick = (e) => {
-    console.log("equation clicked")
-  }
-
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div 
 bind:this={equation}
-on:click|stopPropagation={handleClick}
 class="equation fitContent"
 use:draggable={{
   bounds: 'parent',
@@ -30,7 +26,7 @@ use:draggable={{
   position: initPosition
 }}>
   <Row>
-    <Input/><Result/>
+    <Input inVal/><Result inVal outVal/>
   </Row>
 </div>
 

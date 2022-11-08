@@ -1,6 +1,7 @@
 import "./unitDB";
 import units from "./unitDB";
 
+// make macros
 export let macros = {
   // special chars
   Mu: '\\mathrm{M}',
@@ -14,14 +15,22 @@ export let macros = {
   nicefrac: '^{#1}\\!\\!/\\!_{#2}',
   smallfrac: '{}^{#1}\\!\\!/\\!{}_{#2}'
 }
+units.forEach(unit => {
+  macros[unit.abbreviation] = `\\mathrm{${unit.abbreviation}}`
+})
 
-export let makeUnitMacros = () => {
-  let unitMacros = {}
+export let makeUnitParseInfo = () => {
+  let unitParseInfo = []
   units.forEach(unit => {
-    unitMacros[unit.abbreviation] = `\\mathrm{${unit.abbreviation}}`
+    unitParseInfo.push({
+      trigger: `\\${unit.abbreviation}`,
+      parse: ["UNIT", unit.abbreviation],
+      precedence: 1000
+    })
   })
-  return unitMacros
+  return unitParseInfo
 }
+
 
 export let isMobile = () => {
   let check = false;

@@ -31,6 +31,10 @@ let units = [
 		"name":"kilometer",
 		"abbreviation":"km"
 	},
+  {
+		"name":"centimeter",
+		"abbreviation":"cm"
+	},
 	{
 		"name":"candela",
 		"abbreviation":"cd"
@@ -46,6 +50,26 @@ let units = [
 	{
 		"name":"kelvin",
 		"abbreviation":"K"
+	},
+  {
+		"name":"milliseconds",
+		"abbreviation":"ms"
+	},
+  {
+		"name":"pounds",
+		"abbreviation":"lb"
+	},
+  {
+		"name":"miles",
+		"abbreviation":"mi"
+	},
+  {
+		"name":"Arian",
+		"abbreviation":"Ar"
+	},
+  {
+		"name":"feet",
+		"abbreviation":"ft"
 	}
 ]
 

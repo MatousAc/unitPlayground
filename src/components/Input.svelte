@@ -1,20 +1,21 @@
 <script>
-  import { isMobile, macros, makeUnitMacros } from "../js/helpers"
+  import { isMobile, macros } from "../js/helpers"
 	import { onMount } from 'svelte';
-
+  import { setContext } from 'svelte';
+  
+  export let inVal;
 	let input;
 
 	onMount(() => {
 		input.setOptions({
-			// virtualKeyboardMode: (isMobile()) ? "auto": "off",
-			macros: {...macros, ...makeUnitMacros()}
+			macros: macros
 		})
-		console.log(input.getOptions())
+    console.log(input.getOptions());
 	})
 
 	let feedback = () => {
-		console.log(input.value);
-		console.log(input.getValue('math-json'));
+    inVal = input.value;
+		console.log(inVal);
 	}
 </script>
 
@@ -28,8 +29,6 @@ autofocus>
 
 <style>
 	math-field {
-		/* padding: 0 0.5em;
-		border-radius: 1em; */
 		outline: none;
 	}
 </style>
