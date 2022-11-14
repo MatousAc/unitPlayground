@@ -5,7 +5,7 @@
   import Row from "./Row.svelte"
   import {writable} from 'svelte/store';
   import {onDestroy, setContext} from 'svelte';
-  import eqKey from "../js/equation.js"
+  import { eqKey } from "../js/equation.js"
 
   let eqVal = writable({
     left: '',
@@ -13,6 +13,7 @@
   });
 
   setContext(eqKey, eqVal);
+  let handleClick = () => {};
   
   let equation;
   export let x, y
@@ -22,8 +23,10 @@
 
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div 
 bind:this={equation}
+on:click|stopPropagation={handleClick}
 class="equation fitContent"
 use:draggable={{
   bounds: 'parent',

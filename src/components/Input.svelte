@@ -1,8 +1,8 @@
 <script>
-  import { isMobile, macros } from "../js/helpers"
-	import { onMount } from 'svelte';
-  import { getContext } from 'svelte';
-  import eqKey from "../js/equation.js"
+  import { macros } from "../js/stores.js"
+  import { isMobile } from "../js/helpers"
+  import { onMount, getContext } from 'svelte';
+  import { eqKey } from "../js/equation.js"
   
   const eq = getContext(eqKey)
   $: left = $eq.left;
@@ -34,7 +34,4 @@ autofocus>
 </math-field>
 
 <style>
-	math-field {
-		outline: none;
-	}
 </style>

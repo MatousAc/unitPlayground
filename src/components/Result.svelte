@@ -1,27 +1,32 @@
 <script>
   import engine from "../js/computeEngine"
-  import { getContext } from 'svelte';
-  import eqKey, { getResultUnits } from "../js/equation.js"
+  import { macros } from "../js/stores.js"
+  import { onMount, getContext } from 'svelte';
+  import { eqKey, getResultUnits, inProgress } from "../js/equation.js"
   
+  let output;
   const eq = getContext(eqKey)
-  $: left = $eq.left;
-  $: right = $eq.right;
 
-  $: mathJSON = engine.parse($eq.left).json;
-  
-  // eq.subscribe(val => {
-  //   console.log(left);
-  //   console.log(mathJSON);
-  // })
-  $: resultUnits = getResultUnits(mathJSON);
+  onMount(() => {
+		output.setOptions({
+			macros: macros
+		})
+    console.log(output.getOptions());
+	})
+
+  eq.subscribe(() => {
+    let json = engine.parse($eq.left).json
+    console.log('left: ', $eq.left);
+    console.log('json: ', json);
+    if (!inProgress(JSON.stringify(json))) {
+      output.value = getResultUnits(json);
+    }
+  })
 </script>
 
-<math-field>
-	{resultUnits}
+<math-field
+  bind:this={output}>
 </math-field>
 
 <style>
-	math-field {
-		outline: none;
-	}
 </style>

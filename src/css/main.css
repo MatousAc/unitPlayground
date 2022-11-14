@@ -17,6 +17,14 @@
   height: fit-content;
 }
 
+math-field {
+  outline: none;
+}
+
+#mathlive-popover-panel {
+  visibility: hidden !important;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
