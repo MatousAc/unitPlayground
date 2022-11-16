@@ -19,7 +19,6 @@
 
 math-field {
   outline: none;
-  padding: 0.4em 0.1em;
   display: flex;
   align-items: center;
 }

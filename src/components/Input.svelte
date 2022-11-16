@@ -33,8 +33,8 @@
 
 <math-field
   bind:this={input}
-  on:blur={feedback}
   on:input={feedback}
+  on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
   autofocus
 />

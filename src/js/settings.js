@@ -1,5 +1,11 @@
 // this file defines a store for app settings
 import { writable } from 'svelte/store'
 
-export const includeScalar = writable(false);
-export const significantDigits = writable(2);
+const settings = writable({
+  includeScalar: false,
+  significantDigits: 2,
+  convertToSI: false,
+  theme: "light"
+})
+
+export default settings;

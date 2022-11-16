@@ -29,8 +29,8 @@
 </script>
 
 <math-field bind:this={output}
+on:blur
 virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
-
 />
 
 <style>
