@@ -1,10 +1,13 @@
 // useful f(x)s
 import Qty from 'js-quantities'
-import { includeScalar, significantDigits } from './settings'
+import settings from './settings'
 
-let sigFigs, inScale;
-$: sigFigs = significantDigits;
-$: inScale = includeScalar;
+let sigFigs, inScale, toSI;
+settings.subscribe(s => {
+  sigFigs = s.significantDigits;
+  inScale = s.includeScalar;
+  toSI = s.convertToSI;
+})
 
 
 // json AST => single result, converts to Latex
@@ -15,6 +18,7 @@ export let getResultUnits = (json, fallbackValue) => {
   let res = ''
   try {
     let qty = converge(json)
+    if (toSI) qty = qty.toBase();
     res = qty.format(toLatex())
     console.log('res:', res)
   } catch (e) {
@@ -25,25 +29,31 @@ export let getResultUnits = (json, fallbackValue) => {
 }
 
 // custom formatter to convert a quantity to Latex
-let toLatex =  () => {
-  return function (scalar, units) {
-    // scalar string generation
-    scalar = includeScalar ? `${+scalar.toFixed(significantDigits)}` : ''
-    if (units == '' || units == null) return scalar
+let toLatex =  () => { return function (scalar, units) {
+  // scalar string generation
+  scalar = inScale ? `${+scalar.toFixed(sigFigs)}` : ''
+  if (units == '' || units == null) return scalar
 
-    // getting the right unit format for Latex
-    units = units.match(RegExp('[A-Za-z]+[0-9]*[s/]?', 'g'))
-    units = units.map(unit => {
-      let parts = unit.match(RegExp('[a-zA-Z/]+|[0-9/]+', 'g'))
-      if (parts == null) return unit
-      return parts.join('^')
-    })
-    units = `\\${units.join('\\')}`
-    let frac = units.split('/')
-    units = frac.length === 2 ? `\\frac{${frac[0]}}{${frac[1]}}` : units
-    return scalar + units
-  }
-}
+  // getting the right unit format for Latex
+  console.log(`starts w/ '1/' ${units.match('1/.+')}`)
+  let isDenom = units.match('1/.+');
+  console.log(`initial ${units}`)
+  units = units.match(RegExp('[A-Za-z]+[0-9]*[s/]?', 'g'))
+  console.log(`split ${units}`)
+  units = units.map(unit => {
+    let parts = unit.match(RegExp('[a-zA-Z/]+|[0-9/]+', 'g'))
+    console.log(`parts of each ${parts}`)
+    if (parts == null) return unit;
+    return parts.join('^');
+  })
+  console.log(`units ${units}`)
+  units = `\\${units.join('\\')}`
+  console.log(`joined ${units}`)
+  let frac = units.split('/')
+  units = frac.length === 2 ? `\\frac{${frac[0]}}{${frac[1]}}` : units
+  if (isDenom) units = `\\frac{1}{${units}}`
+  return scalar + units
+}}
 
 // recursively drills through a json AST, returns a Qty
 let converge = ast => {
