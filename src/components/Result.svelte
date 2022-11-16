@@ -1,32 +1,33 @@
 <script>
-  import engine from "../js/computeEngine"
-  import { macros } from "../js/stores.js"
-  import { onMount, getContext } from 'svelte';
-  import { eqKey, getResultUnits, inProgress } from "../js/equation.js"
-  
-  let output;
+  import engine from '../js/computeEngine'
+  import { unitMacros } from '../js/units'
+  import { onMount, getContext } from 'svelte'
+  import { eqKey, getResultUnits } from '../js/equation.js'
+
+  let output
   const eq = getContext(eqKey)
 
   onMount(() => {
-		output.setOptions({
-			macros: macros
-		})
-    console.log(output.getOptions());
-	})
+    output.setOptions({
+      macros: unitMacros,
+      computeEngine: engine,
+    })
+    console.log(output.getOptions())
 
-  eq.subscribe(() => {
-    let json = engine.parse($eq.left).json
-    console.log('left: ', $eq.left);
-    console.log('json: ', json);
-    if (!inProgress(JSON.stringify(json))) {
-      output.value = getResultUnits(json);
-    }
+    unitMacros.subscribe(val => {
+      output.setOptions({ macros: val })
+    })
+
+    eq.subscribe(() => {
+      let json = engine.parse($eq.left, { canonical: true }).json
+      console.log('left: ', $eq.left)
+      console.log('jsonStr: ', JSON.stringify(json))
+      output.value = getResultUnits(json, output.value)
+    })
   })
 </script>
 
-<math-field
-  bind:this={output}>
-</math-field>
+<math-field bind:this={output} />
 
 <style>
 </style>

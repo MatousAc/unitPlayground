@@ -19,10 +19,9 @@
 
 math-field {
   outline: none;
-}
-
-#mathlive-popover-panel {
-  visibility: hidden !important;
+  padding: 0.4em 0.1em;
+  display: flex;
+  align-items: center;
 }
 
 @media (prefers-color-scheme: light) {
