@@ -1,9 +1,31 @@
 // useful f(x)s
 import Qty from 'js-quantities'
+import { includeScalar, significantDigits } from './settings'
 
+let sigFigs, inScale;
+$: sigFigs = significantDigits;
+$: inScale = includeScalar;
+
+
+// json AST => single result, converts to Latex
+export let getResultUnits = (json, fallbackValue) => {
+  if (inProgress(JSON.stringify(json))) {
+    return fallbackValue
+  }
+  let res = ''
+  try {
+    let qty = converge(json)
+    res = qty.format(toLatex())
+    console.log('res:', res)
+  } catch (e) {
+    console.error(e.message)
+  }
+
+  return res == '' ? fallbackValue : '=' + res
+}
 
 // custom formatter to convert a quantity to Latex
-var toLatex = function (significantDigits, includeScalar) {
+let toLatex =  () => {
   return function (scalar, units) {
     // scalar string generation
     scalar = includeScalar ? `${+scalar.toFixed(significantDigits)}` : ''
@@ -23,43 +45,25 @@ var toLatex = function (significantDigits, includeScalar) {
   }
 }
 
-export let getResultUnits = (json, fallbackValue) => {
-  if (inProgress(JSON.stringify(json))) {
-    return fallbackValue
-  }
-  let res = ''
-  try {
-    let qty = converge(json)
-    res = qty.format(toLatex(3, true))
-    console.log('res:', res)
-  } catch (e) {
-    console.error(e.message)
-  }
-
-  return res == '' ? fallbackValue : '=' + res
-}
-
+// recursively drills through a json AST, returns a Qty
 let converge = ast => {
   if (!Array.isArray(ast)) return Qty(ast)
 
   let op = ast[0]
-  op = (op = 'Rational') ? 'Divide' : op
   switch (op) {
-    case 'Add':
-    case 'Divide':
-    case 'Subtract':
-    case 'Multiply':
-      return ast
-        .slice(1)
-        .reduce((a, b) =>
-          eval(`converge(a).${op.toLowerCase().substring(0, 3)}(converge(b))`)
-        )
-    case 'Power':
-      return Qty(`${converge(ast[1])}^${converge(ast[2])}`)
-    case 'UNIT':
-      return Qty(ast[1])
-    default:
-      return ''
+  case 'Add':
+  case 'Divide':
+  case 'Subtract':
+  case 'Multiply':
+    return ast.slice(1).reduce((a, b) =>
+        eval(`converge(a).${op.toLowerCase().substring(0, 3)}(converge(b))`)
+      )
+  case 'Power':
+    return Qty(`${converge(ast[1])}^${converge(ast[2])}`)
+  case 'UNIT':
+    return Qty(ast[1])
+  default:
+    return ''
   }
 }
 

@@ -3,6 +3,7 @@ import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?modul
 import { parseDict } from './units.js'
 
 let engine = new ComputeEngine();
+engine.jsonSerializationOptions = { exclude: ['Rational'] };
 
 parseDict.subscribe(parseInfo => {
   engine._latexDictionary = parseInfo;

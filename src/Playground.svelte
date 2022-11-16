@@ -22,7 +22,7 @@
 bind:this={playground}
 on:click={createEquation}
 class="playground fillParent">
-
+<!-- create settings overhang -->
 </div>
 
 <style>

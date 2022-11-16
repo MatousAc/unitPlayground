@@ -3,6 +3,7 @@
   import { unitMacros } from '../js/units'
   import { onMount, getContext } from 'svelte'
   import { eqKey, getResultUnits } from '../js/equation.js'
+  import { isMobile } from '../js/helpers'
 
   let output
   const eq = getContext(eqKey)
@@ -19,7 +20,7 @@
     })
 
     eq.subscribe(() => {
-      let json = engine.parse($eq.left, { canonical: true }).json
+      let json = engine.parse($eq.left, { canonical: false }).json
       console.log('left: ', $eq.left)
       console.log('jsonStr: ', JSON.stringify(json))
       output.value = getResultUnits(json, output.value)
@@ -27,7 +28,10 @@
   })
 </script>
 
-<math-field bind:this={output} />
+<math-field bind:this={output}
+virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
+
+/>
 
 <style>
 </style>
