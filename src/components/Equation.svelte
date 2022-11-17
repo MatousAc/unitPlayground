@@ -18,7 +18,7 @@
   let equation;
   export let x, y
   let initPosition = {
-    x:x - 10, y:y - 25
+    x:x - 15, y:y - 25
   }
 
   let destroyIfEmpty = () => {
@@ -30,7 +30,6 @@
   }
 
   onDestroy(() => {}) // nothing currently
-  let input, result;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

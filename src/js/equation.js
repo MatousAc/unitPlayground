@@ -4,8 +4,8 @@ import settings from './settings'
 
 let sigFigs, inScale, toSI;
 settings.subscribe(s => {
-  sigFigs = s.significantDigits;
   inScale = s.includeScalar;
+  sigFigs = s.significantDigits;
   toSI = s.convertToSI;
 })
 

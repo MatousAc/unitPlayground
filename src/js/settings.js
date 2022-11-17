@@ -2,8 +2,8 @@
 import { writable } from 'svelte/store'
 
 const settings = writable({
-  includeScalar: false,
-  significantDigits: 2,
+  includeScalar: true,
+  significantDigits: 3,
   convertToSI: false,
   theme: "light"
 })

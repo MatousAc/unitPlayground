@@ -12,7 +12,7 @@
   let input
   onMount(() => {
     input.setOptions({
-      // enablePopover: false,
+      enablePopover: false,
       macros: unitMacros,
       computeEngine: engine,
     })
