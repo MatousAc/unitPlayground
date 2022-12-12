@@ -36,6 +36,8 @@
     position: relative;
     background-color: var(--backClr);
     color: var(--textClr);
+    transition-duration: 1s;
+    transition-property: background, color;
   }
 
   .playground.light {

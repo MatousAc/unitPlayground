@@ -3,8 +3,8 @@
   import Input from "./Input.svelte"
   import Result from "./Result.svelte"
   import Row from "./Row.svelte"
-  import {writable} from 'svelte/store';
-  import {onDestroy, setContext} from 'svelte';
+  import { writable } from 'svelte/store';
+  import { onDestroy, setContext } from 'svelte';
   import { eqKey } from "../js/equation.js"
 
   let eqVal = writable({

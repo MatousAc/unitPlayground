@@ -1,4 +1,4 @@
-<div class = "col">
+<div class=col>
 	<slot></slot>
 </div>
 

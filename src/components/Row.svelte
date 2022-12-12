@@ -1,5 +1,10 @@
-<div class = "row">
-		<slot></slot>
+<script>
+  export let justify='center'
+  export let align='center'
+</script>
+
+<div class='row justify-content-{justify} align-items-{align}'>
+	<slot></slot>
 </div>
 
 <style>
@@ -7,6 +12,5 @@
 	display: flex;
 	flex-direction: row;
 	width: fit-content;
-	justify-content: center;
 }
 </style>

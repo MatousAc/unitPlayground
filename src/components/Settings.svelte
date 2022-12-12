@@ -1,18 +1,30 @@
 <script>
   import settings from '../js/settings'
-  import Row from './Row.svelte';
-  import Col from './Col.svelte';
+  import Row from './Row.svelte'
+  import Col from './Col.svelte'
+  import Switch from './Switch.svelte'
+
+  let isOpen = false
+  let themes = ["light", "navy"]
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class=settingsWrapper>
-  <div class=settings on:click|stopPropagation={() => {}}>
+  <span 
+    class="material-symbols-outlined settingsIcon p-5px{(isOpen) ? ' open' : ''}"
+    on:click|stopPropagation={() => isOpen = !isOpen}>
+    settings
+  </span>
+  <div 
+    class='settings mb-1{(isOpen) ? ' open' : ''}'
+    on:click|stopPropagation={() => {}}>
     <Col>
-      <label for=significantDigits>
+      <label class=m-3px
+        for=significantDigits>
         {$settings.significantDigits} decimal place{
         $settings.significantDigits == 1 ? '' : 's'}
       </label>
-      <input
+      <input class=m-3px
         name=significantDigits
         type=range
         bind:value={$settings.significantDigits}
@@ -21,30 +33,68 @@
       />
     </Col>
     <Row>
-      <label for=includeScalar>
-        Include scalar values:
-      </label>
-      <input name=includeScalar type=checkbox bind:checked={$settings.includeScalar} />
+      <span class=m-3px>
+        Include scalar values
+      </span>
+      <Switch name=includeScalar bind:checked={$settings.includeScalar}/>
     </Row>
-    
+    <Row>
+      <label class=m-3px
+        for=theme>
+        Theme
+      </label>
+      <select class="m-3px p-5px br-1"
+      name=theme type=select 
+      bind:value={$settings.theme}
+      style="height: fit-content;"
+      >
+        {#each themes as theme}
+          <option>{theme}</option>
+        {/each}
+      </select>
+    </Row>    
   </div>
 </div>
 
 <style>
+  .settingsIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    z-index: 2;
+    transition-duration: 0.4s;
+  }
+  .open.settingsIcon {
+    filter: invert(1);
+    transform: rotate(-270deg);
+    transition-timing-function: cubic-bezier(0.97, -0.04, 0.15, 0.91);
+  }
   .settingsWrapper { 
     position: absolute;
     width: 100%;
+    overflow: hidden;
+  }
+
+  .settings.open {
+    transform: translateY(0) !important;
   }
   .settings {
     position: relative;
+    z-index: 1;
     top: 0;
     left: 0;
     display: flex;
-    padding: 1em;
+    justify-content: space-between;
+    align-items: center;
     background-color: var(--textClr);
-    color: var(--backClr);
     box-shadow: 0px 5px 8px 0 grey;
-    /* visibility: hidden; */
+    color: var(--backClr);
+    padding: 1em;
+    font-size: 1.2em;
+    transform: translateY(-105%);
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
   }
 
   .settings:hover {

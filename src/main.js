@@ -1,4 +1,5 @@
 import './css/main.css'
+import './css/bootstrap.css'
 import Playground from './Playground.svelte'
 
 // single playground
