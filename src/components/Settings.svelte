@@ -39,6 +39,12 @@
       <Switch name=includeScalar bind:checked={$settings.includeScalar}/>
     </Row>
     <Row>
+      <span class=m-3px>
+        Simplify Units
+      </span>
+      <Switch name=convertToSI bind:checked={$settings.convertToSI}/>
+    </Row>
+    <Row>
       <label class=m-3px
         for=theme>
         Theme

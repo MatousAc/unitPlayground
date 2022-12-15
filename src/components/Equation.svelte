@@ -1,35 +1,57 @@
 <script>
-  import { draggable } from "@neodrag/svelte"
-  import Input from "./Input.svelte"
-  import Result from "./Result.svelte"
-  import Row from "./Row.svelte"
-  import { writable } from 'svelte/store';
+  import { draggable } from '@neodrag/svelte'
+  import Input from './Input.svelte'
+  import Result from './Result.svelte'
+  import Row from './Row.svelte'
+  import { writable, get } from 'svelte/store';
   import { onDestroy, setContext } from 'svelte';
-  import { eqKey } from "../js/equation.js"
+  import { eqKey } from '../js/equation.js'
+  import { swallow } from '../js/stores.js'
 
+  export let initLeft = ''
   let eqVal = writable({
-    left: '',
+    left: initLeft,
     right: ''
   });
 
   setContext(eqKey, eqVal);
   let handleClick = () => {};
   
-  let equation;
+  let equation
   export let x, y
   let initPosition = {
     x:x - 15, y:y - 25
+  }
+
+  let selfDestruct = () => {
+    equation.closest('.playground').removeChild(equation)
   }
 
   let destroyIfEmpty = () => {
     let row = equation.children[0];
     let mfs = row.children;
     if (mfs[0].value == '' && mfs[1].value == '') {
-      equation.parentNode.removeChild(equation);
+      selfDestruct()
     }
   }
 
-  onDestroy(() => {}) // nothing currently
+  let destroyIfInTrash = () => {
+    let trash = document.querySelector('.trashIcon')
+    if (trash.matches(':hover')) {
+      // swallow({
+      //   'offsetX': equation.position.x,
+      //   'offsetY': equation.position.y,
+      //   'value': get(eqVal).left
+      // })
+      // swallow(equation)
+      console.log("about to self destruct")
+      selfDestruct()
+    }
+  }
+
+  onDestroy(() => {
+
+  })
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -37,14 +59,15 @@
 bind:this={equation}
 on:click|stopPropagation={handleClick}
 on:blur={destroyIfEmpty}
-class="equation fitContent"
+on:neodrag:end={destroyIfInTrash()}
+class='equation fitContent'
 use:draggable={{
   bounds: 'parent',
   cancel: '.noDrag',
   defaultClass: 'draggable',
   defaultClassDragging: 'dragging',
   defaultClassDragged: 'dragged',
-  position: initPosition
+  defaultPosition: initPosition
 }}>
   <Row>
     <Input on:blur={destroyIfEmpty}/>
@@ -61,7 +84,8 @@ use:draggable={{
   transition: border 0.5s;
 }
 
-.equation:hover {
+.equation:hover,
+:global(.equation.dragging) {
   border-color: var(--textClr);
 }
 </style>
