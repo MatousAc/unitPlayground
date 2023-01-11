@@ -39,7 +39,6 @@
     background-color: var(--backClr);
     color: var(--textClr);
     transition-duration: 1s;
-    /* transition-property: background, color; */
     overflow: hidden;
   }
 
@@ -51,9 +50,9 @@
     --accent1Clr: #f7cb15;
     box-shadow: inset 0px 0px 6px 1px grey;
   }
-  .playground.navy {
-    --backClr: #032b43;
-    --textClr: #ffba08;
+  .playground.dark {
+    --backClr: black;
+    --textClr: white;
     --safeClr: #136f63;
     --dangerClr: #d00000;
     --accent1Clr: #3f88c5;

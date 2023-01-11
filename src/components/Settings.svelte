@@ -3,6 +3,7 @@
   import Row from './Row.svelte'
   import Col from './Col.svelte'
   import Switch from './Switch.svelte'
+	import ThemeSwitcher from "./ThemeSwitcher.svelte"
 
   let isOpen = false
   let themes = ["light", "navy"]
@@ -44,21 +45,7 @@
       </span>
       <Switch name=convertToSI bind:checked={$settings.convertToSI}/>
     </Row>
-    <Row>
-      <label class=m-3px
-        for=theme>
-        Theme
-      </label>
-      <select class="m-3px p-5px br-1"
-      name=theme type=select 
-      bind:value={$settings.theme}
-      style="height: fit-content;"
-      >
-        {#each themes as theme}
-          <option>{theme}</option>
-        {/each}
-      </select>
-    </Row>    
+    <ThemeSwitcher bind:theme={$settings.theme}/>
   </div>
 </div>
 
@@ -96,7 +83,7 @@
     background-color: var(--textClr);
     box-shadow: 0px 5px 8px 0 grey;
     color: var(--backClr);
-    padding: 1em;
+    padding: 1em 2em 1em 1em;
     font-size: 1.2em;
     transform: translateY(-105%);
     transition-duration: 0.2s;

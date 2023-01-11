@@ -18,5 +18,9 @@
   },
   "config": {
     "compiler-warnings": "css-unused-selector:ignore,unused-export-let:ignore"
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "svelte-fa": "^3.0.3"
   }
 }

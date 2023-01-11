@@ -13,3 +13,4 @@ export const swallow = equation => {
 export const pop = () => {
   return get(trashStack).pop();
 }
+
