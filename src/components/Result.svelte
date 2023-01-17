@@ -2,22 +2,23 @@
   import engine from '../js/computeEngine'
   import { unitMacros } from '../js/units'
   import { onMount, getContext } from 'svelte'
-  import { eqKey, getResultUnits } from '../js/equation.js'
+  // import { eqKey, getResultUnits } from '../js/js-quantities.js'
+  import { eqKey, getResultUnits } from '../js/math.js'
   import settings from '../js/settings'
   import { isMobile } from '../js/helpers'
 
-  let output
+  let result
   const eq = getContext(eqKey)
 
   onMount(() => {
-    output.setOptions({
+    result.setOptions({
       macros: unitMacros,
       computeEngine: engine,
     })
-    console.log(output.getOptions())
+    console.log(result.getOptions())
 
     unitMacros.subscribe(val => {
-      output.setOptions({ macros: val })
+      result.setOptions({ macros: val })
     })
 
     eq.subscribe(() => reCalculate())
@@ -28,13 +29,13 @@
     let json = engine.parse($eq.left, { canonical: false }).json
     console.log('left: ', $eq.left)
     console.log('jsonStr: ', JSON.stringify(json))
-    output.value = getResultUnits(json, output.value)
+    result.value = getResultUnits(json, result.value)
   }
 </script>
 
-<math-field bind:this={output}
-on:blur
-virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
+<math-field bind:this={result}
+  on:blur
+  virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
 />
 
 <style>
