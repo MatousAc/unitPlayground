@@ -9,6 +9,7 @@ settings.subscribe(s => {
     precision: s.precision,
     simplifyThreshold: 2
   })
-  console.log(s.system)
 })
+
+console.log(unit.config())
   

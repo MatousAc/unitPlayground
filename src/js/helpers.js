@@ -1,3 +1,10 @@
+import units from 'unitmath'
+
+// a typeOf f(x)
+export let typeOf = (obj) => {
+  if (obj.units != undefined) return 'unit'
+  return {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
+}
 
 // is mobile function taken from https://stackoverflow.com/a/11381730/14062356
 export let isMobile = () => {

@@ -3,7 +3,6 @@
   import { unitMacros } from '../js/unitOcean'
   import { onMount, getContext } from 'svelte'
   import { eqKey, getResultUnits } from '../js/unitmath.js'
-  // import { eqKey, getResultUnits } from '../js/math.js'
   import settings from '../js/settings'
   import { isMobile } from '../js/helpers'
 

@@ -6,7 +6,6 @@
   import { writable, get } from 'svelte/store';
   import { onDestroy, setContext } from 'svelte';
   import { eqKey } from '../js/unitmath.js'
-  // import { eqKey } from '../js/math.js'
   // import { swallow } from '../js/stores.js'
 
   export let initLeft = ''
