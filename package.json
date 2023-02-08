@@ -22,6 +22,7 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "mathjs": "^11.5.0",
-    "svelte-fa": "^3.0.3"
+    "svelte-fa": "^3.0.3",
+    "unitmath": "^0.8.8"
   }
 }

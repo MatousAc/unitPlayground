@@ -43,7 +43,7 @@
       <span class=m-3px>
         Simplify Units
       </span>
-      <Switch name=convertToSI bind:checked={$settings.convertToSI}/>
+      <Switch name=convertToSI bind:checked={$settings.simplify}/>
     </Row>
     <ThemeSwitcher bind:theme={$settings.theme}/>
   </div>

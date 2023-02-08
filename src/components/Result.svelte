@@ -2,8 +2,8 @@
   import engine from '../js/computeEngine'
   import { unitMacros } from '../js/units'
   import { onMount, getContext } from 'svelte'
-  // import { eqKey, getResultUnits } from '../js/js-quantities.js'
-  import { eqKey, getResultUnits } from '../js/math.js'
+  import { eqKey, getResultUnits } from '../js/unitmath.js'
+  // import { eqKey, getResultUnits } from '../js/math.js'
   import settings from '../js/settings'
   import { isMobile } from '../js/helpers'
 

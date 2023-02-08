@@ -6,7 +6,7 @@ let sigFigs, inScale, toSI;
 settings.subscribe(s => {
   inScale = s.includeScalar;
   sigFigs = s.significantDigits;
-  toSI = s.convertToSI;
+  toSI = s.simplify;
 })
 
 
