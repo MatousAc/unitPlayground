@@ -2,18 +2,35 @@
 // and makes it available as stores
 // @ts-ignore
 import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
-import Qty from 'js-quantities';
+import { unit } from './unitmathSetup'
 import { writable } from 'svelte/store';
 
 // initial values
 let starterUnits = [];
-Qty.getKinds().forEach((kind) => {
-  Qty.getUnits(kind).forEach((unit) => {
-    Qty.getAliases(unit).forEach((alias) => {
-      starterUnits.push(alias);
-    })
-  })
-})
+let prefixDict = {};
+
+for (const [group, prefixes] of Object.entries(unit.definitions().prefixes)) {
+  prefixDict[group] = Object.keys(prefixes)
+}
+
+let unitStrings = (name, attrs) => {
+  let names
+  if (attrs.aliases != undefined) {
+    names = [name, ...attrs.aliases]
+  } else names = [name]
+  names.forEach(name => {
+    if (attrs.prefixes != undefined) {
+      prefixDict[attrs.prefixes].forEach(prefix => {
+        starterUnits.push(prefix + name)
+      });
+    } else starterUnits.push(name)
+  });
+}
+
+for (const [name, attributes] of Object.entries(unit.definitions().units)) {
+  unitStrings(name, attributes)
+}
+
 
 let starterMacros = {
   Mu: '\\mathrm{M}',
@@ -80,3 +97,14 @@ function makeUnitParse(unit) {
   }
 }
 
+
+
+// legacy: how we imported units from js-quantities
+// import Qty from 'js-quantities';
+// Qty.getKinds().forEach((kind) => {
+//   Qty.getUnits(kind).forEach((unit) => {
+//     Qty.getAliases(unit).forEach((alias) => {
+//       starterUnits.push(alias);
+//     })
+//   })
+// })

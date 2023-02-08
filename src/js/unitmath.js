@@ -1,17 +1,18 @@
 // useful f(x)s
-import units from 'unitmath'
 import settings from './settings'
+import { unit } from './unitmathSetup'
 
-let sigFigs, useScalar, simplify;
+let sigFigs, useScalar, simplify, system;
 settings.subscribe(s => {
   useScalar = s.includeScalar;
-  sigFigs = s.significantDigits;
+  sigFigs = s.precision;
   simplify = s.simplify;
+  system = s.system;
 })
 
-
-// json AST => single result, converts to Latex
+// json AST => single result
 export let getResultUnits = (json, fallbackValue) => {
+  console.log(unit.definitions())
   if (inProgress(JSON.stringify(json))) {
     return fallbackValue
   }
@@ -30,13 +31,14 @@ export let getResultUnits = (json, fallbackValue) => {
   return res == '' ? fallbackValue : '=' + res
 }
 
-// custom formatter to convert a quantity to Latex
+// converts a quantity to Latex
 let toLatex = (qty) => {
   // if (!isNaN(qty)) qty = unit(qty)
   let scalar = qty.value
   let units = qty.units
   // scalar string generation
-  scalar = useScalar ? `${parseFloat(scalar.toFixed(sigFigs))}` : ''
+  // scalar = (useScalar && scalar) ? scalar : ''
+  scalar = (useScalar && scalar) ? `${parseFloat(scalar.toFixed(sigFigs))}` : ''
   if (units.length == 0) return scalar
 
   // getting the right unit format for Latex
@@ -66,7 +68,7 @@ let converge = ast => {
       else return ast
     case "number":
     case "string":
-      return units(ast)
+      return unit(ast)
     default:
       return ast
   }
@@ -88,7 +90,7 @@ let converge = ast => {
   case 'Power':
     return power(ast)
   case 'UNIT':
-    return units(ast[1])
+    return unit(ast[1])
   case "List":
     return ast
   default:
@@ -101,7 +103,7 @@ let power = (arr) => {
   console.log("power array", arr)
   return arr.flat().reduceRight((a, b) => {
     console.log("b", b)
-    if (typeof b === "number") { b = units(b) }
+    if (typeof b === "number") { b = unit(b) }
     console.log("typeof b", typeof b)
     console.log("b", b)
     console.log("a", a)

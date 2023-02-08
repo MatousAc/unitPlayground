@@ -5,7 +5,7 @@ import settings from './settings'
 let sigFigs, inScale, toSI;
 settings.subscribe(s => {
   inScale = s.includeScalar;
-  sigFigs = s.significantDigits;
+  sigFigs = s.precision;
   toSI = s.simplify;
 })
 

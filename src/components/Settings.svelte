@@ -4,6 +4,7 @@
   import Col from './Col.svelte'
   import Switch from './Switch.svelte'
 	import ThemeSwitcher from "./ThemeSwitcher.svelte"
+  import Select from './Select.svelte'
 
   let isOpen = false
   let themes = ["light", "navy"]
@@ -22,26 +23,34 @@
     <Col>
       <label class=m-3px
         for=significantDigits>
-        {$settings.significantDigits} decimal place{
-        $settings.significantDigits == 1 ? '' : 's'}
+        {$settings.precision} decimal place{
+        $settings.precision == 1 ? '' : 's'}
       </label>
       <input class=m-3px
         name=significantDigits
         type=range
-        bind:value={$settings.significantDigits}
+        bind:value={$settings.precision}
         min=0
         max=10
       />
     </Col>
     <Row>
       <span class=m-3px>
-        Include scalar values
+        Scalar values
       </span>
       <Switch name=includeScalar bind:checked={$settings.includeScalar}/>
     </Row>
     <Row>
+      <Select name=system bind:value={$settings.system}
+        options={[
+          {name: "SI", value: "si"},
+          {name: "US", value: "us"},
+          {name: "Cgs", value: "cgs"}
+        ]}/>
+    </Row>
+    <Row>
       <span class=m-3px>
-        Simplify Units
+        Base Units
       </span>
       <Switch name=convertToSI bind:checked={$settings.simplify}/>
     </Row>
