@@ -2,6 +2,7 @@
 import settings from './settings'
 import { unit } from './unitmathSetup'
 import { typeOf } from './helpers'
+import { Fail, Hint, UnrecognizedUnit } from './error'
 
 let sigFigs, useScalar, simplify, system;
 settings.subscribe(s => {
@@ -24,8 +25,6 @@ export let getResultUnits = (json, fallbackValue) => {
     if (simplify) qty = qty.simplify();
     res = toLaTeX(qty)
     console.log('res', res)
-    console.log("")
-    console.log("")
   } catch (e) {
     console.error(e)
   }
@@ -35,13 +34,13 @@ export let getResultUnits = (json, fallbackValue) => {
 
 // recursively drills through a json AST, returns a Unit
 let converge = ast => {
-  console.log(ast, typeOf(ast))
+  // console.log(ast, typeOf(ast))
   switch (typeOf(ast)) {
     case "array": break
     case 'unit': return ast
     case "number": return unit(ast)
     case "string":
-      throw new Error("Unit not recognized.")
+      throw new UnrecognizedUnit(ast)
     case 'object':
     default:
       return ast
@@ -56,8 +55,6 @@ let converge = ast => {
     return ast.slice(1).reduce((a, b) => {
       a = converge(a)
       b = converge(b)
-      console.log("a", a)
-      console.log("b", b)
       return eval(`a.${op.toLowerCase().substring(0, 3)}(b)`)
   })
   
@@ -96,7 +93,6 @@ let toLaTeX = (u) => {
   units.forEach(u => {
     let latex = `\\${u.prefix}${u.unit.name}`
     if (Math.abs(u.power) != 1) latex += `^{${Math.abs(u.power)}}`
-    console.log(latex)
     if (u.power > 0) {numerator += (latex)}
     else {denominator += (latex)}
   });
