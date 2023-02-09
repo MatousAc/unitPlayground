@@ -21,6 +21,8 @@
     unitMacros.subscribe(val => {
       input.setOptions({ macros: val })
     })
+
+    input.value = left
   })
 
   let feedback = () => {

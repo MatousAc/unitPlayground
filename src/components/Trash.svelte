@@ -5,17 +5,17 @@
   let trash
 
   let vomit = () => {
-    // let last = pop()
-    // console.log(last)
-    // new Equation({
-    //   props: {
-    //     x: last.offsetX,
-    //     y: last.offsetY,
-    //     left: last.value
-    //   },
-    //   target: trash.parentNode,
-    // })
-    // trash.parentNode.append(last)
+    let last = pop()
+    console.log(last)
+    new Equation({
+      props: {
+        x: last.offsetX,
+        y: last.offsetY,
+        initLeft: last.value
+      },
+      target: trash.parentNode,
+    })
+    trash.parentNode.append(last)
   }
 </script>
 

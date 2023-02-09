@@ -6,7 +6,7 @@
   import { writable, get } from 'svelte/store';
   import { onDestroy, setContext } from 'svelte';
   import { eqKey } from '../js/unitmath.js'
-  // import { swallow } from '../js/stores.js'
+  import { swallow } from '../js/stores.js'
 
   export let initLeft = ''
   let eqVal = writable({
@@ -15,7 +15,6 @@
   });
 
   setContext(eqKey, eqVal);
-  let handleClick = () => {};
   
   let equation
   export let x, y
@@ -32,17 +31,20 @@
     let mfs = row.children;
     if (mfs[0].value == '' && mfs[1].value == '') {
       selfDestruct()
+      console.log("destroyed empty eq")
     }
   }
 
-  let destroyIfInTrash = () => {
+  let destroyIfInTrash = (e) => {
+    console.log("eq", equation)
+    console.log("e", e)
     let trash = document.querySelector('.trashIcon')
     if (trash.matches(':hover')) {
-      // swallow({
-      //   'offsetX': equation.position.x,
-      //   'offsetY': equation.position.y,
-      //   'value': get(eqVal).left
-      // })
+      swallow({
+        'offsetX': e.detail.offsetX,
+        'offsetY': e.detail.offsetY-10,
+        'value': get(eqVal).left
+      })
       // swallow(equation)
       console.log("about to self destruct")
       selfDestruct()
@@ -52,14 +54,16 @@
   onDestroy(() => {
 
   })
+  // on:blur={destroyIfEmpty}
+
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div 
 bind:this={equation}
-on:click|stopPropagation={handleClick}
-on:blur={destroyIfEmpty}
-on:neodrag:end={destroyIfInTrash()}
+on:click|stopPropagation
+on:blur={console.log("blurred", equation)}
+on:neodrag:end={destroyIfInTrash}
 class='equation fitContent'
 use:draggable={{
   bounds: 'parent',
@@ -69,9 +73,9 @@ use:draggable={{
   defaultClassDragged: 'dragged',
   defaultPosition: initPosition
 }}>
-  <Row>
-    <Input on:blur={destroyIfEmpty}/>
-    <Result on:blur={destroyIfEmpty}/>
+  <Row on:message>
+    <Input on:message/>
+    <Result on:message/>
   </Row>
 </div>
 
