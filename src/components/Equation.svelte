@@ -23,7 +23,7 @@
   }
 
   let selfDestruct = () => {
-    equation.closest('.playground').removeChild(equation)
+    equation.parentNode.removeChild(equation)
   }
 
   let destroyIfEmpty = () => {
@@ -36,8 +36,6 @@
   }
 
   let destroyIfInTrash = (e) => {
-    console.log("eq", equation)
-    console.log("e", e)
     let trash = document.querySelector('.trashIcon')
     if (trash.matches(':hover')) {
       swallow({
@@ -45,24 +43,18 @@
         'offsetY': e.detail.offsetY-10,
         'value': get(eqVal).left
       })
-      // swallow(equation)
-      console.log("about to self destruct")
       selfDestruct()
     }
   }
 
-  onDestroy(() => {
-
-  })
-  // on:blur={destroyIfEmpty}
-
+  onDestroy(() => {})
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div 
 bind:this={equation}
 on:click|stopPropagation
-on:blur={console.log("blurred", equation)}
+
 on:neodrag:end={destroyIfInTrash}
 class='equation fitContent'
 use:draggable={{
@@ -73,9 +65,9 @@ use:draggable={{
   defaultClassDragged: 'dragged',
   defaultPosition: initPosition
 }}>
-  <Row on:message>
-    <Input on:message/>
-    <Result on:message/>
+  <Row>
+    <Input on:blur={destroyIfEmpty}/>
+    <Result/>
   </Row>
 </div>
 

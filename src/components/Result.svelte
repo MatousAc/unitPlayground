@@ -33,7 +33,6 @@
 </script>
 
 <math-field bind:this={result}
-  on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
 />
 

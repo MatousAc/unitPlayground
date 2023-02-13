@@ -1,29 +1,14 @@
 <script>
-  import { pop } from "../js/stores.js"
-  import Equation from '../components/Equation.svelte'
+  import { vomit } from "../js/stores.js"
 
   let trash
-
-  let vomit = () => {
-    let last = pop()
-    console.log(last)
-    new Equation({
-      props: {
-        x: last.offsetX,
-        y: last.offsetY,
-        initLeft: last.value
-      },
-      target: trash.parentNode,
-    })
-    trash.parentNode.append(last)
-  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <span 
   bind:this={trash}
   class="material-symbols-outlined trashIcon"
-  on:click|stopPropagation={vomit}>
+  on:click|stopPropagation={() => vomit(trash.parentNode)}>
   delete
 </span>
 
