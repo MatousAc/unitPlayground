@@ -3,100 +3,108 @@
 // @ts-ignore
 import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
 import { unit } from './unitmathSetup'
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 
-// initial values
-let starterUnits = [];
-let prefixDict = {};
-
-for (const [group, prefixes] of Object.entries(unit.definitions().prefixes)) {
-  prefixDict[group] = Object.keys(prefixes)
+///////////////////
+// processing f(x)s
+let getPrefixDictionary = () => {
+  let prefixDict = {};
+  for (const [group, prefixes] of Object.entries(unit.definitions().prefixes)) {
+    prefixDict[group] = Object.keys(prefixes)
+  }
+  return prefixDict;
 }
+export const prefixDictionary = writable(getPrefixDictionary())
 
-let unitStrings = (name, attrs) => {
+
+let aliasPrefixCombos = (name, attrs) => {
+  let unitStrings = [];
   let names
   if (attrs.aliases != undefined) {
     names = [name, ...attrs.aliases]
   } else names = [name]
   names.forEach(name => {
     if (attrs.prefixes != undefined) {
-      prefixDict[attrs.prefixes].forEach(prefix => {
-        starterUnits.push(prefix + name)
+      get(prefixDictionary)[attrs.prefixes].forEach(prefix => {
+        unitStrings.push(prefix + name)
       });
-    } else starterUnits.push(name)
+    } else unitStrings.push(name)
   });
+  return unitStrings
 }
 
-for (const [name, attributes] of Object.entries(unit.definitions().units)) {
-  unitStrings(name, attributes)
+let makeMacros = unitList => {
+  let macros = {}
+  unitList.forEach(unit => {
+    macros[unit] = `\\mathrm{${unit}}`
+  })
+  return macros
 }
 
-
-let starterMacros = {
-  Mu: '\\mathrm{M}',
-  euler: '\\mathrm{e}',
-  imaginary: '\\mathrm{i}',
+let makeParse = unitList => {
+  let parseInfo = []
+  unitList.forEach((alias) => {
+    parseInfo.push({
+      trigger: `\\${alias}`,
+      parse: ["UNIT", alias]
+    })
+  })
+  return parseInfo
 }
-starterUnits.forEach(unit => {
-  starterMacros[unit] = `\\mathrm{${unit}}`
-})
 
-let unitParse = []
-starterUnits.forEach((alias) => {
-  unitParse.push(makeUnitParse(alias))
-})
+let filterCEParsingInfo = unitParse => {
+  // hashmap for quick lookup
+  let startHash = new Map();
+  unitParse.forEach(entry => {
+    startHash.set(entry["trigger"], true);
+  }) 
+  let defaultParse = ComputeEngine.getLatexDictionary()
+  // below we have to filter out latex commands that
+  // conflict with units so that parsing works properly
+  defaultParse = defaultParse.filter(def =>
+    !startHash.has(`${def["trigger"]}`)
+  )
+  return defaultParse
+}
 
-// hashmap for quick lookup
-let startHash = new Map();
-unitParse.forEach(entry => {
-  startHash.set(entry["trigger"], true);
-}) 
-let defaultParse = ComputeEngine.getLatexDictionary()
-// below we have to filter out latex commands that
-// conflict with units so that parsing works properly
-defaultParse = defaultParse.filter(def =>
-  !startHash.has(`${def["trigger"]}`)
-)
-
-// define stores for unit info
-export const unitList = writable(starterUnits)
-export const unitMacros = writable(starterMacros)
+///////////////////
+// first-time setup
+let getDefaultUnits = () => {
+  let starterUnits = []
+  for (const [name, attributes] of Object.entries(unit.definitions().units)) {
+    starterUnits = [...starterUnits ,...aliasPrefixCombos(name, attributes)]
+  }
+  return starterUnits
+}
+// define starting stores for unit info
+let defaultUnits = getDefaultUnits()
+let starterParse = makeParse(defaultUnits)
+export const unitMacros = writable(makeMacros(defaultUnits))
 export const parseDict = writable([
-  ...unitParse, 
-  ...defaultParse
+  ...starterParse, 
+  ...filterCEParsingInfo(starterParse)
 ])
 
-// adding a new unit requires this?
-export let addUnit = (unit) => {
-  unitList.update(list => {
-    list.push(unit);
-    return list
-  })
+/////////////////////
+// user defined units
 
+// adding a new unit requires these updates
+export let addUnit = unit => {
   unitMacros.update(macros => {
     return {
       ...macros,
-      unit: `\\mathrm{${unit}}`
+      ...makeMacros([unit])
     }
   });
 
   parseDict.update(dict => {
     return [
       ...dict,
-      makeUnitParse(unit)
+      ...makeParse([unit])
     ]
   });
-  // Qty.add_unit() or something
-}
 
-// helper
-function makeUnitParse(unit) {
-  return {
-    trigger: `\\${unit}`,
-    parse: ["UNIT", unit]
-  }
 }
-
 
 
 // legacy: how we imported units from js-quantities

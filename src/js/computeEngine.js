@@ -8,6 +8,5 @@ engine.jsonSerializationOptions = { exclude: ['Rational'] };
 parseDict.subscribe(parseInfo => {
   engine._latexDictionary = parseInfo;
 })
-// console.log("engine _lD: ", engine._latexDictionary)
 
 export default engine;
