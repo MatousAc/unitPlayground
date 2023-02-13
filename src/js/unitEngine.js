@@ -2,22 +2,15 @@
 // and makes it available as stores
 // @ts-ignore
 import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
-import { unit } from './unitmathSetup'
-import { writable, get } from 'svelte/store';
+import { get } from 'svelte/store';
+import {
+  prefixDictionary,
+  unitMacros,
+  parseDict
+} from './stores';
 
-///////////////////
-// processing f(x)s
-let getPrefixDictionary = () => {
-  let prefixDict = {};
-  for (const [group, prefixes] of Object.entries(unit.definitions().prefixes)) {
-    prefixDict[group] = Object.keys(prefixes)
-  }
-  return prefixDict;
-}
-export const prefixDictionary = writable(getPrefixDictionary())
-
-
-let aliasPrefixCombos = (name, attrs) => {
+///// processing f(x)s /////
+export const aliasPrefixCombos = (name, attrs) => {
   let unitStrings = [];
   let names
   if (attrs.aliases != undefined) {
@@ -33,7 +26,7 @@ let aliasPrefixCombos = (name, attrs) => {
   return unitStrings
 }
 
-let makeMacros = unitList => {
+export const makeMacros = unitList => {
   let macros = {}
   unitList.forEach(unit => {
     macros[unit] = `\\mathrm{${unit}}`
@@ -41,7 +34,7 @@ let makeMacros = unitList => {
   return macros
 }
 
-let makeParse = unitList => {
+export const makeParse = unitList => {
   let parseInfo = []
   unitList.forEach((alias) => {
     parseInfo.push({
@@ -52,7 +45,7 @@ let makeParse = unitList => {
   return parseInfo
 }
 
-let filterCEParsingInfo = unitParse => {
+export const filterCEParsingInfo = unitParse => {
   // hashmap for quick lookup
   let startHash = new Map();
   unitParse.forEach(entry => {
@@ -67,27 +60,7 @@ let filterCEParsingInfo = unitParse => {
   return defaultParse
 }
 
-///////////////////
-// first-time setup
-let getDefaultUnits = () => {
-  let starterUnits = []
-  for (const [name, attributes] of Object.entries(unit.definitions().units)) {
-    starterUnits = [...starterUnits ,...aliasPrefixCombos(name, attributes)]
-  }
-  return starterUnits
-}
-// define starting stores for unit info
-let defaultUnits = getDefaultUnits()
-let starterParse = makeParse(defaultUnits)
-export const unitMacros = writable(makeMacros(defaultUnits))
-export const parseDict = writable([
-  ...starterParse, 
-  ...filterCEParsingInfo(starterParse)
-])
-
-/////////////////////
-// user defined units
-
+///// user defined units /////
 // adding a new unit requires these updates
 export let addUnit = unit => {
   unitMacros.update(macros => {

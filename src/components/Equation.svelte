@@ -5,8 +5,8 @@
   import Row from './Row.svelte'
   import { writable, get } from 'svelte/store';
   import { onDestroy, setContext } from 'svelte';
-  import { eqKey } from '../js/unitmath.js'
-  import { swallow } from '../js/stores.js'
+  import { eqKey } from '../js/equation'
+  import { swallow } from '../js/stores'
 
   export let initLeft = ''
   let eqVal = writable({

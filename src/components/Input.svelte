@@ -1,8 +1,8 @@
 <script>
-  import { unitMacros } from '../js/unitOcean'
+  import { unitMacros } from '../js/stores'
   import { isMobile } from '../js/helpers'
   import { onMount, getContext } from 'svelte'
-  import { eqKey, getResultUnits } from '../js/unitmath.js'
+  import { eqKey, getResultUnits } from '../js/equation'
   import engine from '../js/computeEngine' 
 
   const eq = getContext(eqKey)

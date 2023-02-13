@@ -1,6 +1,6 @@
 // @ts-ignore
 import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
-import { parseDict } from './unitOcean'
+import { parseDict } from './stores'
 
 let engine = new ComputeEngine();
 engine.jsonSerializationOptions = { exclude: ['Rational'] };
