@@ -11,6 +11,6 @@
 .row {
 	display: flex;
 	flex-direction: row;
-	width: fit-content;
+	width: auto;
 }
 </style>

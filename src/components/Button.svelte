@@ -18,9 +18,4 @@ button {
   font-size: inherit;
   padding: 0.2em 0.6em;
 }
-
-button:focus,
-button:focus-visible {
-	outline: 4px auto -webkit-focus-ring-color;
-}
 </style>

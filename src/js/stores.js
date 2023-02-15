@@ -1,7 +1,23 @@
 import { writable, get } from "svelte/store"
-import Equation from '../components/Equation.svelte'
+
+///// unitmath Setup /////
+import units from 'unitmath'
+import settings from './settings'
+export let unit
+
+settings.subscribe(s => {
+  unit = units.config({
+    system: s.system,
+    precision: s.precision,
+    simplifyThreshold: 2
+  })
+})
+
+console.log(unit.config())
+
 
 ///// trash stack management /////
+import Equation from '../components/Equation.svelte'
 export const trashStack = writable([])
 
 export const swallow = equation => {
@@ -25,7 +41,6 @@ export const vomit = dest => {
 }
 
 ///// unit parsing information and math-field macros /////
-import { unit } from './unitmathSetup'
 import {
   aliasPrefixCombos,
   makeMacros,
@@ -59,7 +74,7 @@ export const parseDict = writable([
   ...filterCEParsingInfo(starterParse)
 ])
 
-///// user-defined units /////
+// store for user-defined units
 export const userUnits = writable({
   lightyear: { value: '9460730472580800 m' },
   profo: {

@@ -1,13 +1,15 @@
-// this file defines unit abbreviation, macro, and parsing data 
-// and makes it available as stores
+// these functions create unit abbreviations, macros, and parsing data 
+// for starting lists of units or units added by the user at any time
 // @ts-ignore
 import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
 import { get } from 'svelte/store';
 import {
   prefixDictionary,
   unitMacros,
-  parseDict
+  parseDict,
+  userUnits
 } from './stores';
+import { unit } from './stores'
 
 ///// processing f(x)s /////
 export const aliasPrefixCombos = (name, attrs) => {
@@ -45,17 +47,21 @@ export const makeParse = unitList => {
   return parseInfo
 }
 
+export const isDefined = u => {
+  return unit.definitions().has(unit)
+}
+
 export const filterCEParsingInfo = unitParse => {
   // hashmap for quick lookup
-  let startHash = new Map();
+  let map = new Map()
   unitParse.forEach(entry => {
-    startHash.set(entry["trigger"], true);
-  }) 
+    map.set(entry["trigger"], true);
+  })
   let defaultParse = ComputeEngine.getLatexDictionary()
   // below we have to filter out latex commands that
   // conflict with units so that parsing works properly
   defaultParse = defaultParse.filter(def =>
-    !startHash.has(`${def["trigger"]}`)
+    !map.has(`${def["trigger"]}`)
   )
   return defaultParse
 }
@@ -64,6 +70,13 @@ export const filterCEParsingInfo = unitParse => {
 // adding a new unit requires these updates
 export let addUnit = unit => {
   console.log("Adding Unit")
+  userUnits.update(units => {
+    return {
+      ...units,
+      unit
+    }
+  })
+  console.log(get(userUnits))
   unitMacros.update(macros => {
     return {
       ...macros,

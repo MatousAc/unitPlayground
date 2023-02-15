@@ -1,7 +1,7 @@
 <script>
   import { draggable } from '@neodrag/svelte'
-  import Input from './Input.svelte'
-  import Result from './Result.svelte'
+  import Left from './Left.svelte'
+  import Right from './Right.svelte'
   import Row from './Row.svelte'
   import { writable, get } from 'svelte/store';
   import { onDestroy, setContext } from 'svelte';
@@ -66,8 +66,8 @@ use:draggable={{
   defaultPosition: initPosition
 }}>
   <Row>
-    <Input on:blur={destroyIfEmpty}/>
-    <Result/>
+    <Left on:blur={destroyIfEmpty}/>
+    <Right/>
   </Row>
 </div>
 

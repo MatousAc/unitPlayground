@@ -5,15 +5,20 @@
   import Switch from './Switch.svelte'
 	import ThemeSwitcher from "./ThemeSwitcher.svelte"
   import Select from './Select.svelte'
-  import { addUnit } from '../js/unitEngine'
   import Button from './Button.svelte'
+  import NewUnit from './NewUnit.svelte'
 
+  let thisBind
   let isOpen = false
   let themes = ["light", "navy"]
+
+  let showNewUnitModal = () => {
+    new NewUnit({ target: thisBind.parentNode })
+  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class=settingsWrapper>
+<div bind:this={ thisBind } class=settingsWrapper>
   <span 
     class="material-symbols-rounded settingsIcon p-5px{(isOpen) ? ' open' : ''}"
     on:click|stopPropagation={() => isOpen = !isOpen}>
@@ -22,7 +27,7 @@
   <div 
     class='settings mb-1{(isOpen) ? ' open' : ''}'
     on:click|stopPropagation={() => {}}>
-    <Button onClick={addUnit}>
+    <Button onClick={showNewUnitModal}>
       <Row>
         <span 
           class="material-symbols-rounded">

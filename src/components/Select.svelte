@@ -21,9 +21,9 @@
 </select>
 
 <style>
-  select {
-    font-size: 0.8em;
-    padding: 0.3em;
-    border-radius: 1em;
-  }
+select {
+  font-size: 0.8em;
+  padding: 0.3em;
+  border-radius: 1em;
+}
 </style>

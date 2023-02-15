@@ -1,6 +1,6 @@
 // useful f(x)s
 import settings from './settings'
-import { unit } from './unitmathSetup'
+import { unit } from './stores'
 import { typeOf } from './helpers'
 import { Fail, Hint, UnrecognizedUnit } from './error'
 

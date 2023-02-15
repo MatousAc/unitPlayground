@@ -155,6 +155,10 @@
   align-items: right;
 }
 
+.absolute {
+  position: absolute;
+}
+
 /* general styles */
 .display-none {
   display: none;
@@ -169,3 +173,4 @@
 .br-2 {border-radius: 2em;}
 .br-3 {border-radius: 3em;}
 .br-4 {border-radius: 4em;}
+.br-half {border-radius: 0.5em;}

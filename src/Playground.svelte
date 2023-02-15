@@ -1,5 +1,6 @@
 <script>
   import Equation from './components/Equation.svelte'
+  import Modal from './components/Modal.svelte'
   import Settings from './components/Settings.svelte'
   import Trash from './components/Trash.svelte'
   import settings from './js/settings'
