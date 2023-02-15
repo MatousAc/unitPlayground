@@ -1,70 +1,49 @@
 <script>
   import settings from '../js/settings'
-  import Fa from 'svelte-fa'
-  import { faMoon, faSun, faDisplay } from '@fortawesome/free-solid-svg-icons'
+  import Button from './Button.svelte'
+  import Row from './Row.svelte'
+  export let theme = "light"
 
-  export let theme = "system";
-  let themeIcon;
-  settings.subscribe(val => {
-    theme = val.theme
-    if (theme === "system") {
-      themeIcon = faDisplay
-    } else if (theme === "light") {
-      themeIcon = faSun
-    } else {
-      themeIcon = faMoon
-    }
-  })
+  let icon
+  let iconMap = {
+    system : "computer",
+    light : "light_mode",
+    dark : "dark_mode"
+  }
+  settings.subscribe(val => { icon = iconMap[val.theme] })
 </script>
 
-<button
-  class="{$$props.class}"
-  on:click={() => theme = (theme == "dark") ? "light" : "dark"}
+<Button
+  class="themeSwitcher {$$props.class}"
+  onClick={() => theme = (theme == "dark") ? "light" : "dark"}
 >
-  <Fa class="icon" icon={themeIcon}/>
-  <span class="label">{theme}</span>
-</button>
+  <Row>
+    <span class="material-symbols-rounded icon">
+      {icon}
+    </span>
+    <span class="label">{theme}</span>
+  </Row>
+</Button>
 
 <style>
-button {
-  background-color: var(--text-Clr);
-  border: 2px solid var(--backClr);
-  color: var(--backClr);
-  font-size: 0.9em;
-  padding: 0.25rem 0.5rem;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-button span.label {
+span.label {
   text-transform: capitalize;
   margin-left: 0.25rem;
 }
 
 @media only screen and (max-width: 767px) {
-  span {
+  span.label {
     min-width: 6ch;
-  }
-
-  .icon {
-    min-width: 2ch;
   }
 }
 
 @media only screen and (min-width: 768px) {
-  span {
+  span.label {
     min-width: 12ch;
   }
 
   span.label::after {
     content: " theme";
-  }
-
-  .icon {
-    min-width: 2ch;
   }
 }
 </style>

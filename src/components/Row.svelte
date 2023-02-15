@@ -3,7 +3,7 @@
   export let align='center'
 </script>
 
-<div class='row justify-content-{justify} align-items-{align}'>
+<div class='row justify-content-{justify} align-items-{align} {$$props.class}'>
 	<slot></slot>
 </div>
 

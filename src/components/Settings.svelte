@@ -5,6 +5,8 @@
   import Switch from './Switch.svelte'
 	import ThemeSwitcher from "./ThemeSwitcher.svelte"
   import Select from './Select.svelte'
+  import { addUnit } from '../js/unitEngine'
+  import Button from './Button.svelte'
 
   let isOpen = false
   let themes = ["light", "navy"]
@@ -13,13 +15,22 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class=settingsWrapper>
   <span 
-    class="material-symbols-outlined settingsIcon p-5px{(isOpen) ? ' open' : ''}"
+    class="material-symbols-rounded settingsIcon p-5px{(isOpen) ? ' open' : ''}"
     on:click|stopPropagation={() => isOpen = !isOpen}>
     settings
   </span>
   <div 
     class='settings mb-1{(isOpen) ? ' open' : ''}'
     on:click|stopPropagation={() => {}}>
+    <Button onClick={addUnit}>
+      <Row>
+        <span 
+          class="material-symbols-rounded">
+          add
+        </span>
+        <span class=pr-5px>Add Unit</span>
+      </Row>
+    </Button>
     <Col>
       <label class=m-3px
         for=significantDigits>
@@ -59,47 +70,47 @@
 </div>
 
 <style>
-  .settingsIcon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-    z-index: 2;
-    transition-duration: 0.4s;
-  }
-  .open.settingsIcon {
-    filter: invert(1);
-    transform: rotate(-270deg);
-    transition-timing-function: cubic-bezier(0.97, -0.04, 0.15, 0.91);
-  }
-  .settingsWrapper { 
-    position: absolute;
-    width: 100%;
-    overflow: hidden;
-  }
+.settingsIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  z-index: 2;
+  transition-duration: 0.4s;
+}
+.open.settingsIcon {
+  filter: invert(1);
+  transform: rotate(-270deg);
+  transition-timing-function: cubic-bezier(0.97, -0.04, 0.15, 0.91);
+}
+.settingsWrapper { 
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+}
 
-  .settings.open {
-    transform: translateY(0) !important;
-  }
-  .settings {
-    position: relative;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--textClr);
-    box-shadow: 0px 5px 8px 0 grey;
-    color: var(--backClr);
-    padding: 1em 2em 1em 1em;
-    font-size: 1.2em;
-    transform: translateY(-105%);
-    transition-duration: 0.2s;
-    transition-timing-function: ease-out;
-  }
+.settings.open {
+  transform: translateY(0) !important;
+}
+.settings {
+  position: relative;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--textClr);
+  box-shadow: 0px 5px 8px 0 grey;
+  color: var(--backClr);
+  padding: 1em 2em 1em 1em;
+  font-size: 1.05em;
+  transform: translateY(-105%);
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+}
 
-  .settings:hover {
-    outline: 1px black;
-  }
+.settings:hover {
+  outline: 1px black;
+}
 </style>

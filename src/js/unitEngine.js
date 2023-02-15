@@ -63,6 +63,7 @@ export const filterCEParsingInfo = unitParse => {
 ///// user defined units /////
 // adding a new unit requires these updates
 export let addUnit = unit => {
+  console.log("Adding Unit")
   unitMacros.update(macros => {
     return {
       ...macros,

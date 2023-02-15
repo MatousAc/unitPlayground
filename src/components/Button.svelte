@@ -1,30 +1,26 @@
 <script>
-	export let onClick;
+	export let onClick
 </script>
 
-<button on:click={onClick}>
+<button
+on:click={onClick}
+class='{$$props.class}'>
 	<slot/>
 </button>
 
 <style>
-	button {
-		border-radius: 8px;
-		border: 1px solid transparent;
-		padding: 0.6em 1.2em;
-		font-size: 1em;
-		font-weight: 500;
-		font-family: inherit;
-		background-color: #1a1a1a;
-		cursor: pointer;
-		transition: border-color 0.25s;
-	}
+button {
+  border: 2px solid white;
+  border-radius: 2em;
+  cursor: pointer;
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  padding: 0.2em 0.6em;
+}
 
-  button:hover {
-  	border-color: #646cff;
-	}
-
-	button:focus,
-	button:focus-visible {
-		outline: 4px auto -webkit-focus-ring-color;
-	}
+button:focus,
+button:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+}
 </style>
