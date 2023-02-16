@@ -16,13 +16,10 @@ export let getResultUnits = (json, fallbackValue) => {
     return fallbackValue
   }
   let res = ''
-  console.log(JSON.stringify(json))
   try {
     let qty = converge(json)
-    console.log(qty)
     if (toSI) qty = qty.toSI();
     res = toLatex(qty)
-    console.log('res:', res)
   } catch (e) {
     console.error(e)
   }
@@ -40,24 +37,19 @@ let toLatex = (qty) => {
   if (units == '' || units == null) return scalar
 
   // getting the right unit format for Latex
-  console.log(`initial ${units}`)
   units = units.split(" / ")
-  console.log(`split ${units}`)
   units = units.map(ssUnits => { // space-separated units
     ssUnits = ssUnits.replace(/\((.+?)\)/, `$1`)
     let csUnits = ssUnits.split(" ")
-    console.log(`unitList ${csUnits}`)
     
     return "\\" + csUnits.join('\\');
   })
   units = (units.length === 2) ? `\\frac{${units[0]}}{${units[1]}}` : units
-  console.log(`units ${units}`)
   return scalar + units
 }
 
 // recursively drills through a json AST, returns a Qty
 let converge = ast => {
-  console.log(ast)
   if (!Array.isArray(ast)) {
     return  unit(ast)
   }
@@ -85,7 +77,6 @@ let converge = ast => {
 }
 
 let power = (base, exp) => {
-  console.log(base, "^", exp)
   if (Array.isArray(exp)) {
     exp = exp.slice(1).reduceRight((a, b) => {
       a = converge(a)

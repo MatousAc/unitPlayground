@@ -14,6 +14,7 @@ settings.subscribe(s => {
 })
 
 console.log(unit.config())
+console.log(unit.definitions())
 
 
 ///// trash stack management /////
@@ -21,7 +22,6 @@ import Equation from '../components/Equation.svelte'
 export const trashStack = writable([])
 
 export const swallow = equation => {
-  console.log(equation)
   trashStack.update(list => {
     list.push(equation);
     return list

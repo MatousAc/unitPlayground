@@ -26,8 +26,8 @@
 
   let reCalculate = () => {
     let json = engine.parse($eq.left, { canonical: false }).json
-    console.log('left: ', $eq.left)
-    console.log('jsonStr: ', JSON.stringify(json))
+    console.log('Left: ', $eq.left)
+    console.log('JSON: ', JSON.stringify(json))
     result.value = getResultUnits(json, result.value)
   }
 </script>

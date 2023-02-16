@@ -1,18 +1,23 @@
 <script>
+  import Row from "./Row.svelte"
+
+
   export let name
+  export let label
   export let ph
   export let val
 </script>
 
-<div class="m-1">
+<Row align="flex-end" justify="space-between">
   <label for="{name}">
-    Unit Names
+    {label}
   </label>
   <input
+  {name}
   bind:value={val}
   placeholder="{ph}"
-  class='br-half p-half ml-half'>
-</div>
+  class='br-half p-half ml-1'>
+</Row>
 
 <style>
 input {

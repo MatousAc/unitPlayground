@@ -27,7 +27,6 @@
 <div
   bind:this={playground}
   on:click={createEquation}
-  on:blur={() => console.log('playground blur')}
   class="fillParent playground {theme}"
 >
   <Settings/>

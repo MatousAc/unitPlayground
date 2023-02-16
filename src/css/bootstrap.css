@@ -147,6 +147,10 @@
   align-items: space-around;
 }
 
+.align-items-flex-end {
+  align-items: flex-end;
+}
+
 .align-items-left {
   align-items: left;
 }
@@ -157,6 +161,11 @@
 
 .absolute {
   position: absolute;
+}
+
+// sizing
+.w-full {
+  width: 100%;
 }
 
 /* general styles */

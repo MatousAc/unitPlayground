@@ -1,24 +1,29 @@
 <script>
   import { forEach } from "mathjs"
   import { each } from "svelte/internal"
+  import Row from "./Row.svelte";
 
-  export let value
   export let name
+  export let label
+  export let val
   export let options = []
+  console.log(options)
 </script>
 
-<label for={name} class=m-3px>
-  System
-</label>
-<select
-  name={name}
-  bind:value={value}
-  class="ml-half"
-  >
-  {#each options as {name, value}}
-    <option value={value}>{name}</option>
-  {/each}
-</select>
+<Row justify="space-between">
+  <label for={name}>
+    {label}
+  </label>
+  <select
+    name={name}
+    bind:value={val}
+    class="ml-half"
+    >
+    {#each options as {name, value}}
+      <option {value}>{name}</option>
+    {/each}
+  </select>
+</Row>
 
 <style>
 select {

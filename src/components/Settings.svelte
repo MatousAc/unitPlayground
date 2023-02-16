@@ -16,7 +16,7 @@
     new NewUnit({ target: thisBind.parentNode })
   }
 </script>
-
+  
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div bind:this={ thisBind } class=settingsWrapper>
   <span 
@@ -57,7 +57,7 @@
       <Switch name=includeScalar bind:checked={$settings.includeScalar}/>
     </Row>
     <Row>
-      <Select name=system bind:value={$settings.system}
+      <Select name=system label=System bind:val={$settings.system}
         options={[
           {name: "SI", value: "si"},
           {name: "US", value: "us"},

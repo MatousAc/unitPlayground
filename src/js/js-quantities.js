@@ -20,7 +20,6 @@ export let getResultUnits = (json, fallbackValue) => {
     let qty = converge(json)
     if (toSI) qty = qty.toBase();
     res = qty.format(toLatex())
-    console.log('res:', res)
   } catch (e) {
     console.error(e.message)
   }
@@ -35,20 +34,14 @@ let toLatex =  () => { return function (scalar, units) {
   if (units == '' || units == null) return scalar
 
   // getting the right unit format for Latex
-  console.log(`starts w/ '1/' ${units.match('1/.+')}`)
   let isDenom = units.match('1/.+');
-  console.log(`initial ${units}`)
   units = units.match(RegExp('[A-Za-z]+[0-9]*[s/]?', 'g'))
-  console.log(`split ${units}`)
   units = units.map(unit => {
     let parts = unit.match(RegExp('[a-zA-Z/]+|[0-9/]+', 'g'))
-    console.log(`parts of each ${parts}`)
     if (parts == null) return unit;
     return parts.join('^');
   })
-  console.log(`units ${units}`)
   units = `\\${units.join('\\')}`
-  console.log(`joined ${units}`)
   let frac = units.split('/')
   units = frac.length === 2 ? `\\frac{${frac[0]}}{${frac[1]}}` : units
   if (isDenom) units = `\\frac{1}{${units}}`

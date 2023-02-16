@@ -16,7 +16,7 @@
       macros: unitMacros,
       computeEngine: engine,
     })
-    console.log(input.getOptions())
+    console.log("Input Options", input.getOptions())
     // does subscribing here work? fixme?
     unitMacros.subscribe(val => {
       input.setOptions({ macros: val })

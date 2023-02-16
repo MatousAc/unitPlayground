@@ -18,13 +18,12 @@ export let getResultUnits = (json, fallbackValue) => {
     return fallbackValue
   }
   let res = ''
-  console.log(JSON.stringify(json))
   try {
     let qty = converge(json)
-    console.log("qty", qty)
+    console.log("Unit", qty)
     if (simplify) qty = qty.simplify();
     res = toLaTeX(qty)
-    console.log('res', res)
+    console.log('Result', res)
   } catch (e) {
     console.error(e)
   }
@@ -34,7 +33,6 @@ export let getResultUnits = (json, fallbackValue) => {
 
 // recursively drills through a json AST, returns a Unit
 let converge = ast => {
-  // console.log(ast, typeOf(ast))
   switch (typeOf(ast)) {
     case "array": break
     case 'unit': return ast
@@ -73,7 +71,6 @@ let converge = ast => {
 
 let power = (arr) => {
   arr = [converge(arr[1]), converge(arr[2])].flat()
-  // console.log("array to reduce: ", arr)
   return arr.flat().reduceRight((a, b) => {
     if (typeOf(b) === "number") { b = unit(b) }
     return b.pow(a) 
