@@ -37,12 +37,12 @@ let toLatex = (qty) => {
   if (units == '' || units == null) return scalar
 
   // getting the right unit format for Latex
-  units = units.split(" / ")
+  units = units.split(' / ')
   units = units.map(ssUnits => { // space-separated units
     ssUnits = ssUnits.replace(/\((.+?)\)/, `$1`)
-    let csUnits = ssUnits.split(" ")
+    let csUnits = ssUnits.split(' ')
     
-    return "\\" + csUnits.join('\\');
+    return '\\' + csUnits.join('\\');
   })
   units = (units.length === 2) ? `\\frac{${units[0]}}{${units[1]}}` : units
   return scalar + units
@@ -69,7 +69,7 @@ let converge = ast => {
     
   case 'UNIT':
     return unit(ast[1])
-  case "List":
+  case 'List':
     return ast
   default:
     return ''

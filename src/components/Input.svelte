@@ -1,5 +1,5 @@
 <script>
-  import Row from "./Row.svelte"
+  import Row from './Row.svelte'
 
 
   export let name
@@ -8,14 +8,14 @@
   export let val
 </script>
 
-<Row align="flex-end" justify="space-between">
-  <label for="{name}">
+<Row align='flex-end' justify='space-between'>
+  <label for='{name}'>
     {label}
   </label>
   <input
   {name}
   bind:value={val}
-  placeholder="{ph}"
+  placeholder='{ph}'
   class='br-half p-half ml-1'>
 </Row>
 

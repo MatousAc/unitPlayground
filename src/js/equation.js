@@ -20,7 +20,7 @@ export let getResultUnits = (json, fallbackValue) => {
   let res = ''
   try {
     let qty = converge(json)
-    console.log("Unit", qty)
+    console.log('Unit', qty)
     if (simplify) qty = qty.simplify();
     res = toLaTeX(qty)
     console.log('Result', res)
@@ -34,10 +34,10 @@ export let getResultUnits = (json, fallbackValue) => {
 // recursively drills through a json AST, returns a Unit
 let converge = ast => {
   switch (typeOf(ast)) {
-    case "array": break
+    case 'array': break
     case 'unit': return ast
-    case "number": return unit(ast)
-    case "string":
+    case 'number': return unit(ast)
+    case 'string':
       throw new UnrecognizedUnit(ast)
     case 'object':
     default:
@@ -62,7 +62,7 @@ let converge = ast => {
     return converge(ast[1]).sqrt()
   case 'UNIT':
     return unit(ast[1])
-  case "List":
+  case 'List':
     return ast.slice(1)
   default:
     return ''
@@ -72,7 +72,7 @@ let converge = ast => {
 let power = (arr) => {
   arr = [converge(arr[1]), converge(arr[2])].flat()
   return arr.flat().reduceRight((a, b) => {
-    if (typeOf(b) === "number") { b = unit(b) }
+    if (typeOf(b) === 'number') { b = unit(b) }
     return b.pow(a) 
   })
 }
@@ -95,7 +95,7 @@ let toLaTeX = (u) => {
   });
 
   let uStr
-  if (numerator == '' && denominator != '') numerator = "1"
+  if (numerator == '' && denominator != '') numerator = '1'
   if (denominator == '') { uStr = numerator }
   else { uStr = `\\frac{${numerator}}{${denominator}}` }
   

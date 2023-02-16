@@ -2,20 +2,20 @@
 export class Fail extends Error {
   constructor(message) {
     super(message);
-    this.name = "Fail";
+    this.name = 'Fail';
   }
 }
 
 export class Hint extends Error {
   constructor(message) {
     super(message);
-    this.name = "Hint";
+    this.name = 'Hint';
   }
 }
 
 export class UnrecognizedUnit extends Hint {
   constructor(str) {
     super(`Unit '${str}' not recognized.`);
-    this.name = "UnrecognizedUnit";
+    this.name = 'UnrecognizedUnit';
   }
 }

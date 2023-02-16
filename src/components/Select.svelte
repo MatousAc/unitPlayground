@@ -1,7 +1,5 @@
 <script>
-  import { forEach } from "mathjs"
-  import { each } from "svelte/internal"
-  import Row from "./Row.svelte";
+  import Row from './Row.svelte';
 
   export let name
   export let label
@@ -10,14 +8,14 @@
   console.log(options)
 </script>
 
-<Row justify="space-between">
+<Row justify='space-between'>
   <label for={name}>
     {label}
   </label>
   <select
     name={name}
     bind:value={val}
-    class="ml-half"
+    class='ml-half'
     >
     {#each options as {name, value}}
       <option {value}>{name}</option>

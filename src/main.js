@@ -4,7 +4,7 @@ import Playground from './Playground.svelte'
 
 // single playground
 // let playground = new Playground({
-//   target: document.getElementById("base")
+//   target: document.getElementById('base')
 // })
 
 // export default playground

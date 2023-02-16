@@ -1,4 +1,4 @@
-import { writable, get } from "svelte/store"
+import { writable, get } from 'svelte/store'
 
 ///// unitmath Setup /////
 import units from 'unitmath'
@@ -46,7 +46,7 @@ import {
   makeMacros,
   makeParse,
   filterCEParsingInfo
-} from "./unitEngine"
+} from './unitEngine'
 
 let getPrefixDictionary = () => {
   let prefixDict = {};

@@ -3,14 +3,14 @@
   import Row from './Row.svelte'
   import Col from './Col.svelte'
   import Switch from './Switch.svelte'
-	import ThemeSwitcher from "./ThemeSwitcher.svelte"
+	import ThemeSwitcher from './ThemeSwitcher.svelte'
   import Select from './Select.svelte'
   import Button from './Button.svelte'
   import NewUnit from './NewUnit.svelte'
 
   let thisBind
   let isOpen = false
-  let themes = ["light", "navy"]
+  let themes = ['light', 'navy']
 
   let showNewUnitModal = () => {
     new NewUnit({ target: thisBind.parentNode })
@@ -20,7 +20,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div bind:this={ thisBind } class=settingsWrapper>
   <span 
-    class="material-symbols-rounded settingsIcon p-5px{(isOpen) ? ' open' : ''}"
+    class='material-symbols-rounded settingsIcon p-5px{(isOpen) ? ' open' : ''}'
     on:click|stopPropagation={() => isOpen = !isOpen}>
     settings
   </span>
@@ -30,7 +30,7 @@
     <Button onClick={showNewUnitModal}>
       <Row>
         <span 
-          class="material-symbols-rounded">
+          class='material-symbols-rounded'>
           add
         </span>
         <span class=pr-5px>Add Unit</span>
@@ -59,9 +59,9 @@
     <Row>
       <Select name=system label=System bind:val={$settings.system}
         options={[
-          {name: "SI", value: "si"},
-          {name: "US", value: "us"},
-          {name: "Cgs", value: "cgs"}
+          {name: 'SI', value: 'si'},
+          {name: 'US', value: 'us'},
+          {name: 'Cgs', value: 'cgs'}
         ]}/>
     </Row>
     <Row>

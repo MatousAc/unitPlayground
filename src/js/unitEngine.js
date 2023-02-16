@@ -41,7 +41,7 @@ export const makeParse = unitList => {
   unitList.forEach((alias) => {
     parseInfo.push({
       trigger: `\\${alias}`,
-      parse: ["UNIT", alias]
+      parse: ['UNIT', alias]
     })
   })
   return parseInfo
@@ -55,13 +55,13 @@ export const filterCEParsingInfo = unitParse => {
   // hashmap for quick lookup
   let map = new Map()
   unitParse.forEach(entry => {
-    map.set(entry["trigger"], true);
+    map.set(entry['trigger'], true);
   })
   let defaultParse = ComputeEngine.getLatexDictionary()
   // below we have to filter out latex commands that
   // conflict with units so that parsing works properly
   defaultParse = defaultParse.filter(def =>
-    !map.has(`${def["trigger"]}`)
+    !map.has(`${def['trigger']}`)
   )
   return defaultParse
 }
@@ -69,7 +69,7 @@ export const filterCEParsingInfo = unitParse => {
 ///// user defined units /////
 // adding a new unit requires these updates
 export let addUnit = unit => {
-  console.log("Adding Unit")
+  console.log('Adding Unit')
   userUnits.update(units => {
     return {
       ...units,

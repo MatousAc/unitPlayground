@@ -4,7 +4,7 @@
   export let name
 </script>
 
-<div class="container ml-3px">
+<div class='container ml-3px'>
   <label class=switch for={name}>
     <input type=checkbox id={name} bind:checked={checked}/>
     <div class='slider round'></div>
@@ -41,7 +41,7 @@
 .slider:before {
   background-color: #fff;
   bottom: 4px;
-  content: "";
+  content: '';
   height: 18px;
   left: 4px;
   position: absolute;

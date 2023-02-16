@@ -31,7 +31,7 @@
     let mfs = row.children;
     if (mfs[0].value == '' && mfs[1].value == '') {
       selfDestruct()
-      console.log("Destroyed empty equation.")
+      console.log('Destroyed empty equation.')
     }
   }
 

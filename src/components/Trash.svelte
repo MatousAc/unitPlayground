@@ -1,5 +1,5 @@
 <script>
-  import { vomit } from "../js/stores.js"
+  import { vomit } from '../js/stores.js'
 
   let trash
 </script>
@@ -7,7 +7,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <span 
   bind:this={trash}
-  class="material-symbols-rounded trashIcon"
+  class='material-symbols-rounded trashIcon'
   on:click|stopPropagation={() => vomit(trash.parentNode)}>
   delete
 </span>

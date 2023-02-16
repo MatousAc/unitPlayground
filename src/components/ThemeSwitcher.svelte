@@ -2,26 +2,26 @@
   import settings from '../js/settings'
   import Button from './Button.svelte'
   import Row from './Row.svelte'
-  export let theme = "light"
+  export let theme = 'light'
 
   let icon
   let iconMap = {
-    system : "computer",
-    light : "light_mode",
-    dark : "dark_mode"
+    system : 'computer',
+    light : 'light_mode',
+    dark : 'dark_mode'
   }
   settings.subscribe(val => { icon = iconMap[val.theme] })
 </script>
 
 <Button
-  class="themeSwitcher {$$props.class}"
-  onClick={() => theme = (theme == "dark") ? "light" : "dark"}
+  class='themeSwitcher {$$props.class}'
+  onClick={() => theme = (theme == 'dark') ? 'light' : 'dark'}
 >
   <Row>
-    <span class="material-symbols-rounded icon">
+    <span class='material-symbols-rounded icon'>
       {icon}
     </span>
-    <span class="label">{theme}</span>
+    <span class='label'>{theme}</span>
   </Row>
 </Button>
 
@@ -43,7 +43,7 @@ span.label {
   }
 
   span.label::after {
-    content: " theme";
+    content: ' theme';
   }
 }
 </style>

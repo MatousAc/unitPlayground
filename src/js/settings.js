@@ -5,8 +5,8 @@ const settings = writable({
   includeScalar: true,
   precision: 3,
   simplify: false,
-  system: "si",
-  theme: "light"
+  system: 'si',
+  theme: 'light'
 })
 
 export default settings;
