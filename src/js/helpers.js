@@ -4,17 +4,32 @@ export const typeOf = (obj) => {
   return {}.toString.call(obj).split(' ')[1].slice(0, -1).toLowerCase();
 }
 
-export const objectMap = (obj, fn) =>
+export const objMap = (obj, fn) =>
 Object.fromEntries(
   Object.entries(obj).map(
     ([k, v], i) => [k, fn(v, k, i)]
   )
 )
 
-export const objectToArray = (obj, fn) =>
+export const obj2Arr = (obj, fn) =>
 Object.entries(obj).map(
   ([k, v], i) => [k, fn(v, k, i)]
 )
+
+export const humanize = str => {
+  let pieces = str.split('_')
+  pieces = pieces.map(word => {
+    word = word.toLowerCase()
+    word = word.charAt(0).toUpperCase() + word.slice(1)
+    if (word == "Si") word = "SI"
+    return word
+  });
+  return pieces.join(' ');
+}
+
+export const hyphenate = str => {
+  return str.toLowerCase().replace("_", "-");
+}
 
 export function isMobile() {
 	const toMatch = [

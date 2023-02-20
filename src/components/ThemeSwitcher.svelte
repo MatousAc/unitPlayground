@@ -21,7 +21,7 @@
     <span class='material-symbols-rounded icon'>
       {icon}
     </span>
-    <span class='label'>{theme}</span>
+    <span class='label hide-under-900'>{theme} theme</span>
   </Row>
 </Button>
 
@@ -31,19 +31,9 @@ span.label {
   margin-left: 0.25rem;
 }
 
-@media only screen and (max-width: 767px) {
-  span.label {
-    min-width: 6ch;
-  }
-}
-
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 800px) {
   span.label {
     min-width: 12ch;
-  }
-
-  span.label::after {
-    content: ' theme';
   }
 }
 </style>

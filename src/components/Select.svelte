@@ -5,7 +5,6 @@
   export let label
   export let val
   export let options = []
-  console.log(options)
 </script>
 
 <Row justify='space-between'>

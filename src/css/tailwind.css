@@ -4,6 +4,7 @@
 .m-3 {margin: 3em}
 .m-4 {margin: 4em}
 .m-half {margin: .5em}
+.m-quarter {margin: .25em}
 .m-3px {margin: 3px}
 .m-5px {margin: 5x}
 
@@ -12,6 +13,7 @@
 .ml-3 {margin-left: 3em}
 .ml-4 {margin-left: 4em}
 .ml-half {margin-left: .5em}
+.ml-quarter {margin-left: .25em}
 .ml-3px {margin-left: 3px}
 .ml-5px {margin-left: 5px}
 
@@ -20,6 +22,7 @@
 .mr-3 {margin-right: 3em}
 .mr-4 {margin-right: 4em}
 .mr-half {margin-right: .5em}
+.mr-quarter {margin-right: .25em}
 .mr-3px {margin-right: 3px}
 .mr-5px {margin-right: 5px}
 
@@ -28,6 +31,7 @@
 .mt-3 {margin-top: 3em}
 .mt-4 {margin-top: 4em}
 .mt-half {margin-top: .5em}
+.mt-quarter {margin-top: .25em}
 .mt-3px {margin-top: 3px}
 .mt-5px {margin-top: 5px}
 
@@ -36,6 +40,7 @@
 .mb-3 {margin-bottom: 3em}
 .mb-4 {margin-bottom: 4em}
 .mb-half {margin-bottom: .5em}
+.mb-quarter {margin-bottom: .25em}
 .mb-3px {margin-bottom: 3px}
 .mb-5px {margin-bottom: 5px}
 
@@ -45,6 +50,7 @@
 .p-3 {padding: 3em;}
 .p-4 {padding: 4em;}
 .p-half {padding: .5em;}
+.p-quarter {padding: .25em;}
 .p-5px {padding: 5px;}
 
 .pl-1 {padding-left: 1em}
@@ -52,6 +58,7 @@
 .pl-3 {padding-left: 3em}
 .pl-4 {padding-left: 4em}
 .pl-half {padding-left: .5em}
+.pl-quarter {padding-left: .25em}
 .pl-3px {padding-left: 3px}
 .pl-5px {padding-left: 5px}
 
@@ -60,6 +67,7 @@
 .pr-3 {padding-right: 3em}
 .pr-4 {padding-right: 4em}
 .pr-half {padding-right: .5em}
+.pr-quarter {padding-right: .25em}
 .pr-3px {padding-right: 3px}
 .pr-5px {padding-right: 5px}
 
@@ -68,6 +76,7 @@
 .pt-3 {padding-top: 3em}
 .pt-4 {padding-top: 4em}
 .pt-half {padding-top: .5em}
+.pt-quarter {padding-top: .25em}
 .pt-3px {padding-top: 3px}
 .pt-5px {padding-top: 5px}
 
@@ -76,6 +85,7 @@
 .pb-3 {padding-bottom: 3em}
 .pb-4 {padding-bottom: 4em}
 .pb-half {padding-bottom: .5em}
+.pb-quarter {padding-bottom: .25em}
 .pb-3px {padding-bottom: 3px}
 .pb-5px {padding-bottom: 5px}
 
@@ -183,3 +193,11 @@
 .br-3 {border-radius: 3em;}
 .br-4 {border-radius: 4em;}
 .br-half {border-radius: 0.5em;}
+
+/* responsive design */
+
+@media only screen and (max-width: 899px) {
+  .hide-under-900 {
+    display: none;
+  }
+}

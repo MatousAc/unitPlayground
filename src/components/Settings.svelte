@@ -33,26 +33,25 @@
           class='material-symbols-rounded'>
           add
         </span>
-        <span class=pr-5px>Add Unit</span>
+        <span class='pr-5px hide-under-900'>Add Unit</span>
       </Row>
     </Button>
-    <Col>
+    <Row>
       <label class=m-3px
-        for=significantDigits>
-        {$settings.precision} decimal place{
-        $settings.precision == 1 ? '' : 's'}
+        for=decimalPlaces>
+        Precision
       </label>
-      <input class=m-3px
-        name=significantDigits
-        type=range
+      <input class='m-3px br-1 pl-half' name=decimalPlaces
+        style="max-width: 4ch;"
         bind:value={$settings.precision}
+        type=number step=1
         min=0
-        max=10
+        max=9
       />
-    </Col>
+    </Row>
     <Row>
       <span class=m-3px>
-        Scalar values
+        Scalars
       </span>
       <Switch name=includeScalar bind:checked={$settings.includeScalar}/>
     </Row>
@@ -109,7 +108,6 @@
   box-shadow: 0px 5px 8px 0 grey;
   color: var(--backClr);
   padding: 1em 2em 1em 1em;
-  font-size: 1.05em;
   transform: translateY(-105%);
   transition-duration: 0.2s;
   transition-timing-function: ease-out;
