@@ -1,6 +1,7 @@
 <script>
   import Row from './Row.svelte';
 
+  export let onChange = () => {}
   export let name
   export let label
   export let val
@@ -15,6 +16,7 @@
     name={name}
     bind:value={val}
     class='ml-half'
+    on:change={onChange}
     >
     {#each options as {name, value}}
       <option {value}>{name}</option>

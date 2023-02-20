@@ -14,14 +14,17 @@
   $: names = nameStr.split(' ')
   let amount
   let prefixGroup
-  $: attributes = {
-    aliases: names.splice(1),
-    prefixes: prefixGroup,
-    value: amount
-  }
-
+  let attributes
   let sampleUnits = ''
+
   const setSampleUnits = () => {
+    attributes = {
+      aliases: names.splice(1),
+      prefixes: prefixGroup,
+      value: amount
+    }
+    console.log(nameStr)
+    console.log(names)
     console.log(attributes)
     sampleUnits = aliasPrefixCombos(names.splice(0, 1)[0], attributes).join(' ')
   }
@@ -34,16 +37,16 @@
 
   <div>
     <Fill>
-      <Input val={nameStr} name=name label='Unit Names'
-      ph='inch inches in' on:change={setSampleUnits}/>
+      <Input bind:val={nameStr} name=name label='Unit Names'
+      ph='inch inches in' onChange={setSampleUnits}/>
     </Fill>
     <Fill>
-      <Input val={amount} name=amount 
-      label=Amount ph='2.54 cm' on:change={setSampleUnits}/>
+      <Input bind:val={amount} name=amount 
+      label=Amount ph='2.54 cm' onChange={setSampleUnits}/>
     </Fill>
     <Fill>
-      <Select val={prefixGroup} name=prefixGroup label=Prefixes
-        on:change={setSampleUnits}
+      <Select bind:val={prefixGroup} name=prefixGroup label=Prefixes
+        onChange={setSampleUnits}
         options={
           Object.keys(get(prefixDictionary)).map(prefix => ({
             name: humanize(prefix),

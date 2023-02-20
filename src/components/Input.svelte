@@ -1,7 +1,7 @@
 <script>
   import Row from './Row.svelte'
 
-
+  export let onChange = () => {}
   export let name
   export let label
   export let ph
@@ -16,6 +16,7 @@
   {name}
   bind:value={val}
   placeholder='{ph}'
+  on:change={onChange}
   class='br-half p-half ml-1'>
 </Row>
 
