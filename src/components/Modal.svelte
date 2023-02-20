@@ -1,13 +1,14 @@
 <script>
+// @ts-nocheck
+
   import { fade } from 'svelte/transition'
-	import { createEventDispatcher, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
   import Button from './Button.svelte'
   import Row from './Row.svelte'
 
-	const dispatch = createEventDispatcher();
-	const close = () => modal.parentNode.removeChild(modal);
-
 	let modal;
+	export const close = () => modal.parentNode.removeChild(modal);
+
 
 	const handle_keydown = e => {
 		if (e.key === 'Escape') {
@@ -44,7 +45,8 @@
 <svelte:window on:keydown={handle_keydown}/>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div transition:fade class=modalBase on:click={close} bind:this={modal}>
+<div transition:fade class=modalBase
+  on:click={close} bind:this={modal}>
   <div on:click|stopPropagation class=modal role=dialog aria-modal=true>
     <Row justify=space-between>
       <slot name="header"></slot>

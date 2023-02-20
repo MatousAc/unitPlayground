@@ -1,23 +1,20 @@
 <script>
   import { get } from 'svelte/store';
   import Modal from './Modal.svelte';
-  import { addUnit, aliasPrefixCombos } from '../js/unitEngine';
+  import Row from './Row.svelte'
   import Button from './Button.svelte'
   import Input from './Input.svelte'
   import Select from './Select.svelte'
   import Fill from './Fill.svelte'
+  import { unit } from '../js/umSetup';
+  import { addUnit, aliasPrefixCombos } from '../js/unitEngine';
   import { prefixDictionary } from '../js/stores';
   import { getRandomSubarray, humanize } from '../js/helpers'
-  import Row from './Row.svelte'
-  import { unit } from '../js/umSetup';
-
-  let nameStr = ''
-  let name = ''
-  let amount
-  let prefixGroup
-  let attributes
-  let sampleUnits = ''
-
+  
+  // for processing new unit info
+  let nameStr = '', sampleUnits = '', name = ''
+  let amount, prefixGroup, attributes = {}
+  
   const setSampleUnits = () => {
     let names = nameStr.trim().split(' ')
     let u = unit(amount)
@@ -30,16 +27,18 @@
     let units = aliasPrefixCombos(name, attributes)
     sampleUnits = getRandomSubarray(units, 6)
   }
+
+  let modal
 </script>
 
-<Modal>
+<Modal bind:this={modal}>
   <h2 slot=header>
     New Unit
   </h2>
 
   <div slot=body>
     <Fill>
-      <Input bind:val={nameStr} name=name label='Unit Names'
+      <Input autofocus={true} bind:val={nameStr} name=name label='Unit Names'
       ph='inch inches in' onChange={setSampleUnits}/>
     </Fill>
     <Fill>
@@ -68,9 +67,12 @@
     </Fill>
   </div>
 
-  <Row slot=footer justify=flex-end>
-    <Button onClick={() => addUnit(name, attributes)}>
-      <span 
+  <Row slot=footer justify=flex-end on:closeModal>
+    <Button onClick={() => {
+        addUnit(name, attributes)
+        modal.close()
+      }}>
+      <span
         class=material-symbols-rounded>
         add
       </span>

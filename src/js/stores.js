@@ -85,10 +85,11 @@ export const userUnits = writable({
 })
 
 // change the unit obj when defs are changed
-userUnits.subscribe(defs => 
-  unit = unit.config({
+userUnits.subscribe(defs => {
+  console.log("userUnits updated")
+  return unit = unit.config({
     definitions: {
       units: defs
     }
   })
-)
+})
