@@ -33,6 +33,7 @@ export let getResultUnits = (json, fallbackValue) => {
 
 // recursively drills through a json AST, returns a Unit
 let converge = ast => {
+  console.log(ast)
   switch (typeOf(ast)) {
     case 'array': break
     case 'unit': return ast

@@ -1,7 +1,6 @@
 <script>
   import settings from '../js/settings'
   import Row from './Row.svelte'
-  import Col from './Col.svelte'
   import Switch from './Switch.svelte'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
   import Select from './Select.svelte'
@@ -27,7 +26,9 @@
   <div 
     class='settings mb-1{(isOpen) ? ' open' : ''}'
     on:click|stopPropagation={() => {}}>
-    <Button onClick={showNewUnitModal}>
+    <Button 
+      onClick={showNewUnitModal}
+      outlined={true}>
       <Row>
         <span 
           class='material-symbols-rounded'>

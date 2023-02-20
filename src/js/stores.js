@@ -81,5 +81,14 @@ export const userUnits = writable({
     value: '70 in',
     prefixGroup: 'LONG',
     aliases: ['profos', 'Profo', 'Profos']
-  },
+  }
 })
+
+// change the unit obj when defs are changed
+userUnits.subscribe(defs => 
+  unit = unit.config({
+    definitions: {
+      units: defs
+    }
+  })
+)

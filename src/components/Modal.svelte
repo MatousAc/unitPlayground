@@ -44,19 +44,20 @@
 <svelte:window on:keydown={handle_keydown}/>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div transition:fade class='modalBase' on:click={close} bind:this={modal}>
-  <div on:click|stopPropagation class='modal' role='dialog' aria-modal='true'>
-    <Row justify='space-between'>
-      <slot name='header'></slot>
-      <Button autofocus onClick={close} class='closeButton'>
-        <span class='material-symbols-rounded'>
+<div transition:fade class=modalBase on:click={close} bind:this={modal}>
+  <div on:click|stopPropagation class=modal role=dialog aria-modal=true>
+    <Row justify=space-between>
+      <slot name="header"></slot>
+      <Button autofocus onClick={close} class=closeButton>
+        <span class=material-symbols-rounded>
           close
         </span>
       </Button>
     </Row>
   	<hr>
-  	<slot></slot>
+  	<slot name="body"></slot>
   	<hr>
+    <slot name="footer"></slot>
   </div>
 </div>
 

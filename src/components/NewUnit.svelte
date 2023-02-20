@@ -7,35 +7,37 @@
   import Select from './Select.svelte'
   import Fill from './Fill.svelte'
   import { prefixDictionary } from '../js/stores';
-  import { humanize } from '../js/helpers'
+  import { getRandomSubarray, humanize } from '../js/helpers'
   import Row from './Row.svelte'
+  import { unit } from '../js/umSetup';
 
   let nameStr = ''
-  $: names = nameStr.split(' ')
+  let name = ''
   let amount
   let prefixGroup
   let attributes
   let sampleUnits = ''
 
   const setSampleUnits = () => {
+    let names = nameStr.trim().split(' ')
+    let u = unit(amount)
     attributes = {
-      aliases: names.splice(1),
+      aliases: names.slice(1),
       prefixes: prefixGroup,
-      value: amount
+      value: unit(amount).simplify({ system: 'auto'}).toString()
     }
-    console.log(nameStr)
-    console.log(names)
-    console.log(attributes)
-    sampleUnits = aliasPrefixCombos(names.splice(0, 1)[0], attributes).join(' ')
+    name = names[0]
+    let units = aliasPrefixCombos(name, attributes)
+    sampleUnits = getRandomSubarray(units, 6)
   }
 </script>
 
 <Modal>
-  <h2 slot='header'>
+  <h2 slot=header>
     New Unit
   </h2>
 
-  <div>
+  <div slot=body>
     <Fill>
       <Input bind:val={nameStr} name=name label='Unit Names'
       ph='inch inches in' onChange={setSampleUnits}/>
@@ -55,11 +57,35 @@
         }/>
     </Fill>
     <Fill>
-      <Row>
-        <span>Units you are producing: {sampleUnits}</span>
+      <Row justify=flex-start align=flex-start>
+        <span class=pr-1>Examples</span>
+        <div class="grid examples">
+          {#each sampleUnits as unit, i}
+          <span style="grid-area: u{i};">{unit}</span>
+          {/each}
+        </div>
       </Row>
     </Fill>
   </div>
 
-  <Button onClick={addUnit}/>
+  <Row slot=footer justify=flex-end>
+    <Button onClick={() => addUnit(name, attributes)}>
+      <span 
+        class=material-symbols-rounded>
+        add
+      </span>
+      <span class=pr-5px>Create Unit</span>
+    </Button>
+  </Row>
 </Modal>
+
+<style>
+  .grid.examples {
+    display: grid;
+    gap: 0.5em;
+    grid-template-areas: 
+      "u0 u1"
+      "u2 u3"
+      "u4 u5";
+  }
+</style>

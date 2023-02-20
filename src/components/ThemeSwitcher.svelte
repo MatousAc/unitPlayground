@@ -14,6 +14,7 @@
 </script>
 
 <Button
+  outlined={true}
   class='themeSwitcher {$$props.class}'
   onClick={() => theme = (theme == 'dark') ? 'light' : 'dark'}
 >
