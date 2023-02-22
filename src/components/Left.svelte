@@ -2,8 +2,7 @@
   import { unitMacros } from '../js/stores'
   import { isMobile } from '../js/helpers'
   import { onMount, getContext } from 'svelte'
-  import { eqKey, getResultUnits } from '../js/equation'
-  import engine from '../js/computeEngine' 
+  import { eqKey } from '../js/equation'
 
   const eq = getContext(eqKey)
   $: left = $eq.left
@@ -14,18 +13,19 @@
     input.setOptions({
       enablePopover: false,
       macros: unitMacros,
-      computeEngine: engine,
+      // computeEngine: engine,
     })
     console.log('Input Options', input.getOptions())
-    // does subscribing here work? fixme?
+    
     unitMacros.subscribe(val => {
+      console.log("Field Macros Updated")
       input.setOptions({ macros: val })
     })
 
     input.value = left
   })
 
-  let feedback = () => {
+  const feedback = () => {
     $eq = {
       left: input.value,
       right: right,
@@ -37,7 +37,6 @@
 <math-field
   bind:this={input}
   on:input={feedback}
-  on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
   autofocus
 />

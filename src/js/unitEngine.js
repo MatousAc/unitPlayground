@@ -69,7 +69,6 @@ export const filterCEParsingInfo = unitParse => {
 ///// user defined units /////
 // adding a new unit requires these updates
 export let addUnit = (name, attrs) => {
-  let names = [name, ...attrs["aliases"]]
   console.log('Adding Unit')  
   userUnits.update(units => {
     if (!isDefined(name)) {
@@ -78,29 +77,16 @@ export let addUnit = (name, attrs) => {
     return units
   })
   console.log(get(userUnits))
-  unitMacros.update(macros => {
-    return {
-      ...macros,
-      ...makeMacros(names)
-    }
-  });
 
-  parseDict.update(dict => {
-    return [
-      ...dict,
-      ...makeParse(names)
-    ]
-  });
+  // display / parsing info
+  let names = aliasPrefixCombos(name, attrs)
+  unitMacros.update(macros => ({
+    ...macros,
+    ...makeMacros(names)
+  }));
 
+  parseDict.update(dict => [
+    ...dict,
+    ...makeParse(names)
+  ]);
 }
-
-
-// legacy: how we imported units from js-quantities
-// import Qty from 'js-quantities';
-// Qty.getKinds().forEach((kind) => {
-//   Qty.getUnits(kind).forEach((unit) => {
-//     Qty.getAliases(unit).forEach((alias) => {
-//       starterUnits.push(alias);
-//     })
-//   })
-// })

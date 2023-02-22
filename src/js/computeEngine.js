@@ -2,11 +2,17 @@
 import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
 import { parseDict } from './stores'
 
-let engine = new ComputeEngine();
-engine.jsonSerializationOptions = { exclude: ['Rational'] };
+let engine
+const restartEngine = parseInfo => {
+  engine = new ComputeEngine({
+    latexDictionary: parseInfo
+  });
+  engine.jsonSerializationOptions = { exclude: ['Rational'] };
+  console.log("Engine restarted")
+}
 
 parseDict.subscribe(parseInfo => {
-  engine._latexDictionary = parseInfo;
+  restartEngine(parseInfo)
 })
 
-export default engine;
+export const parse = latex => engine.parse(latex, { canonical: false })

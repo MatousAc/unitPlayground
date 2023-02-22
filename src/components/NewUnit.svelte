@@ -6,7 +6,6 @@
   import Input from './Input.svelte'
   import Select from './Select.svelte'
   import Fill from './Fill.svelte'
-  import { unit } from '../js/umSetup';
   import { addUnit, aliasPrefixCombos } from '../js/unitEngine';
   import { prefixDictionary } from '../js/stores';
   import { getRandomSubarray, humanize } from '../js/helpers'
@@ -17,11 +16,10 @@
   
   const setSampleUnits = () => {
     let names = nameStr.trim().split(' ')
-    let u = unit(amount)
     attributes = {
       aliases: names.slice(1),
       prefixes: prefixGroup,
-      value: unit(amount).simplify({ system: 'auto'}).toString()
+      value: amount
     }
     name = names[0]
     let units = aliasPrefixCombos(name, attributes)
@@ -67,7 +65,7 @@
     </Fill>
   </div>
 
-  <Row slot=footer justify=flex-end on:closeModal>
+  <Row slot=footer justify=flex-end>
     <Button onClick={() => {
         addUnit(name, attributes)
         modal.close()

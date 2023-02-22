@@ -1,37 +1,39 @@
 <script>
-  import engine from '../js/computeEngine'
-  import { unitMacros } from '../js/stores'
+  import { unitMacros, parseDict } from '../js/stores'
   import { onMount, getContext } from 'svelte'
   import { eqKey, getResultUnits } from '../js/equation'
   import settings from '../js/settings'
   import { isMobile } from '../js/helpers'
-
-  let result
+  import { parse } from '../js/computeEngine'
+  
+  let input
   const eq = getContext(eqKey)
 
   onMount(() => {
-    result.setOptions({
+    input.setOptions({
       macros: unitMacros,
-      computeEngine: engine,
+      // computeEngine: engine,
     })
-    console.log(result.getOptions())
+    console.log(input.getOptions())
 
     unitMacros.subscribe(val => {
-      result.setOptions({ macros: val })
+      input.setOptions({ macros: val })
     })
 
+    // all the places we need to recalculate
     eq.subscribe(() => reCalculate())
     settings.subscribe(() => reCalculate())
+    parseDict.subscribe(() => reCalculate())
   })
 
   let reCalculate = () => {
-    let json = engine.parse($eq.left, { canonical: false }).json
+    let json = parse($eq.left).json
     console.log(`Left => JSON | ${$eq.left} => ${JSON.stringify(json)}`)
-    result.value = getResultUnits(json, result.value)
+    input.value = getResultUnits(json, input.value)
   }
 </script>
 
-<math-field bind:this={result}
+<math-field bind:this={input}
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
 />
 

@@ -21,7 +21,7 @@ export let getResultUnits = (json, fallbackValue) => {
   try {
     let qty = converge(json)
     console.log('Unit', qty)
-    if (simplify) qty = qty.simplify();
+    // if (simplify) qty = qty.simplify();
     res = toLaTeX(qty)
     console.log('Result', res)
   } catch (e) {
@@ -33,7 +33,7 @@ export let getResultUnits = (json, fallbackValue) => {
 
 // recursively drills through a json AST, returns a Unit
 let converge = ast => {
-  console.log(ast)
+  // console.log("Ast:", ast)
   switch (typeOf(ast)) {
     case 'array': break
     case 'unit': return ast
@@ -79,7 +79,8 @@ let power = (arr) => {
 }
 
 // formats a Unit object as LaTeX
-let toLaTeX = (u) => {
+let toLaTeX = u => {
+  // console.log(u)
   let scalar = u.getValue()
   let units = u.units
   // scalar string generation

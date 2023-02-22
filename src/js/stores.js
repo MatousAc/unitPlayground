@@ -1,22 +1,4 @@
 import { writable, get } from 'svelte/store'
-
-///// unitmath Setup /////
-import units from 'unitmath'
-import settings from './settings'
-export let unit
-
-settings.subscribe(s => {
-  unit = units.config({
-    system: s.system,
-    precision: s.precision,
-    simplifyThreshold: 2
-  })
-})
-
-console.log(unit.config())
-console.log(unit.definitions())
-
-
 ///// trash stack management /////
 import Equation from '../components/Equation.svelte'
 export const trashStack = writable([])
@@ -30,6 +12,7 @@ export const swallow = equation => {
 
 export const vomit = dest => {
   let last = get(trashStack).pop()
+  // @ts-ignore
   new Equation({
     props: {
       x: last.offsetX,
@@ -39,6 +22,25 @@ export const vomit = dest => {
     target: dest
   })
 }
+
+
+///// unitmath Setup /////
+import units from 'unitmath'
+import settings from './settings'
+export let unit
+
+settings.subscribe(s => {
+  unit = units.config({
+    system: s.system,
+    precision: s.precision,
+    simplifyThreshold: 2,
+    // definitions: get(userUnits)
+  })
+})
+
+console.log(unit.config())
+console.log(unit.definitions())
+
 
 ///// unit parsing information and math-field macros /////
 import {
@@ -86,7 +88,7 @@ export const userUnits = writable({
 
 // change the unit obj when defs are changed
 userUnits.subscribe(defs => {
-  console.log("userUnits updated")
+  console.log("unit object updated")
   return unit = unit.config({
     definitions: {
       units: defs
