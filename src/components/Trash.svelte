@@ -35,7 +35,7 @@
 }
 
 .trashIcon:has(~ .equation.dragging) {
-  padding-top: calc(.04 * var(--scale));
+  padding-top: calc(.07 * var(--scale));
   font-size: 2em;
 }
 

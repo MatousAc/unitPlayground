@@ -55,7 +55,7 @@ export const filterCEParsingInfo = unitParse => {
   // hashmap for quick lookup
   let map = new Map()
   unitParse.forEach(entry => {
-    map.set(entry['trigger'], true);
+    map.set(entry['trigger'], true)
   })
   let defaultParse = ComputeEngine.getLatexDictionary()
   // below we have to filter out latex commands that
@@ -78,7 +78,7 @@ export let addUnit = (name, attrs) => {
   })
   console.log(get(userUnits))
 
-  // display / parsing info
+  // display/parsing info
   let names = aliasPrefixCombos(name, attrs)
   unitMacros.update(macros => ({
     ...macros,

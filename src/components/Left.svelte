@@ -12,13 +12,10 @@
   onMount(() => {
     input.setOptions({
       enablePopover: false,
-      macros: unitMacros,
-      // computeEngine: engine,
+      macros: unitMacros
     })
-    console.log('Input Options', input.getOptions())
     
     unitMacros.subscribe(val => {
-      console.log("Field Macros Updated")
       input.setOptions({ macros: val })
     })
 
@@ -37,6 +34,7 @@
 <math-field
   bind:this={input}
   on:input={feedback}
+  on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
   autofocus
 />

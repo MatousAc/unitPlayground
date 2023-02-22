@@ -44,6 +44,7 @@
   .playground.light {
     --backClr: #ffffff;
     --textClr: #242424;
+    --textClrFaded: #605f5f;
     --safeClr: #76bed0;
     --dangerClr: #f55d3e;
     --accent1Clr: #f7cb15;
