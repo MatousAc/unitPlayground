@@ -8,12 +8,14 @@
   import { eqKey } from '../js/equation'
   import { swallow } from '../js/stores'
 
+  // define some internal values
   export let initLeft = ''
   let eqVal = writable({
     left: initLeft,
     right: ''
   });
 
+  // a context for each equation
   setContext(eqKey, eqVal);
   
   let equation
@@ -22,16 +24,21 @@
     x:x - 15, y:y - 25
   }
 
+  let dragBounds = "parent"
+
+  // destruction f(x)s
   let selfDestruct = () => {
     equation.parentNode.removeChild(equation)
   }
 
   let destroyIfEmpty = () => {
-    let row = equation.children[0];
-    let mfs = row.children;
-    if (mfs[0].value == '' && mfs[1].value == '') {
+    let row = equation.children[0]
+    let mfs = row.children
+    if (mfs[0].value === '' && mfs[1].value === '') {
+      // avoid getBoundingClientRect error
+      dragBounds = undefined
+      // now remove yourself from the equation please
       selfDestruct()
-      console.log('Destroyed empty equation.')
     }
   }
 
@@ -54,20 +61,21 @@
 <div 
 bind:this={equation}
 on:click|stopPropagation
-
+on:blur={destroyIfEmpty}
 on:neodrag:end={destroyIfInTrash}
 class='equation fitContent'
 use:draggable={{
-  bounds: 'parent',
+  bounds: dragBounds,
   cancel: '.noDrag',
   defaultClass: 'draggable',
   defaultClassDragging: 'dragging',
   defaultClassDragged: 'dragged',
-  defaultPosition: initPosition
+  defaultPosition: initPosition,
+  applyUserSelectHack: true
 }}>
   <Row>
     <Left on:blur={destroyIfEmpty}/>
-    <Right/>
+    <Right on:blur={destroyIfEmpty}/>
   </Row>
 </div>
 
@@ -78,6 +86,7 @@ use:draggable={{
   border-radius: 1em;
   border: 2px solid transparent;
   transition: border 0.5s;
+  border-color: var(--textClrFaded);
 }
 
 .equation:hover,
