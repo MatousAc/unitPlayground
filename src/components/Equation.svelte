@@ -28,6 +28,8 @@
 
   // destruction f(x)s
   let selfDestruct = () => {
+    // avoid getBoundingClientRect error
+    dragBounds = undefined
     equation.parentNode.removeChild(equation)
   }
 
@@ -35,8 +37,6 @@
     let row = equation.children[0]
     let mfs = row.children
     if (mfs[0].value === '' && mfs[1].value === '') {
-      // avoid getBoundingClientRect error
-      dragBounds = undefined
       // now remove yourself from the equation please
       selfDestruct()
     }
