@@ -3,6 +3,7 @@ import settings from './settings'
 import { unit } from './stores'
 import { typeOf } from './helpers'
 import { NonError, Fail, Hint, MissingOperand, UnitMismatch, UnrecognizedUnit } from './error'
+export const eqKey = Symbol() // each equation has a context
 
 let sigFigs, useScalar, simplify, system;
 settings.subscribe(s => {
@@ -158,5 +159,3 @@ const handleError = ast => {
     }
   }
 }
-
-export const eqKey = Symbol()

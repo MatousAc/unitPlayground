@@ -4,9 +4,10 @@
   import Right from './Right.svelte'
   import Row from './Row.svelte'
   import { writable, get } from 'svelte/store';
-  import { onDestroy, setContext } from 'svelte';
+  import { setContext } from 'svelte';
   import { eqKey } from '../js/equation'
   import { swallow } from '../js/stores'
+  import MathInput from './MathInput.svelte'
 
   // define some internal values
   export let initLeft = ''
@@ -21,9 +22,9 @@
   let equation
   export let x, y
   let initPosition = {
+    // make middle where equation was
     x:x - 15, y:y - 25
   }
-
   let dragBounds = "parent"
 
   // destruction f(x)s
@@ -53,8 +54,6 @@
       selfDestruct()
     }
   }
-
-  onDestroy(() => {})
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -74,7 +73,7 @@ use:draggable={{
   applyUserSelectHack: true
 }}>
   <Row>
-    <Left on:blur={destroyIfEmpty}/>
+    <MathInput on:blur={destroyIfEmpty}/>
     <Right on:blur={destroyIfEmpty}/>
   </Row>
 </div>

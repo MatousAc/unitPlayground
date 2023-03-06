@@ -3,6 +3,7 @@
   import { isMobile } from '../js/helpers'
   import { onMount, getContext } from 'svelte'
   import { eqKey } from '../js/equation'
+  import Combine from './Combine.svelte'
 
   const eq = getContext(eqKey)
   $: left = $eq.left
@@ -30,14 +31,7 @@
   }
 </script>
 
-<!-- svelte-ignore a11y-autofocus -->
-<math-field
-  bind:this={input}
-  on:input={feedback}
-  on:blur
-  virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
-  autofocus
-/>
+<Combine op={'+'}/>
 
 <style>
 </style>
