@@ -9,7 +9,8 @@
 		"package": "svelte-kit sync && svelte-package && publint",
 		"prepublishOnly": "npm run package",
 		"lint": "prettier --plugin-search-dir . --check .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"write-package-json": "node ./scripts/package-json-writer.js"
 	},
 	"exports": {
 		".": {
@@ -25,6 +26,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-cloudflare": "^2.2.0",
 		"@sveltejs/kit": "^1.5.0",
 		"@sveltejs/package": "^2.0.0",
 		"prettier": "^2.8.0",
@@ -35,7 +37,7 @@
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0"
 	},
-  "dependencies": {
+	"dependencies": {
 		"@cortex-js/compute-engine": "^0.12.2",
 		"@neodrag/svelte": "^2.0.3",
 		"mathlive": "^0.89.4",

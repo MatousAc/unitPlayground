@@ -210,7 +210,7 @@ math-field {
   position: absolute;
 }
 
-// sizing
+/* sizing */
 .w-full {
   width: 100%;
 }
