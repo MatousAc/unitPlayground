@@ -1,5 +1,5 @@
 // @ts-ignore
-import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
+import { ComputeEngine } from '@cortex-js/compute-engine'
 import { parseDict } from './stores'
 
 let engine

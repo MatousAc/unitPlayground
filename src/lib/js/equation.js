@@ -37,7 +37,7 @@ export let getResultUnits = (json, currentResult) => {
     case MissingOperand: console.error(e.message); break
     case Hint:
       console.error(e.message)
-      console.error("You might wanna czech this one out : )")
+      console.error("You might wanna czech this one out")
       break
     case Fail:
       console.error(e.message)

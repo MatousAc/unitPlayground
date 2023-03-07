@@ -1,7 +1,7 @@
 // these functions create unit abbreviations, macros, and parsing data 
 // for starting lists of units or units added by the user at any time
 // @ts-ignore
-import { ComputeEngine } from 'https://unpkg.com/@cortex-js/compute-engine?module';
+import { ComputeEngine } from '@cortex-js/compute-engine'
 import { get } from 'svelte/store';
 import {
   prefixDictionary,
