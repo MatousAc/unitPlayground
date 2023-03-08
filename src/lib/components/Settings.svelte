@@ -18,8 +18,8 @@
   
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div bind:this={ thisBind } class=settingsWrapper>
-  <span 
-    class='material-symbols-rounded settingsIcon p-5px{(isOpen) ? ' open' : ''}'
+  <span style="padding: 5px;"
+    class='material-symbols-rounded settingsIcon{(isOpen) ? ' open' : ''}'
     on:click|stopPropagation={() => isOpen = !isOpen}>
     settings
   </span>
@@ -34,16 +34,19 @@
           class='material-symbols-rounded'>
           add
         </span>
-        <span class='pr-5px hide-under-900'>Add Unit</span>
+        <span style="padding-right: 5px;"
+          class='hide-under-900'
+        >Add Unit</span>
       </Row>
     </Button>
     <Row>
-      <label class=m-3px
+      <label style="margin: 3px;"
         for=decimalPlaces>
         Precision
       </label>
-      <input class='m-3px br-1 pl-half' name=decimalPlaces
-        style="max-width: 4ch;"
+      <input
+        name=decimalPlaces
+        style="max-width: 4ch; margin: 3px; border-radius: 1em; padding-left: .5em"
         bind:value={$settings.precision}
         type=number step=1
         min=0
@@ -51,7 +54,7 @@
       />
     </Row>
     <Row>
-      <span class=m-3px>
+      <span style="margin: 3px;">
         Scalars
       </span>
       <Switch name=includeScalar bind:checked={$settings.includeScalar}/>
@@ -65,7 +68,7 @@
         ]}/>
     </Row>
     <Row>
-      <span class=m-3px>
+      <span style="margin: 3px; white-space: nowrap;">
         Base Units
       </span>
       <Switch name=convertToSI bind:checked={$settings.simplify}/>

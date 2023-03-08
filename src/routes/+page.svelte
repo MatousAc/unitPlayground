@@ -2,16 +2,14 @@
   import UnitPlayground from '../lib/index.js'
 </script>
 
-<h1>Welcome to your library project</h1>
-<p>Create your package using @sveltejs/package and preview/showcase your work with SvelteKit</p>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<div class=unitPlayground>
+<h1 class='text-4xl m-1 text-center'>Welcome to the Unit Playground!</h1>
+<div class=base>
   <UnitPlayground/>
 </div>
 
 <style>
-.unitPlayground {
-  width: 900px;
-  height: 500px;
+.base {
+  width: 90vw;
+  height: 50vh;
 }
 </style>

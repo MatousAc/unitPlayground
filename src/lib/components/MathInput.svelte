@@ -47,16 +47,16 @@
       clearTimeout(singleClickTimer);
       numClicks = 0;
       console.log("double click!");
-      console.log(e.composedPath())
+
     }
   };
 
-  // const setEventHandlers = () => {
-  //   let pieces = input.shadowRoot.querySelectorAll("span[data-atom-id]:not(.ML__base)")
-  //   pieces.forEach(piece => {
-  //     piece.onclick = handleClick
-  //   });
-  // }
+  const handle_keydown = e => {
+		console.log(e)
+		if (e.keyCode === 27) { // esc
+      console.log("Escape!")
+    }
+	};
 </script>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -64,7 +64,7 @@
 <math-field
   bind:this={input}
   on:input={feedback}
-  on:click|preventDefault={handleClick}
+  on:keydown={handle_keydown}
   on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
   autofocus

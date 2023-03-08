@@ -55,7 +55,7 @@
     </Fill>
     <Fill>
       <Row justify=flex-start align=flex-start>
-        <span class=pr-1>Examples</span>
+        <span style="padding-right: 1em;">Examples</span>
         <div class="grid examples">
           {#each sampleUnits as unit, i}
           <span style="grid-area: u{i};">{unit}</span>
@@ -74,7 +74,7 @@
         class=material-symbols-rounded>
         add
       </span>
-      <span class=pr-5px>Create Unit</span>
+      <span style="padding-right: 5px;">Create Unit</span>
     </Button>
   </Row>
 </Modal>

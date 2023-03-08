@@ -62,7 +62,7 @@ bind:this={equation}
 on:click|stopPropagation
 on:blur={destroyIfEmpty}
 on:neodrag:end={destroyIfInTrash}
-class='equation fitContent'
+class='equation'
 use:draggable={{
   bounds: dragBounds,
   cancel: '.noDrag',
@@ -80,6 +80,9 @@ use:draggable={{
 
 <style>
 .equation {
+  width: fit-content;
+  height: fit-content;
+  
   position: absolute;
   padding: 0.5em 0.8em;
   border-radius: 1em;

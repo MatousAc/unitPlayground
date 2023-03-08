@@ -1,9 +1,9 @@
 <script>
+  import './playground.css'
   import Equation from './components/Equation.svelte'
   import Settings from './components/Settings.svelte'
   import Trash from './components/Trash.svelte'
   import settings from './js/settings'
-  import './playground.css'
 
   let playground
   let createEquation = e => {

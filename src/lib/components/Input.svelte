@@ -19,12 +19,14 @@
   bind:value={val}
   placeholder='{ph}'
   on:change={onChange}
-  class='br-half p-half ml-1'
   autofocus={autofocus}>
 </Row>
 
 <style>
 input {
   border-width: 1px;
+  margin-left: 1em;
+  padding: .5em;
+  border-radius: 0.5em;
 }
 </style>
