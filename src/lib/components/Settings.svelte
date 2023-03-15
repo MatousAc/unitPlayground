@@ -24,7 +24,7 @@
     settings
   </span>
   <div 
-    class='settings mb-1{(isOpen) ? ' open' : ''}'
+    class='settings{(isOpen) ? ' open' : ''}'
     on:click|stopPropagation={() => {}}>
     <Button 
       onClick={showNewUnitModal}
@@ -94,7 +94,6 @@
 .settingsWrapper { 
   position: absolute;
   width: 100%;
-  overflow: hidden;
 }
 
 .settings.open {

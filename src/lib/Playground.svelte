@@ -43,6 +43,7 @@
   width: 100%;
   height: 100%;
   font-family: Roboto, Arial, sans-serif;
+  font-size: 16px;
 
   position: relative;
   background-color: var(--backClr);

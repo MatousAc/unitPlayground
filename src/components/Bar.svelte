@@ -35,9 +35,9 @@
   })
 </script>
 
-<nav class="w-full z-10 flex items-center px-4 sticky justify-between{showMobileMenu ? ' mobile' : ''}">
+<nav class="w-full text-2xl z-20 flex items-center px-4 sticky justify-between{showMobileMenu ? ' mobile' : ''}">
   <!-- logo -->
-  <a class="logo p-2 md:p-0" href="/testimony">
+  <a class="logo p-4 md:p-0" href="/">
     <Logo class="h-7 md:h-8"/>
   </a>
 
@@ -48,7 +48,7 @@
     on:click={() => showMobileMenu = false}>
     {#each links as link}
       <li>
-        <a class="py-2 px-4 md:p-6 block" 
+        <a class="py-2 px-4 md:p-6 block"
           href={link.href}
           target={link.target}
           >{link.title}</a>
@@ -71,7 +71,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div 
 on:click={() => showMobileMenu = false}
-class="pageDimmer hidden fixed top-0 left-0 w-full"
+class="pageDimmer hidden fixed top-0 left-0 w-full z-10"
 ></div>
 
 <style lang=postcss>
@@ -79,7 +79,6 @@ nav {
   top: 0;
   background-color: var(--nav);
   color: var(--nav-text);
-  font-size: 1.2rem;
   border-bottom: var(--nav-border-bottom-width) var(--nav-border) solid;
 }
 
@@ -101,7 +100,7 @@ nav ul.links li {
     left: 0;
     width: 100.5%;
 
-    height: 0.1rem;
+    height: 0.1em;
     background: var(--nav-underline);
     transition: transform 0.3s;
     transform: scaleX(0);
@@ -169,9 +168,6 @@ nav ul.links li {
 /* mobile link display animation
 eventually use: https://codepen.io/virgilpana/pen/NPzodr
 or use an expanding circle with overflow hidden where overflow content is absolutely positioned */
-nav.mobile .logo {
-  display: none;
-}
 
 :global(nav.mobile button) {
   display: flex;

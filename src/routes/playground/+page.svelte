@@ -2,7 +2,7 @@
   import UnitPlayground from '../../lib/index.js'
 </script>
 
-<div class=base>
+<div class="base pt-4">
   <UnitPlayground/>
 </div>
 

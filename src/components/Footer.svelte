@@ -1,12 +1,19 @@
 <script>
-	// import Logo from "./Logo.svelte"
+	import Logo from "./Logo.svelte"
 </script>
 
-<div class="footer w-full flex items-center px-4 justify-end mt-auto">
+<div class="footer w-full flex items-center py-2 px-4 justify-between mt-auto">
+  <h2 class="text-3xl">
+    Unit Playground
+  </h2>
+
+  <p>
+    Copyright 2023 Ac Hybl
+  </p>
+
   <!-- logo -->
-  <a class="logo p-4" href="/testimony">
-    <!-- <Logo class="w-16 md:w-20"/> -->
-    UnitPlayground
+  <a class="logo p-4" href="/">
+    <Logo class="w-6 md:w-8"/>
   </a>
 </div>
 
