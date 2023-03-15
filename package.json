@@ -1,7 +1,7 @@
 {
     "name": "unitplayground",
     "license": "MIT",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "scripts": {
         "dev": "vite dev",
         "build": "vite build && npm run package",
@@ -44,6 +44,7 @@
     },
     "dependencies": {
         "@cortex-js/compute-engine": "^0.12.2",
+        "@exceptionless/node": "^2.0.1",
         "@neodrag/svelte": "^2.0.3",
         "unitmath": "^0.8.8"
     },

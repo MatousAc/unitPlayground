@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte"
-	// import Logo from "./Logo.svelte"
-	// import ThemeSwitcher from "./ThemeSwitcher.svelte"
+	import Logo from "./Logo.svelte"
 
   // component vars
   let showMobileMenu = false;
@@ -11,11 +10,10 @@
 
   // links
   const links = [
-    { title: "home", href: "/", target: "_self" },
-    { title: "resume", href: "resume.pdf", target: "_blank" },
-    { title: "research", href: "AzureAutoML.pdf", target: "_blank" },
-    { title: "testimony", href: "/testimony", target: "_self" },
-    { title: "info", href: "/info", target: "_self" }
+    { title: "Home", href: "/", target: "_self" },
+    { title: "Playground", href: "/playground", target: "_self" },
+    { title: "About", href: "/about", target: "_self" },
+    { title: "npm Package", href: "https://www.npmjs.com/package/unitplayground", target: "_blank" }
   ]
 
   const mediaQueryHandler = e => {
@@ -40,8 +38,7 @@
 <nav class="w-full z-10 flex items-center px-4 sticky justify-between{showMobileMenu ? ' mobile' : ''}">
   <!-- logo -->
   <a class="logo p-2 md:p-0" href="/testimony">
-    <!-- <Logo class="w-16 md:w-20"/> -->
-    UnitPlayground
+    <Logo class="h-7 md:h-8"/>
   </a>
 
   <!-- links -->
@@ -93,9 +90,7 @@ nav ul.links li {
   list-style-type: none;
   position: relative;
 }
-nav ul.links li a {
-  text-transform: capitalize;
-}
+
 
 /* link underline animation for large displays */
 @media only screen and (min-width: 768px) {
