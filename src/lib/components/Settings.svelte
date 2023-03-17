@@ -119,4 +119,11 @@
 .settings:hover {
   outline: 1px black;
 }
+
+/* responsive design */
+@media only screen and (max-width: 899px) {
+  .hide-under-900 {
+    display: none;
+  }
+}
 </style>

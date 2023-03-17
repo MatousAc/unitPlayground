@@ -23,8 +23,10 @@ button {
   justify-content: center;
 }
 
-button.outlined {
-  border: 2px solid white;
-  border-radius: 2em;
+@media only screen and (min-width: 900px) {
+  button.outlined {
+    border: 2px solid white;
+    border-radius: 2em;
+  }
 }
 </style>

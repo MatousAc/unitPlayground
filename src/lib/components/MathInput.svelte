@@ -55,6 +55,14 @@
 		console.log(e)
 		if (e.keyCode === 27) { // esc
       console.log("Escape!")
+      console.log(input.selection)
+      let select = input.getValue(input.selection, 'latex')
+      console.log("input selection: ", select)
+      let hbo = input.hitboxFromOffset(select)
+      console.log("input offset", hbo)
+      let ofp = input.offsetFromPoint(100, 60)
+      console.log("offset form point", ofp)
+      console.log("last offset", input.lastOffset)
     }
 	};
 </script>
@@ -71,4 +79,9 @@
 />
 
 <style>
+math-field {
+  outline: none;
+  display: flex;
+  align-items: center;
+}
 </style>

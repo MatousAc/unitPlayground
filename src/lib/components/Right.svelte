@@ -38,4 +38,9 @@
 />
 
 <style>
+math-field {
+  outline: none;
+  display: flex;
+  align-items: center;
+}
 </style>

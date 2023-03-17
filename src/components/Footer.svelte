@@ -8,7 +8,7 @@
   </h2>
 
   <p>
-    Copyright 2023 Ac Hybl
+    Copyright © 2023, Ac Hybl.
   </p>
 
   <!-- logo -->

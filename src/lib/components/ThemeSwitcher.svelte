@@ -32,9 +32,16 @@ span.label {
   margin-left: 0.25rem;
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 900px) {
   span.label {
     min-width: 12ch;
+  }
+}
+
+/* responsive design */
+@media only screen and (max-width: 899px) {
+  .hide-under-900 {
+    display: none;
   }
 }
 </style>
