@@ -45,6 +45,7 @@
         "@cortex-js/compute-engine": "^0.12.2",
         "@exceptionless/node": "^2.0.1",
         "@neodrag/svelte": "^2.0.3",
+        "mathlive": "^0.90.3",
         "unitmath": "^0.8.8"
     },
     "svelte": "./dist/index.js",
