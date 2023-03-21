@@ -1,4 +1,4 @@
-<math-field>
+<math-field contenteditable="true">
 </math-field>
 
 <style>

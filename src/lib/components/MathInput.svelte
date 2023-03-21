@@ -11,17 +11,17 @@
 
   let input
   onMount(() => {
-    // input.setOptions({
-    //   enablePopover: false,
-    //   macros: unitMacros,
-    //   computeEngine: engine
-    // })
+    input.setOptions({
+      enablePopover: false,
+      macros: unitMacros,
+      computeEngine: engine
+    })
     
     unitMacros.subscribe(val => {
-      // input.setOptions({
-      //   macros: val,
-      //   computeEngine: engine
-      // })
+      input.setOptions({
+        macros: val,
+        computeEngine: engine
+      })
     })
 
     input.value = left
