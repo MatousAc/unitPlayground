@@ -38,8 +38,8 @@ settings.subscribe(s => {
   })
 })
 
-console.log(unit.config())
-console.log(unit.definitions())
+// console.log(unit.config())
+// console.log(unit.definitions())
 
 
 ///// unit parsing information and math-field macros /////

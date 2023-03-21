@@ -10,13 +10,13 @@
   const eq = getContext(eqKey)
 
   onMount(() => {
-    input.setOptions({
-      enablePopover: false,
-      macros: unitMacros
-    })
+    // input.setOptions({
+    //   enablePopover: false,
+    //   macros: unitMacros
+    // })
 
     unitMacros.subscribe(val => {
-      input.setOptions({ macros: val })
+      // input.setOptions({ macros: val })
     })
 
     // all the places we need to recalculate

@@ -2,7 +2,7 @@
 import { ComputeEngine } from '@cortex-js/compute-engine'
 import { parseDict } from './stores'
 
-let engine
+export let engine
 const restartEngine = parseInfo => {
   engine = new ComputeEngine({
     latexDictionary: parseInfo

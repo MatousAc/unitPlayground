@@ -151,7 +151,7 @@ const handleError = ast => {
     let code = ast[1]
     switch (code) {
     case "'unexpected-command'":
-      let re = new RegExp(/["|']\\(?<name>.*)["|']/)
+      let re = /["|']\\(?<name>.*)["|']/
       let badUnit = ast[2].match(re).groups.name
       throw new UnrecognizedUnit(badUnit)
     default:

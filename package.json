@@ -1,7 +1,7 @@
 {
     "name": "unitplayground",
     "license": "MIT",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "scripts": {
         "dev": "vite dev",
         "build": "vite build && npm run package",
@@ -30,7 +30,6 @@
         "@sveltejs/adapter-cloudflare": "^2.2.0",
         "@sveltejs/kit": "^1.5.0",
         "@sveltejs/package": "^2.0.0",
-        "auto-version-js": "^0.3.10",
         "autoprefixer": "^10.4.13",
         "postcss": "^8.4.21",
         "prettier": "^2.8.0",
