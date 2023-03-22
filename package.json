@@ -7,6 +7,12 @@
       "type": "git",
       "url": "github.com/MatousAc/unitPlayground"
     },
+    "keywords": [
+      "dimensional analysis",
+      "generative dimensional analysis",
+      "interactive unit math",
+      "unit conversion"
+    ],
     "scripts": {
         "dev": "vite dev",
         "build": "vite build && npm run package",
