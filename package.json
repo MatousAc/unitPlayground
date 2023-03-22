@@ -4,14 +4,14 @@
     "version": "0.1.4",
     "homepage": "unitplayground.com",
     "repository": {
-      "type": "git",
-      "url": "github.com/MatousAc/unitPlayground"
+        "type": "git",
+        "url": "github.com/MatousAc/unitPlayground"
     },
     "keywords": [
-      "dimensional analysis",
-      "generative dimensional analysis",
-      "interactive unit math",
-      "unit conversion"
+        "dimensional analysis",
+        "generative dimensional analysis",
+        "interactive unit math",
+        "unit conversion"
     ],
     "scripts": {
         "dev": "vite dev",
