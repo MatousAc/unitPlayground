@@ -7,7 +7,7 @@
   let playground
   let createEquation = e => {
     new Equation({
-      // credit to Johan Jaeger below
+      // credit to Johan Jaeger for the props syntax
       props: {
         x: e.offsetX,
         y: e.offsetY,
