@@ -1,58 +1,53 @@
-# create-svelte
+# UnitPlayground
+This library provides canvass-like a Svelte component that encourages a deeper understanding of units. This "unit playground" aims to aid problem solvers by providing instant unit feedback, hints, and rearrangeable equations.
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+[![version](https://img.shields.io/npm/v/unitplayground)](https://www.npmjs.com/package/unitplayground)
+[![build](https://app.travis-ci.com/MatousAc/unitPlayground.svg?branch=main)](https://app.travis-ci.com/github/MatousAc/unitPlayground)
+[![issues](https://img.shields.io/github/issues/matousac/unitplayground)](https://github.com/MatousAc/unitPlayground/issues)
+[![dependencies](https://img.shields.io/librariesio/release/npm/unitplayground)](https://www.npmjs.com/package/unitplayground?activeTab=dependencies)
+<!-- [![license](https://img.shields.io/npm/l/svelte.svg)](LICENSE.md) -->
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
 
-## Creating a project
+<!-- toc -->
+[Installation & Usage](#installation--usage) | [About](#about) | [Acknowledgements](#acknowledgements) | [License](#license)
+<!-- tocstop -->
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation & Usage
+### Install
+Currently, this package is only available in Svelte projects. Simply install with npm.
+```
+npm i unitplayground
+```
+### Add to your project
+To use the component in your project import it and place it within some container `<div>`. UnitPlayground will fill its parent container. Example:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+<h5 a><strong><code>+page.svelte</code></strong></h5>
 
-# create a new project in my-app
-npm create svelte@latest my-app
+```svelte
+<script>
+  import UnitPlayground from 'unitplayground'
+</script>
+
+<div class=base>
+  <UnitPlayground/>
+</div>
+
+<style>
+  .base {
+    max-width: 100%;
+    width: 90vw;
+    height: 50vh;
+  }
+</style>
 ```
 
-## Developing
+## About
+What is this package able to deliver?
+Stay tuned . . .
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Acknowledgements
+Thanks to the authors and maintainers of my dependencies, especially [mathlive](https://www.npmjs.com/package/mathlive), [@cortex-js/compute-engine](https://www.npmjs.com/package/@cortex-js/compute-engine), and [unitmath](https://www.npmjs.com/package/unitmath).
+Also, thanks to Robert Ordóñez for the emotional support while I was developing this project.
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
-## Building
-
-To build your library:
-
-```bash
-npm run package
-```
-
-To create a production version of your showcase app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
-```
+## License
+UnitPlayground is released under the MIT license.

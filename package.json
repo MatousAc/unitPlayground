@@ -1,7 +1,12 @@
 {
     "name": "unitplayground",
     "license": "MIT",
-    "version": "0.1.3",
+    "version": "0.1.4",
+    "homepage": "unitplayground.com",
+    "repository": {
+      "type": "git",
+      "url": "github.com/MatousAc/unitPlayground"
+    },
     "scripts": {
         "dev": "vite dev",
         "build": "vite build && npm run package",
