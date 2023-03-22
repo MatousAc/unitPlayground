@@ -89,8 +89,12 @@ let converge = ast => {
   
   case 'Power': return power(ast)
   case 'Sqrt': return converge(ast[1]).sqrt()
+  case 'Negate': return converge(ast[1]).mul(-1)
   case 'UNIT': return unit(ast[1])
   case 'List': return ast.slice(1)
+  case 'Delimiter': 
+    if (ast[1] !== undefined) return converge(ast[1])
+    else return ''
   case "Error": return handleError(ast)
   default: return ''
   }
@@ -135,7 +139,8 @@ function inProgress(json) {
   return (
     str == '' ||
     str.includes('Nothing') ||
-    str.includes('HorizontalSpacing')
+    str.includes('HorizontalSpacing') ||
+    str.includes('["Delimiter"]')
   ) // might be nice to handle various errors here
 }
 
