@@ -11,14 +11,14 @@
 
   let input
   onMount(() => {
-    input.setOptions({
-      enablePopover: false,
-      macros: unitMacros
-    })
+    // input.setOptions({
+    //   enablePopover: false,
+    //   macros: unitMacros
+    // })
     
-    unitMacros.subscribe(val => {
-      input.setOptions({ macros: val })
-    })
+    // unitMacros.subscribe(val => {
+    //   input.setOptions({ macros: val })
+    // })
 
     input.value = left
   })
@@ -26,7 +26,7 @@
   const feedback = () => {
     $eq = {
       left: input.value,
-      right: right,
+      right: right
     }
   }
 </script>

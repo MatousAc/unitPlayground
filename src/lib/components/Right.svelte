@@ -10,13 +10,11 @@
   const eq = getContext(eqKey)
 
   onMount(() => {
-    // input.setOptions({
-    //   enablePopover: false,
-    //   macros: unitMacros
-    // })
-
+    input.popoverPolicy = false
+    input.macros = unitMacros
+    
     unitMacros.subscribe(val => {
-      // input.setOptions({ macros: val })
+      input.macros = val
     })
 
     // all the places we need to recalculate
@@ -34,7 +32,7 @@
 
 <math-field bind:this={input}
   on:blur
-  virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
+  mathVirtualKeyboardPolicy={isMobile() ? 'auto' : 'off'}
 />
 
 <style>

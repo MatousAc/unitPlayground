@@ -11,17 +11,13 @@
 
   let input
   onMount(() => {
-    input.setOptions({
-      enablePopover: false,
-      macros: unitMacros,
-      computeEngine: engine
-    })
+    input.popoverPolicy = false
+    input.macros = unitMacros
+    input.computeEngine = engine
     
     unitMacros.subscribe(val => {
-      input.setOptions({
-        macros: val,
-        computeEngine: engine
-      })
+      input.macros = val
+      input.computeEngine = engine
     })
 
     input.value = left
@@ -107,7 +103,7 @@
   on:keydown={handleKeydown}
   on:click|preventDefault={handleClick}
   on:blur
-  virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
+  mathVirtualKeyboardPolicy={isMobile() ? 'auto' : 'off'}
   autofocus
 />
 

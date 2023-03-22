@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-  <script src="//unpkg.com/mathlive@0.89.4"></script>
+  <script src="//unpkg.com/mathlive@0.90.4"></script>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200' />
 </svelte:head>
 
