@@ -4,19 +4,23 @@
   import { eqKey, getResultUnits } from '../js/equation'
   import settings from '../js/settings'
   import { isMobile } from '../js/helpers'
-  import { parse } from '../js/computeEngine'
+  import { engine, parse } from '../js/computeEngine'
   
   let input
   const eq = getContext(eqKey)
 
   onMount(() => {
-    // input.setOptions({
-    //   enablePopover: false,
-    //   macros: unitMacros
-    // })
+    input.setOptions({
+      enablePopover: false,
+      macros: unitMacros,
+      // computeEngine: engine
+    })
 
     unitMacros.subscribe(val => {
-      // input.setOptions({ macros: val })
+      input.setOptions({
+        macros: val,
+        // computeEngine: engine
+      })
     })
 
     // all the places we need to recalculate

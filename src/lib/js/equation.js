@@ -20,12 +20,12 @@ export let getResultUnits = (json, currentResult) => {
   let result = ''
   try {
     let value = converge(json)
-    console.log('Unit', value)
-    console.log("unit object when being used")
+    // console.log('Unit', value)
+    // console.log("unit object when being used")
     console.log(unit.definitions())
     if (simplify) value = value.simplify();
     result = toLaTeX(value)
-    console.log('Result:', result)
+    // console.log('Result:', result)
   } catch (e) {
     switch (e.constructor) {
     case NonError: console.warn(e.message); break
