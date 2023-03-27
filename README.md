@@ -47,7 +47,7 @@ Stay tuned . . .
 
 ## Acknowledgements
 Thanks to the authors and maintainers of my dependencies, especially [mathlive](https://www.npmjs.com/package/mathlive), [@cortex-js/compute-engine](https://www.npmjs.com/package/@cortex-js/compute-engine), and [unitmath](https://www.npmjs.com/package/unitmath).
-Also, thanks to Robert Ordóñez for the emotional support while I was developing this project.
+Also, thanks to my professor Robert Ordóñez for support while I was developing this project.
 
 ## License
 UnitPlayground is released under the MIT license.

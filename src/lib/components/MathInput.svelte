@@ -41,8 +41,54 @@
     console.log("Ejecting target!")
   }
 
+  // taken from https://stackoverflow.com/a/32859917/14062356
+  let findFirstDiffPos = (a, b) => {
+    var i = 0;
+    if (a === b) return -1;
+    while (a[i] === b[i]) i++;
+    return i;
+  }
 
-  let splitOnTopLevelOperators = latex => {
+  let getPosition = offset => {
+    let source = input.value
+    let offsetLatex = input.getValue(0, offset, 'latex')
+    let position = offsetLatex.length
+    
+    // console.log("clicked on: ", input.getValue(offset, offset+6 , 'latex'))
+    if (offsetLatex === source.substring(0, position)) {
+    // console.log(`At ${position}:${source.substring(0, position)}`)
+      return position
+    }
+    // console.log("valid latex to offset: ", offsetLatex)
+    // console.log(`At ${position}:${source.substring(0, position)}`)
+
+    // adjust for missing latex
+    let diffIndex = findFirstDiffPos(offsetLatex, source)
+    offsetLatex = offsetLatex.substring(diffIndex)
+    let sourceLatex = source.substring(diffIndex)
+    // numerator
+    let len = offsetLatex.length
+    // console.log(`Matching offset: ${offsetLatex}`)
+    while (sourceLatex.indexOf(offsetLatex.substring(0, len)) === -1) len--
+    let foundAt = sourceLatex.indexOf(offsetLatex.substring(0, len))
+    position = diffIndex + foundAt + len
+    // console.log(`Matched offset: ${offsetLatex.substring(0, len)} at: ${foundAt} with len: ${len}`)
+    // console.log(`At ${position}:${source.substring(0, position)}`)
+    
+    offsetLatex = offsetLatex.substring(len)
+    sourceLatex = sourceLatex.substring(foundAt + len)
+    if (offsetLatex.length === 0) {
+    // console.log(`At ${position}:${source.substring(0, position)}`)
+      return position
+    }
+    // denominator
+    // console.log(`Matching offset: ${offsetLatex}`)
+    position += sourceLatex.indexOf(offsetLatex.substring(0, len)) + offsetLatex.length
+    // console.log(`At ${position}:${source.substring(0, position)}`)
+    return position
+  }
+
+  let splitOnTopLevelOps = latex => {
     let splitArray = []
     const re = /[+\-]|(?:\\cdot)|(?:\\times)(?![^{]*})/g
     let ops = latex.matchAll(re)
@@ -78,10 +124,13 @@
   }
 
   let intervalFromPositionAndSplitArray = (pos, last, splitArray) => {
-    let start = 0, end = last
+    let start = 0, end = last, endSet = false
     splitArray.forEach(interval => {
-      if (pos < interval.start) end = interval.start
-      if (pos > interval.end) start = interval.end
+      if (pos <= interval.start && !endSet) {
+        end = interval.start
+        endSet = true
+      }
+      if (pos >= interval.end) start = interval.end
     });
     return { start, end }
   }
@@ -98,12 +147,11 @@
         end: groups[group][1] + interval.start
       }
     }
-    console.log("grp", groups)
-
     return groups
   }
 
   let inInterval = (pos, range) => {
+    // if (range.start == range.end) return false
     return pos >= range.start && pos <= range.end
   }
   let intervalFromPositionPieces = (pos, pc) => {
@@ -124,14 +172,8 @@
     let fullLatex = input.value
     console.log(fullLatex)
 
-    let latexToPosition = input.getValue(0, offset, 'latex')
-    let position = latexToPosition.length
-
-    let area = input.getValue(offset, offset+6 , 'latex')
-    console.log("clicked on: ", area)
-    console.log("latexToPosition: ", latexToPosition)
-
-    let splitArray = splitOnTopLevelOperators(fullLatex)
+    let position = getPosition(offset);
+    let splitArray = splitOnTopLevelOps(fullLatex)
     console.log("splitArray: ", splitArray)
     let interval = intervalFromPositionAndSplitArray(position, fullLatex.length, splitArray)
 
@@ -139,7 +181,6 @@
 
     let fractionPieces = getFractionPieces(fullLatex, interval)
     console.log("fraction pieces", fractionPieces)
-    console.log("position", position)
     interval = intervalFromPositionPieces(position, fractionPieces)
     console.log("Interval: ", interval, "Str: ", fullLatex.substring(interval.start, interval.end))
   }
@@ -157,9 +198,8 @@
       clearTimeout(singleClickTimer);
       numClicks = 0;
       
-      let offset = input.offsetFromPoint(e.x-5, e.y)
+      let offset = input.offsetFromPoint(e.x, e.y)
       determineEjectionInterval(offset)
-      console.log("hitbox", input.hitboxFromOffset(offset))
     }
   };
 
