@@ -7,7 +7,6 @@
   import { setContext } from 'svelte';
   import { eqKey } from '../js/equation'
   import { swallow } from '../js/stores'
-  import MathInput from './MathInput.svelte'
 
   // define some internal values
   export let initLeft = ''
@@ -73,7 +72,7 @@ use:draggable={{
   applyUserSelectHack: true
 }}>
   <Row>
-    <MathInput on:blur={destroyIfEmpty}/>
+    <Left on:blur={destroyIfEmpty}/>
     <Right on:blur={destroyIfEmpty}/>
   </Row>
 </div>
