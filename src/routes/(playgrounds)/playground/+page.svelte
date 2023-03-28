@@ -1,5 +1,5 @@
 <script>
-  import UnitPlayground from '../../../lib/index.js'
+  import UnitPlayground from 'lib/index.js'
 </script>
 
 <UnitPlayground/>

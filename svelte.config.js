@@ -9,7 +9,15 @@ export default {
         include: ['/*'],
         exclude: ['<all>']
       }
-    })
+    }),
+    alias: {
+      // this will match a directory and its contents
+      // (`my-directory/x` resolves to `path/to/my-directory/x`)
+      'lib': './src/lib',
+      'css': './src/css',
+      'components': './src/components',
+      '$': './src'
+    }
   },
   preprocess: vitePreprocess()
 };

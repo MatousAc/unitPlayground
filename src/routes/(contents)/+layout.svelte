@@ -1,8 +1,8 @@
 <script>
   import '../../app.postcss'
-  import '../../css/colors.css'
-  import Footer from '../../components/Footer.svelte'
-  import Bar from '../../components/Bar.svelte'
+  import 'css/colors.css'
+  import Footer from 'components/Footer.svelte'
+  import Bar from 'components/Bar.svelte'
 </script>
 
 <main class="skeleton light flex flex-col">
