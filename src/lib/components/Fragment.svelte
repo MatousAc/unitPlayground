@@ -3,7 +3,6 @@
   import { draggable } from '@neodrag/svelte'
   import { onMount } from 'svelte'
   import { swallow } from '../js/stores'
-	import Equation from './Equation.svelte';
 
   // define some internal values
   let piece

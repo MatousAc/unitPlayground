@@ -36,7 +36,7 @@
 
 .trashIcon:has(~ .equation.dragging) {
   padding-top: calc(.07 * var(--scale));
-  font-size: 2em;
+  font-size: 2.3em;
 }
 
 :global(.trashIcon:hover ~ .equation.dragging) {
