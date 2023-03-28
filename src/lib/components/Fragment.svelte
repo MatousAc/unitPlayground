@@ -3,10 +3,11 @@
   import { draggable } from '@neodrag/svelte'
   import { onMount } from 'svelte'
   import { swallow } from '../js/stores'
+	import Equation from './Equation.svelte';
 
   // define some internal values
   let piece
-  export let x, y, value
+  export let x, y, initVal
   let initPosition = { x:x, y:y }
   let dragBounds = "parent"
 
@@ -21,7 +22,7 @@
       piece.setOptions({ macros: val })
     })
 
-    piece.value = value
+    piece.value = initVal
   })
   
   // destruction f(x)s
@@ -35,9 +36,10 @@
     let trash = document.querySelector('.trashIcon')
     if (trash.matches(':hover')) {
       swallow({
+        'component': "Fragment",
         'offsetX': e.detail.offsetX,
         'offsetY': e.detail.offsetY-10,
-        'value': get(eqVal).left
+        'value': piece.value
       })
       selfDestruct()
     }

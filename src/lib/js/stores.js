@@ -1,26 +1,30 @@
 import { writable, get } from 'svelte/store'
 ///// trash stack management /////
 import Equation from '../components/Equation.svelte'
+import Fragment from '../components/Fragment.svelte';
 export const trashStack = writable([])
 
-export const swallow = equation => {
+export const swallow = component => {
   trashStack.update(list => {
-    list.push(equation);
+    list.push(component);
     return list
   })
 }
 
 export const vomit = dest => {
   let last = get(trashStack).pop()
-  // @ts-ignore
-  new Equation({
+  let props = {
     props: {
       x: last.offsetX,
       y: last.offsetY,
-      initLeft: last.value
+      initVal: last.value
     },
     target: dest
-  })
+  }
+  switch (last.component) {
+    case "Equation": new Equation(props); break;
+    case "Fragment": new Fragment(props); break;
+  }
 }
 
 

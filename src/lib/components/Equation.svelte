@@ -9,9 +9,9 @@
   import { swallow } from '../js/stores'
 
   // define some internal values
-  export let initLeft = ''
+  export let initVal = ''
   let eqVal = writable({
-    left: initLeft,
+    left: initVal,
     right: ''
   });
 
@@ -46,6 +46,7 @@
     let trash = document.querySelector('.trashIcon')
     if (trash.matches(':hover')) {
       swallow({
+        'component': "Equation",
         'offsetX': e.detail.offsetX,
         'offsetY': e.detail.offsetY-10,
         'value': get(eqVal).left

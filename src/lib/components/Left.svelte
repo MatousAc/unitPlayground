@@ -47,7 +47,7 @@
       props: {
         x: e.x - playground.offsetLeft - 30,
         y: e.y - playground.offsetTop - 80,
-        value: ejectedFragment
+        initVal: ejectedFragment
       },
       target: playground
     })

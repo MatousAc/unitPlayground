@@ -12,14 +12,12 @@
   onMount(() => {
     input.setOptions({
       enablePopover: false,
-      macros: unitMacros,
-      // computeEngine: engine
+      macros: unitMacros
     })
 
     unitMacros.subscribe(val => {
       input.setOptions({
         macros: val,
-        // computeEngine: engine
       })
     })
 
