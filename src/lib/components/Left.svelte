@@ -60,7 +60,6 @@
     if (numClicks === 1) {
       singleClickTimer = setTimeout(() => {
         numClicks = 0;
-        console.log(e)
       }, 300)
     } else if (numClicks > 1) {
       clearTimeout(singleClickTimer);

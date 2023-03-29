@@ -5,51 +5,77 @@
   import { swallow } from '../js/stores'
 
   // define some internal values
-  let piece
+  let fragment
   export let x, y, initVal
   let initPosition = { x:x, y:y }
   let dragBounds = "parent"
+  let parent
 
   onMount(() => {
-    piece.setOptions({
+    fragment.setOptions({
       enablePopover: false,
       macros: unitMacros
     })
 
     
     unitMacros.subscribe(val => {
-      piece.setOptions({ macros: val })
+      fragment.setOptions({ macros: val })
     })
 
-    piece.value = initVal
+    fragment.value = initVal
+    parent = fragment.parentNode
   })
   
-  // destruction f(x)s
-  let selfDestruct = () => {
-    // avoid getBoundingClientRect error
+  // life f(x)s
+  let suicide = () => {
     dragBounds = undefined
-    piece.parentNode.removeChild(piece)
+    parent.removeChild(fragment)
   }
 
-  let destroyIfInTrash = (e) => {
+  let resurrect = () => {
+    dragBounds = 'parent'
+    parent.appendChild(fragment)
+  }
+
+  let destroyIfInTrash = e => {
     let trash = document.querySelector('.trashIcon')
     if (trash.matches(':hover')) {
       swallow({
-        'component': "Fragment",
+        'component': 'Fragment',
         'offsetX': e.detail.offsetX,
-        'offsetY': e.detail.offsetY-10,
-        'value': piece.value
+        'offsetY': e.detail.offsetY-20,
+        'value': fragment.value
       })
-      selfDestruct()
+      suicide()
     }
+  }
+
+  let snapIfOverEquation = e => {
+    console.log(e)
+    let eq = document.querySelector('.equation')
+    let event = new CustomEvent("fragmentDrop", {
+      detail: {
+        fragmentValue: fragment.value,
+        x: e.detail.offsetX,
+        y: e.detail.offsetY
+      }
+    })
+    console.log(eq)
+    eq.dispatchEvent(event)
+    suicide()
+  }
+
+  let drop = e => {
+    destroyIfInTrash(e)
+    snapIfOverEquation(e)
   }
 </script>
 
 <!-- svelte-ignore a11y-autofocus -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<math-field class=piece
-  bind:this={piece}
-  on:neodrag:end={destroyIfInTrash}
+<math-field class=fragment
+  bind:this={fragment}
+  on:neodrag:end={drop}
   on:click|stopPropagation
   read-only
   use:draggable={{
@@ -63,7 +89,7 @@
 />
 
 <style>
-.piece {
+.fragment {
   /* FIXME */
   user-select: none;
   
@@ -77,7 +103,7 @@
   border: 2px solid transparent;
 }
 
-.piece:hover,
+.fragment:hover,
 :global(.equation.dragging) {
   border-color: var(--textClr);
 }

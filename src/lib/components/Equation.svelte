@@ -4,7 +4,7 @@
   import Right from './Right.svelte'
   import Row from './Row.svelte'
   import { writable, get } from 'svelte/store';
-  import { setContext } from 'svelte';
+  import { onMount, setContext } from 'svelte';
   import { eqKey } from '../js/equation'
   import { swallow } from '../js/stores'
 
@@ -27,32 +27,43 @@
   let dragBounds = "parent"
 
   // destruction f(x)s
-  let selfDestruct = () => {
+  const suicide = () => {
     // avoid getBoundingClientRect error
     dragBounds = undefined
     equation.parentNode.removeChild(equation)
   }
 
-  let destroyIfEmpty = () => {
+  const destroyIfEmpty = () => {
     let row = equation.children[0]
     let mfs = row.children
     if (mfs[0].value === '' && mfs[1].value === '') {
       // now remove yourself from the equation please
-      selfDestruct()
+      suicide()
     }
   }
 
-  let destroyIfInTrash = (e) => {
+  const destroyIfInTrash = e => {
     let trash = document.querySelector('.trashIcon')
     if (trash.matches(':hover')) {
       swallow({
-        'component': "Equation",
+        'component': 'Equation',
         'offsetX': e.detail.offsetX,
-        'offsetY': e.detail.offsetY-10,
+        'offsetY': e.detail.offsetY-20,
         'value': get(eqVal).left
       })
-      selfDestruct()
+      suicide()
     }
+  }
+
+  // hover class
+  let hover = false
+
+  const insertFragment = event => {
+    console.log("Fragment drop!")
+    console.log(event)
+    console.log(event.detail.fragmentValue)
+    console.log(event.detail.x)
+    console.log(event.detail.y)
   }
 </script>
 
@@ -62,7 +73,10 @@ bind:this={equation}
 on:click|stopPropagation
 on:blur={destroyIfEmpty}
 on:neodrag:end={destroyIfInTrash}
-class='equation'
+on:mouseenter={() => hover = true}
+on:mouseleave={() => hover = false}
+on:fragmentDrop={insertFragment}
+class='equation{hover ? " hover" : ''}'
 use:draggable={{
   bounds: dragBounds,
   cancel: '.noDrag',
@@ -94,5 +108,10 @@ use:draggable={{
 .equation:hover,
 :global(.equation.dragging) {
   border-color: var(--textClr);
+}
+
+/* for fragment hovering */
+.equation.hover:has(~ .fragment.dragging) {
+  font-size: 1.3em;
 }
 </style>

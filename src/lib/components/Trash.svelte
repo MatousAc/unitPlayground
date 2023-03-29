@@ -34,7 +34,8 @@
   filter: brightness(85%);
 }
 
-.trashIcon:has(~ .equation.dragging) {
+.trashIcon:has(~ .equation.dragging),
+.trashIcon:has(~ .fragment.dragging) {
   padding-top: calc(.07 * var(--scale));
   font-size: 2.3em;
 }
