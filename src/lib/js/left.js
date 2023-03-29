@@ -10,36 +10,36 @@ let positionFromOffset = (source, offsetLatex) => {
   let position = offsetLatex.length
   
   // console.log("clicked on: ", getValue(offset, offset+6 , 'latex'))
-  if (offsetLatex === source.substring(0, position)) {
-  // console.log(`At ${position}:${source.substring(0, position)}`)
+  if (offsetLatex === source.slice(0, position)) {
+  // console.log(`At ${position}:${source.slice(0, position)}`)
     return position
   }
   // console.log("valid latex to offset: ", offsetLatex)
-  // console.log(`At ${position}:${source.substring(0, position)}`)
+  // console.log(`At ${position}:${source.slice(0, position)}`)
 
   // adjust for missing latex
   let diffIndex = findFirstDiffPos(offsetLatex, source)
-  offsetLatex = offsetLatex.substring(diffIndex)
-  let sourceLatex = source.substring(diffIndex)
+  offsetLatex = offsetLatex.slice(diffIndex)
+  let sourceLatex = source.slice(diffIndex)
   // numerator
   let len = offsetLatex.length
   // console.log(`Matching offset: ${offsetLatex}`)
-  while (sourceLatex.indexOf(offsetLatex.substring(0, len)) === -1) len--
-  let foundAt = sourceLatex.indexOf(offsetLatex.substring(0, len))
+  while (sourceLatex.indexOf(offsetLatex.slice(0, len)) === -1) len--
+  let foundAt = sourceLatex.indexOf(offsetLatex.slice(0, len))
   position = diffIndex + foundAt + len
-  // console.log(`Matched offset: ${offsetLatex.substring(0, len)} at: ${foundAt} with len: ${len}`)
-  // console.log(`At ${position}:${source.substring(0, position)}`)
+  // console.log(`Matched offset: ${offsetLatex.slice(0, len)} at: ${foundAt} with len: ${len}`)
+  // console.log(`At ${position}:${source.slice(0, position)}`)
   
-  offsetLatex = offsetLatex.substring(len)
-  sourceLatex = sourceLatex.substring(foundAt + len)
+  offsetLatex = offsetLatex.slice(len)
+  sourceLatex = sourceLatex.slice(foundAt + len)
   if (offsetLatex.length === 0) {
-  // console.log(`At ${position}:${source.substring(0, position)}`)
+  // console.log(`At ${position}:${source.slice(0, position)}`)
     return position
   }
   // denominator
   // console.log(`Matching offset: ${offsetLatex}`)
-  position += sourceLatex.indexOf(offsetLatex.substring(0, len)) + offsetLatex.length
-  // console.log(`At ${position}:${source.substring(0, position)}`)
+  position += sourceLatex.indexOf(offsetLatex.slice(0, len)) + offsetLatex.length
+  // console.log(`At ${position}:${source.slice(0, position)}`)
   return position
 }
 
@@ -93,7 +93,7 @@ let intervalFromPositionAndSplitArray = (pos, last, splitArray) => {
 let getFractionPieces = (source, interval) => {
   const re = /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\\placeholder{})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\\placeholder{})}(?<after>[^{}]*)/d
 
-  let fraction = source.substring(interval.start, interval.end)
+  let fraction = source.slice(interval.start, interval.end)
   let groups = fraction.match(re, interval.start, interval.end).indices.groups
   
   for (let group in groups) {
@@ -128,7 +128,7 @@ export let ejectionIntervalFromOffset = (source, offsetLatex) => {
   let splitArray = splitOnTopLevelOps(source)
   let interval = intervalFromPositionAndSplitArray(position, source.length, splitArray)
   // determine fraction part in necessary
-  if (source.substring(interval.start, interval.end).indexOf("\\frac{") === -1) return interval
+  if (source.slice(interval.start, interval.end).indexOf("\\frac{") === -1) return interval
   let fractionPieces = getFractionPieces(source, interval)
   interval = intervalFromPositionPieces(position, fractionPieces)
   return interval

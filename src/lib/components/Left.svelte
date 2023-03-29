@@ -39,9 +39,9 @@
   }
 
   const ejectTargetInterval = (interval, e) => {
-    console.log(`Ejecting ${input.value.substring(interval.start, interval.end)}`)
-    let ejectedFragment = input.value.substring(interval.start, interval.end)
-    input.value = input.value.substring(0, interval.start) + "\\placeholder{}" + input.value.substring(interval.end)  
+    console.log(`Ejecting ${input.value.slice(interval.start, interval.end)}`)
+    let ejectedFragment = input.value.slice(interval.start, interval.end)
+    input.value = input.value.slice(0, interval.start) + "\\placeholder{}" + input.value.slice(interval.end)  
     let playground = input.parentNode.parentNode.parentNode
     new Fragment({
       props: {
