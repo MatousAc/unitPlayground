@@ -87,7 +87,7 @@ use:draggable={{
   height: fit-content;
   
   position: absolute;
-  padding: 0.5em 0.8em;
+  padding: 0.7em 1em;
   border-radius: 1em;
   border: 2px solid transparent;
   transition: border 0.5s;

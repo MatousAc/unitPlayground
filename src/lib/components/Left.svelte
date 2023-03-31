@@ -4,14 +4,22 @@
   import { onMount, getContext } from 'svelte'
   import { eqKey } from '../js/equation'
   import { engine, parse } from '../js/computeEngine'
-	import { ejectionIntervalFromOffset } from '../js/left'
+	import {
+    ejectionIntervalFromOffset, 
+    positionFromOffset, 
+    nearestPhInterval
+  } from '../js/left'
 	import Fragment from './Fragment.svelte';
 
+  // left global vars
   const eq = getContext(eqKey)
   $: left = $eq.left
   $: right = $eq.right
 
   let input
+  let ph = "\{\\Large\\placeholder\{\}\}"
+  const phRE = /\{\\Large\s*\\placeholder\{\}\}/
+
   onMount(() => {
     input.setOptions({
       enablePopover: false,
@@ -39,9 +47,9 @@
   }
 
   const ejectTargetInterval = (interval, e) => {
-    console.log(`Ejecting ${input.value.slice(interval.start, interval.end)}`)
     let ejectedFragment = input.value.slice(interval.start, interval.end)
-    input.value = input.value.slice(0, interval.start) + "\\placeholder{}" + input.value.slice(interval.end)  
+    if (ejectedFragment === ph) return // don't eject placeholders
+    input.value = input.value.slice(0, interval.start) + ph + input.value.slice(interval.end)  
     let playground = input.parentNode.parentNode.parentNode
     new Fragment({
       props: {
@@ -73,6 +81,37 @@
   };
   export const getValue = (...args) => input.getValue(...args)
 
+  const getPhCount = () => {
+    let re = new RegExp(phRE.source, "g")
+    const matches = input.value.match(re)
+    return matches ? matches.length : 0
+  };
+
+  const insertNearOffset = (offset, fragment) => {
+
+  }
+
+  const insertFragment = event => {
+    let fragment = event.detail.fragmentValue
+    let x = event.detail.x
+    let y = event.detail.y
+    let offset = input.offsetFromPoint(x, y)
+
+    switch (getPhCount()) {
+    case 0: insertNearOffset(offset, fragment); break
+    case 1: // fill the one placeholder
+      let re = new RegExp(phRE.source, "d")
+      const indices = input.value.match(re).indices[0]
+      input.value = input.value.slice(0, indices[0]) + 
+        fragment + input.value.slice(indices[1])
+      break
+    default: // fill the nearest placeholder
+      let pos = positionFromOffset(input.value, input.getValue(0, offset))
+      let interval = nearestPhInterval(input.value, pos)
+      input.value = input.value.slice(0, interval.start) + fragment + input.value.slice(interval.end)
+    }
+  }
+  
   const handleKeydown = e => {
     console.log(e)
 		if (e.ctrlKey === false) return 
@@ -105,41 +144,6 @@
       break
     default:
       break;
-    }
-  }
-
-  const getPlaceHolderCount = () => {
-    const re = /\\placeholder\{\}/g
-    const matches = input.value.match(re)
-    return matches ? matches.length : 0
-  };
-
-  const insertNearOffset = (offset, fragment) => {
-
-  }
-
-  const fillPlaceholder = fragment => {
-    const re = /\\placeholder\{\}/d;
-    const indices = input.value.match(re).indices[0]
-    console.log(indices)
-    input.value = input.value.slice(0, indices[0]) + fragment + input.value.slice(indices[1])
-  }
-
-  const fileNearestPlaceholder = (offset, fragment) => {
-    
-  }
-
-  const insertFragment = event => {
-    console.log("fragment drop detected!")
-    let fVal = event.detail.fragmentValue
-    let x = event.detail.x
-    let y = event.detail.y
-    let offset = input.offsetFromPoint(x, y)
-
-    switch (getPlaceHolderCount()) {
-    case 0: insertNearOffset(offset, fVal); break
-    case 1: fillPlaceholder(fVal); break
-    default: fileNearestPlaceholder(offset, fVal)
     }
   }
 </script>

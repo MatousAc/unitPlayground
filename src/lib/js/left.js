@@ -1,3 +1,4 @@
+import Interval from './Interval.js';
 // taken from https://stackoverflow.com/a/32859917/14062356
 let findFirstDiffPos = (a, b) => {
   var i = 0;
@@ -6,7 +7,7 @@ let findFirstDiffPos = (a, b) => {
   return i;
 }
 
-let positionFromOffset = (source, offsetLatex) => {
+export const positionFromOffset = (source, offsetLatex) => {
   let position = offsetLatex.length
   
   // console.log("clicked on: ", getValue(offset, offset+6 , 'latex'))
@@ -43,7 +44,7 @@ let positionFromOffset = (source, offsetLatex) => {
   return position
 }
 
-let splitOnTopLevelOps = source => {
+const splitOnTopLevelOps = source => {
   let splitArray = []
   const re = /[+\-]|(?:\\cdot)|(?:\\times)(?![^{]*})/g
   let ops = source.matchAll(re)
@@ -78,7 +79,7 @@ let splitOnTopLevelOps = source => {
   return splitArray
 }
 
-let intervalFromPositionAndSplitArray = (pos, last, splitArray) => {
+const intervalFromPositionAndSplitArray = (pos, last, splitArray) => {
   let start = 0, end = last, endSet = false
   splitArray.forEach(interval => {
     if (pos <= interval.start && !endSet) {
@@ -90,8 +91,8 @@ let intervalFromPositionAndSplitArray = (pos, last, splitArray) => {
   return { start, end }
 }
 
-let getFractionPieces = (source, interval) => {
-  const re = /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\\placeholder{})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\\placeholder{})}(?<after>[^{}]*)/d
+const getFractionPieces = (source, interval) => {
+  const re = /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\{\\Large\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\{\\Large\s*\\placeholder{}\})}(?<after>[^{}]*)/d
 
   let fraction = source.slice(interval.start, interval.end)
   let groups = fraction.match(re, interval.start, interval.end).indices.groups
@@ -105,10 +106,10 @@ let getFractionPieces = (source, interval) => {
   return groups
 }
 
-let inInterval = (pos, range) => {
+const inInterval = (pos, range) => {
   return pos >= range.start && pos <= range.end
 }
-let intervalFromPositionPieces = (pos, pc) => {
+const intervalFromPositionPieces = (pos, pc) => {
   let start = 0, end = 0
   if (inInterval(pos, pc.before) || inInterval(pos, pc.after)) {
     start = pc.before.start
@@ -121,9 +122,9 @@ let intervalFromPositionPieces = (pos, pc) => {
   return { start, end }
 }
 
-export let ejectionIntervalFromOffset = (source, offsetLatex) => {
-  console.log("Invalid full latex", source)
-  console.log("Valid full latex", offsetLatex)
+export const ejectionIntervalFromOffset = (source, offsetLatex) => {
+  // console.log("Invalid full latex", source)
+  // console.log("Valid full latex", offsetLatex)
   // get the position within source LaTeX
   let position = positionFromOffset(source, offsetLatex);
   // split on +-*
@@ -134,4 +135,24 @@ export let ejectionIntervalFromOffset = (source, offsetLatex) => {
   let fractionPieces = getFractionPieces(source, interval)
   interval = intervalFromPositionPieces(position, fractionPieces)
   return interval
+}
+
+const distance = (pos, match) => {
+  let front = match.index, back = match[0].length + front
+  return Math.min(Math.abs(pos - front), Math.abs(pos - back))
+}
+
+export const nearestPhInterval = (source, position) => {
+  const re = /\{\\Large\s*\\placeholder\{\}\}/g
+  let match = re.exec(source)
+  let nearest = match
+  let minDist = distance(position, match)
+  while ((match = re.exec(source)) !== null) {
+    let dist = distance(position, match)
+    if (dist < minDist) {
+      nearest = match
+      minDist = dist
+    }
+  }
+  return { start: nearest.index, end: nearest.index + nearest[0].length}
 }

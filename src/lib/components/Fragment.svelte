@@ -50,7 +50,6 @@
     let hoveredEquation = null
     equations.forEach(equation => {
       const { top, bottom, left, right } = equation.getBoundingClientRect();
-      console.log("eq x & y: ", x, y)
       if (x >= left && x <= right && y >= top && y <= bottom) {
         hoveredEquation = equation
       }
@@ -68,9 +67,6 @@
 
   const snapIfOverEquation = e => {
     let { x, y } = getCenterXY(e)
-    console.log("detail y: ", y)
-    console.log("adjusted y: ", y)
-    
     // get the correct mathfield
     let equation = equationFromPosition(x, y)
     if (equation === null) return
@@ -86,7 +82,7 @@
       }
     })
     left.dispatchEvent(event)
-    suicide()
+    suicide() // die
   }
 
   const drop = e => {
@@ -122,13 +118,14 @@
   height: fit-content;
   
   position: absolute;
-  padding: 0.5em;
+  padding: 0.7em;
   border-radius: 1em;
-  transition: border 0.5s;
-  border: 2px solid transparent;
+  transition: border, background-color 0.5s;
+  border: 2px dashed transparent;
 }
 
 .fragment:hover:not(.dragging) {
   border-color: var(--textClr);
+  background-color: transparent;
 }
 </style>
