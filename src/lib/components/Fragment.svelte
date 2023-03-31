@@ -27,17 +27,12 @@
   })
   
   // life f(x)s
-  let suicide = () => {
+  const suicide = () => {
     dragBounds = undefined
     parent.removeChild(fragment)
   }
 
-  let resurrect = () => {
-    dragBounds = 'parent'
-    parent.appendChild(fragment)
-  }
-
-  let destroyIfInTrash = e => {
+  const destroyIfInTrash = e => {
     let trash = document.querySelector('.trashIcon')
     if (trash.matches(':hover')) {
       swallow({
@@ -50,22 +45,51 @@
     }
   }
 
-  let snapIfOverEquation = e => {
-    console.log(e)
-    let eq = document.querySelector('.equation')
+  const equationFromPosition = (x, y) => {
+    let equations = document.querySelectorAll('.equation')
+    let hoveredEquation = null
+    equations.forEach(equation => {
+      const { top, bottom, left, right } = equation.getBoundingClientRect();
+      console.log("eq x & y: ", x, y)
+      if (x >= left && x <= right && y >= top && y <= bottom) {
+        hoveredEquation = equation
+      }
+    })
+    return hoveredEquation
+  }
+
+  const getCenterXY = e => {
+    let { top, left } = parent.getBoundingClientRect()
+    let { height, width } = fragment.getBoundingClientRect()
+    let x = e.detail.offsetX + left + (width / 2)
+    let y = e.detail.offsetY + top + (height / 2)
+    return { x, y }
+  }
+
+  const snapIfOverEquation = e => {
+    let { x, y } = getCenterXY(e)
+    console.log("detail y: ", y)
+    console.log("adjusted y: ", y)
+    
+    // get the correct mathfield
+    let equation = equationFromPosition(x, y)
+    if (equation === null) return
+    let row = equation.children[0]
+    let left = row.children[0]
+
+    // trigger event on it
     let event = new CustomEvent("fragmentDrop", {
       detail: {
         fragmentValue: fragment.value,
-        x: e.detail.offsetX,
-        y: e.detail.offsetY
+        x: x,
+        y: y
       }
     })
-    console.log(eq)
-    eq.dispatchEvent(event)
+    left.dispatchEvent(event)
     suicide()
   }
 
-  let drop = e => {
+  const drop = e => {
     destroyIfInTrash(e)
     snapIfOverEquation(e)
   }
@@ -78,6 +102,7 @@
   on:neodrag:end={drop}
   on:click|stopPropagation
   read-only
+  draggable=true
   use:draggable={{
     bounds: dragBounds,
     defaultClass: 'draggable',
@@ -103,8 +128,7 @@
   border: 2px solid transparent;
 }
 
-.fragment:hover,
-:global(.equation.dragging) {
+.fragment:hover:not(.dragging) {
   border-color: var(--textClr);
 }
 </style>

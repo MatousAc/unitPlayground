@@ -35,8 +35,8 @@
 
   const destroyIfEmpty = () => {
     let row = equation.children[0]
-    let mfs = row.children
-    if (mfs[0].value === '' && mfs[1].value === '') {
+    let leftRight = row.children
+    if (leftRight[0].value === '' && leftRight[1].value === '') {
       // now remove yourself from the equation please
       suicide()
     }
@@ -57,14 +57,6 @@
 
   // hover class
   let hover = false
-
-  const insertFragment = event => {
-    console.log("Fragment drop!")
-    console.log(event)
-    console.log(event.detail.fragmentValue)
-    console.log(event.detail.x)
-    console.log(event.detail.y)
-  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -73,9 +65,6 @@ bind:this={equation}
 on:click|stopPropagation
 on:blur={destroyIfEmpty}
 on:neodrag:end={destroyIfInTrash}
-on:mouseenter={() => hover = true}
-on:mouseleave={() => hover = false}
-on:fragmentDrop={insertFragment}
 class='equation{hover ? " hover" : ''}'
 use:draggable={{
   bounds: dragBounds,

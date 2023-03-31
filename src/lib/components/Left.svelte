@@ -107,6 +107,41 @@
       break;
     }
   }
+
+  const getPlaceHolderCount = () => {
+    const re = /\\placeholder\{\}/g
+    const matches = input.value.match(re)
+    return matches ? matches.length : 0
+  };
+
+  const insertNearOffset = (offset, fragment) => {
+
+  }
+
+  const fillPlaceholder = fragment => {
+    const re = /\\placeholder\{\}/d;
+    const indices = input.value.match(re).indices[0]
+    console.log(indices)
+    input.value = input.value.slice(0, indices[0]) + fragment + input.value.slice(indices[1])
+  }
+
+  const fileNearestPlaceholder = (offset, fragment) => {
+    
+  }
+
+  const insertFragment = event => {
+    console.log("fragment drop detected!")
+    let fVal = event.detail.fragmentValue
+    let x = event.detail.x
+    let y = event.detail.y
+    let offset = input.offsetFromPoint(x, y)
+
+    switch (getPlaceHolderCount()) {
+    case 0: insertNearOffset(offset, fVal); break
+    case 1: fillPlaceholder(fVal); break
+    default: fileNearestPlaceholder(offset, fVal)
+    }
+  }
 </script>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -115,6 +150,7 @@
   bind:this={input}
   on:input={feedback}
   on:click|preventDefault={handleClick}
+  on:fragmentDrop={insertFragment}
   on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
   autofocus

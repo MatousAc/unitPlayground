@@ -122,6 +122,8 @@ let intervalFromPositionPieces = (pos, pc) => {
 }
 
 export let ejectionIntervalFromOffset = (source, offsetLatex) => {
+  console.log("Invalid full latex", source)
+  console.log("Valid full latex", offsetLatex)
   // get the position within source LaTeX
   let position = positionFromOffset(source, offsetLatex);
   // split on +-*
