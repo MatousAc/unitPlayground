@@ -1,46 +1,74 @@
 import Range from './Range.js'
+
+export const ph = "\{\\Huge\\placeholder\{\}\}"
+export const phS = "\{\\Huge \\placeholder\{\}\}"
+export const phRE = /\{\\Huge\s*\\placeholder\{\}\}/
 // taken from https://stackoverflow.com/a/32859917/14062356
-const findFirstDiffPos = (a, b) => {
+const matchTo = (a, b, excludeArr) => {
   var i = 0
   if (a === b) return -1
-  while (a[i] === b[i]) i++
+  while (a[i] === b[i]) {
+    for(let j = 0; j < excludeArr.length; j++) {
+      if (excludeArr[j] === a[i]) return i
+    }
+    i++
+  }
   return i
+}
+
+function removeLeading(str, arr) {
+  let removedLen = 0;
+  let result = str;
+  let matchFound = true;
+  
+  while (matchFound) {
+    matchFound = false;
+    for (let i = 0; i < arr.length; i++) {
+      if (result.startsWith(arr[i])) {
+        result = result.substring(arr[i].length);
+        removedLen += arr[i].length;
+        matchFound = true;
+      }
+    }
+  }
+  
+  return { result, removedLen };
 }
 
 export const positionFromOffset = (source, offsetLatex) => {
   let position = offsetLatex.length
-  
-  // console.log("clicked on: ", getValue(offset, offset+6 , 'latex'))
-  if (offsetLatex === source.slice(0, position)) {
-  // console.log(`At ${position}:${source.slice(0, position)}`)
-    return position
-  }
-  // console.log("valid latex to offset: ", offsetLatex)
-  // console.log(`At ${position}:${source.slice(0, position)}`)
+  if (offsetLatex === source.slice(0, position)) return position
 
   // adjust for missing latex
-  let diffIndex = findFirstDiffPos(offsetLatex, source)
-  offsetLatex = offsetLatex.slice(diffIndex)
-  let sourceLatex = source.slice(diffIndex)
-  // numerator
-  let len = offsetLatex.length
-  // console.log(`Matching offset: ${offsetLatex}`)
-  while (sourceLatex.indexOf(offsetLatex.slice(0, len)) === -1) len--
-  let foundAt = sourceLatex.indexOf(offsetLatex.slice(0, len))
-  position = diffIndex + foundAt + len
-  // console.log(`Matched offset: ${offsetLatex.slice(0, len)} at: ${foundAt} with len: ${len}`)
-  // console.log(`At ${position}:${source.slice(0, position)}`)
-  
-  offsetLatex = offsetLatex.slice(len)
-  sourceLatex = sourceLatex.slice(foundAt + len)
-  if (offsetLatex.length === 0) {
-  // console.log(`At ${position}:${source.slice(0, position)}`)
-    return position
+  position = 0
+  // console.log(`At ${position}: ${source.slice(0, position)}`)
+  let ignorables = [
+    "\\frac{", "\\left(",
+    "\\left\\lbrack",
+    "\\left\\lbrace",
+    "}{", "{", "}", "^", " "
+  ]
+  let fullLatex = source
+  while (offsetLatex.length !== 0) {
+    // consume ignorables from both strings
+    let { result, removedLen } = removeLeading(fullLatex, ignorables)
+    fullLatex = result; position += removedLen
+    result = removeLeading(offsetLatex, ignorables).result
+    offsetLatex = result
+
+    // only consume '\' if it isn't part of an ignorable
+    if (offsetLatex.slice(0, 1) === '\\' 
+      && fullLatex.slice(0, 1) === '\\') {
+      position++
+      offsetLatex = offsetLatex.slice(1)
+      fullLatex = fullLatex.slice(1)
+    }
+
+    let p = matchTo(offsetLatex, fullLatex, ['\\', '^', '{', '}'])
+    offsetLatex = offsetLatex.slice(p)
+    fullLatex = fullLatex.slice(p)
+    position += p
   }
-  // denominator
-  // console.log(`Matching offset: ${offsetLatex}`)
-  position += sourceLatex.indexOf(offsetLatex.slice(0, len)) + offsetLatex.length
-  // console.log(`At ${position}:${source.slice(0, position)}`)
   return position
 }
 
@@ -92,7 +120,7 @@ const rangeFromPositionAndSplitArray = (pos, last, splitArray) => {
 }
 
 const getFractionPieces = (source, range) => {
-  const re = /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\{\\Large\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\{\\Large\s*\\placeholder{}\})}(?<after>[^{}]*)/d
+  const re = /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\{\\Huge\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\{\\Huge\s*\\placeholder{}\})}(?<after>[^{}]*)/d
 
   let fraction = source.slice(range.start, range.end)
   let groups = fraction.match(re, range.start, range.end).indices.groups
@@ -120,8 +148,6 @@ const rangeFromPositionPieces = (pos, frac) => {
 }
 
 export const ejectionRangeFromOffset = (source, offsetLatex) => {
-  // console.log("Invalid full latex", source)
-  // console.log("Valid full latex", offsetLatex)
   // get the position within source LaTeX
   let position = positionFromOffset(source, offsetLatex)
   // split on +-*
@@ -139,7 +165,7 @@ const distance = (pos, match) => {
 }
 
 export const nearestPhRange = (source, position) => {
-  const re = /\{\\Huge\s*\\placeholder\{\}\}/g
+  const re = new RegExp(phRE.source, "g")
   let match = re.exec(source)
   let nearest = match
   let minDist = distance(position, match)

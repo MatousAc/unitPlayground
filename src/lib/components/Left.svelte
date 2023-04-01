@@ -7,7 +7,8 @@
 	import {
     ejectionRangeFromOffset, 
     positionFromOffset, 
-    nearestPhRange
+    nearestPhRange,
+    ph, phRE
   } from '../js/left'
   import Range from '../js/Range.js'
 	import Fragment from './Fragment.svelte'
@@ -16,8 +17,6 @@
   const eq = getContext(eqKey)
   // internal vars
   let left
-  let ph = "\{\\Huge\\placeholder\{\}\}"
-  const phRE = /\{\\Huge\s*\\placeholder\{\}\}/
 
   onMount(() => {
     left.setOptions({
@@ -96,7 +95,7 @@
     switch (getPhCount()) {
     case 0:
       range = ejectionRangeFromOffset(left.value, left.getValue(0, offset))
-      range.insertOnClosestSide(left.value, fragment, pos)
+      left.value = range.insertOnClosestSide(left.value, fragment, pos)
       break
     case 1: // fill the one placeholder
       let re = new RegExp(phRE.source, "d")
