@@ -1,4 +1,4 @@
-import Interval from './Interval.js'
+import Range from './Range.js'
 // taken from https://stackoverflow.com/a/32859917/14062356
 const findFirstDiffPos = (a, b) => {
   var i = 0
@@ -68,7 +68,7 @@ const splitOnTopLevelOps = source => {
     if (op.index === i) {
       // console.log(`i: ${i} c: ${c} op[0]: ${op[0]} op i: ${op.index} bbp:${braces},${brackets},${parens}`)
       if (braces === 0 || braces === 0 || parens === 0) {
-        splitArray.push({start: i, end: i + op[0].length})
+        splitArray.push(new Range(i, i + op[0].length))
       }
       opIter = ops.next()
       // console.log("splitArray", splitArray)
@@ -79,62 +79,58 @@ const splitOnTopLevelOps = source => {
   return splitArray
 }
 
-const intervalFromPositionAndSplitArray = (pos, last, splitArray) => {
-  let start = 0, end = last, endSet = false
-  splitArray.forEach(interval => {
-    if (pos <= interval.start && !endSet) {
-      end = interval.start
+const rangeFromPositionAndSplitArray = (pos, last, splitArray) => {
+  let range = new Range(0, last), endSet = false
+  splitArray.forEach(r => {
+    if (pos <= r.start && !endSet) {
+      range.end = r.start
       endSet = true
     }
-    if (pos >= interval.end) start = interval.end
+    if (pos >= r.end) range.start = r.end
   })
-  return { start, end }
+  return range
 }
 
-const getFractionPieces = (source, interval) => {
+const getFractionPieces = (source, range) => {
   const re = /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\{\\Large\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\{\\Large\s*\\placeholder{}\})}(?<after>[^{}]*)/d
 
-  let fraction = source.slice(interval.start, interval.end)
-  let groups = fraction.match(re, interval.start, interval.end).indices.groups
+  let fraction = source.slice(range.start, range.end)
+  let groups = fraction.match(re, range.start, range.end).indices.groups
   
   for (let group in groups) {
-    groups[group] = {
-      start: groups[group][0] + interval.start,
-      end: groups[group][1] + interval.start
-    }
+    groups[group] = new Range(
+      groups[group][0] + range.start,
+      groups[group][1] + range.start
+    )
   }
   return groups
 }
 
-const inInterval = (pos, range) => {
-  return pos >= range.start && pos <= range.end
-}
-const intervalFromPositionPieces = (pos, pc) => {
-  let start = 0, end = 0
-  if (inInterval(pos, pc.before) || inInterval(pos, pc.after)) {
-    start = pc.before.start
-    end = pc.after.end
-  } else if (inInterval(pos, pc.numerator)) {
-    return pc.numerator
-  } else if (inInterval(pos, pc.denominator)) {
-    return pc.denominator
+const rangeFromPositionPieces = (pos, frac) => {
+  let range = new Range(0, 0)
+  if (frac.before.includes(pos) || frac.after.includes(pos)) {
+    range.start = frac.before.start
+    range.end = frac.after.end
+  } else if (frac.numerator.includes(pos)) {
+    return frac.numerator
+  } else if (frac.denominator.includes(pos)) {
+    return frac.denominator
   }
-  return { start, end }
+  return range
 }
 
-export const ejectionIntervalFromOffset = (source, offsetLatex) => {
+export const ejectionRangeFromOffset = (source, offsetLatex) => {
   // console.log("Invalid full latex", source)
   // console.log("Valid full latex", offsetLatex)
   // get the position within source LaTeX
   let position = positionFromOffset(source, offsetLatex)
   // split on +-*
   let splitArray = splitOnTopLevelOps(source)
-  let interval = intervalFromPositionAndSplitArray(position, source.length, splitArray)
+  let range = rangeFromPositionAndSplitArray(position, source.length, splitArray)
   // determine fraction part in necessary
-  if (source.slice(interval.start, interval.end).indexOf("\\frac{") === -1) return interval
-  let fractionPieces = getFractionPieces(source, interval)
-  interval = intervalFromPositionPieces(position, fractionPieces)
-  return interval
+  if (source.slice(range.start, range.end).indexOf("\\frac{") === -1) return range
+  let fractionPieces = getFractionPieces(source, range)
+  return rangeFromPositionPieces(position, fractionPieces)
 }
 
 const distance = (pos, match) => {
@@ -142,8 +138,8 @@ const distance = (pos, match) => {
   return Math.min(Math.abs(pos - front), Math.abs(pos - back))
 }
 
-export const nearestPhInterval = (source, position) => {
-  const re = /\{\\Large\s*\\placeholder\{\}\}/g
+export const nearestPhRange = (source, position) => {
+  const re = /\{\\Huge\s*\\placeholder\{\}\}/g
   let match = re.exec(source)
   let nearest = match
   let minDist = distance(position, match)
@@ -154,5 +150,5 @@ export const nearestPhInterval = (source, position) => {
       minDist = dist
     }
   }
-  return { start: nearest.index, end: nearest.index + nearest[0].length}
+  return new Range(nearest.index, nearest.index + nearest[0].length)
 }

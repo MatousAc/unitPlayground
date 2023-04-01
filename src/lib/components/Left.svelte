@@ -5,18 +5,19 @@
   import { eqKey } from '../js/equation'
   import { engine } from '../js/computeEngine'
 	import {
-    ejectionIntervalFromOffset, 
+    ejectionRangeFromOffset, 
     positionFromOffset, 
-    nearestPhInterval
+    nearestPhRange
   } from '../js/left'
+  import Range from '../js/Range.js'
 	import Fragment from './Fragment.svelte'
 
   // each equation has a separate context
   const eq = getContext(eqKey)
   // internal vars
   let left
-  let ph = "\{\\Large\\placeholder\{\}\}"
-  const phRE = /\{\\Large\s*\\placeholder\{\}\}/
+  let ph = "\{\\Huge\\placeholder\{\}\}"
+  const phRE = /\{\\Huge\s*\\placeholder\{\}\}/
 
   onMount(() => {
     left.setOptions({
@@ -42,15 +43,15 @@
     }
   }
 
-  const ejectTargetInterval = (interval, e) => {
-    let ejectedFragment = left.value.slice(interval.start, interval.end)
+  const ejectTargetRange = (range, e) => {
+    let ejectedFragment = left.value.slice(range.start, range.end)
     if (ejectedFragment === ph) return // don't eject placeholders
-    left.value = left.value.slice(0, interval.start) + ph + left.value.slice(interval.end)  
+    left.value = range.replace(left.value, ph)
     let playground = left.parentNode.parentNode.parentNode
     new Fragment({
       props: {
         x: e.x - playground.offsetLeft - 30,
-        y: e.y - playground.offsetTop - 80,
+        y: e.y - playground.offsetTop - 100,
         initVal: ejectedFragment
       },
       target: playground
@@ -71,9 +72,9 @@
       numClicks = 0
       
       let offset = left.offsetFromPoint(e.x, e.y)
-      let interval = ejectionIntervalFromOffset(left.value, left.getValue(0, offset, 'latex'))
-      ejectTargetInterval(interval, e)
-      left.selection = interval.start
+      let range = ejectionRangeFromOffset(left.value, left.getValue(0, offset, 'latex'))
+      ejectTargetRange(range, e)
+      left.selection = range.start
     }
   }
   export const getValue = (...args) => left.getValue(...args)
@@ -90,25 +91,22 @@
     let y = event.detail.y
     let offset = left.offsetFromPoint(x, y)
 
+    let range
     let pos = positionFromOffset(left.value, left.getValue(0, offset))
     switch (getPhCount()) {
     case 0:
-      let int = ejectionIntervalFromOffset(left.value, left.getValue(0, offset))
-      if (Math.abs(int.start - pos) < Math.abs(int.end - pos)) {
-        left.value = left.value.slice(0, int.start) + fragment + left.value.slice(int.start)
-      } else {
-        left.value = left.value.slice(0, int.end) + fragment + left.value.slice(int.end)
-      }
+      range = ejectionRangeFromOffset(left.value, left.getValue(0, offset))
+      range.insertOnClosestSide(left.value, fragment, pos)
       break
     case 1: // fill the one placeholder
       let re = new RegExp(phRE.source, "d")
       const indices = left.value.match(re).indices[0]
-      left.value = left.value.slice(0, indices[0]) + 
-        fragment + left.value.slice(indices[1])
+      range = new Range(indices[0], indices[1])
+      left.value = range.replace(left.value, fragment)
       break
     default: // fill the nearest placeholder
-      let interval = nearestPhInterval(left.value, pos)
-      left.value = left.value.slice(0, interval.start) + fragment + left.value.slice(interval.end)
+      range = nearestPhRange(left.value, pos)
+      left.value = range.replace(left.value, fragment)
     }
     process()
   }

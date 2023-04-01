@@ -114,14 +114,15 @@
   height: fit-content;
   
   position: absolute;
-  padding: 0.7em;
-  border-radius: 1em;
+  padding: 0.2rem 0.3em;
+  border-radius: 0.5rem;
   transition: border, background-color 0.5s;
-  border: 2px dashed transparent;
+  border: 3px solid #cddef2;
+  background-color: white;
 }
 
-.fragment:hover:not(.dragging) {
-  border-color: var(--textClr);
+:global(.fragment.dragging) {
+  border-color: transparent;
   background-color: transparent;
 }
 </style>

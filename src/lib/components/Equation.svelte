@@ -83,12 +83,14 @@ use:draggable={{
   padding: 0.7em 1em;
   border-radius: 1em;
   border: 2px solid transparent;
-  transition: border 0.5s;
+  transition: border, background-color 0.5s;
   border-color: var(--textClrFaded);
+  background-color: white;
 }
 
 .equation:hover,
 :global(.equation.dragging) {
   border-color: var(--textClr);
+  background-color: transparent;
 }
 </style>
