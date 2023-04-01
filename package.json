@@ -20,9 +20,7 @@
     "package": "svelte-kit sync && svelte-package && publint",
     "prepublishOnly": "npm run package",
     "lint": "prettier --plugin-search-dir . --check .",
-    "format": "prettier --plugin-search-dir . --write .",
-    "write-package-json": "node ./scripts/package-json-writer.js",
-    "wpj": "node ./scripts/package-json-writer.js"
+    "format": "prettier --plugin-search-dir . --write ."
   },
   "exports": {
     ".": {
