@@ -1,12 +1,10 @@
 <script>
-	export let onClick
-  export let outlined = false
+export let onClick
+export let outlined = false
 </script>
 
-<button
-on:click={onClick}
-class='{$$props.class}{(outlined) ? " outlined" : ""}'>
-	<slot/>
+<button on:click={onClick} class="{$$props.class}{outlined ? ' outlined' : ''}">
+  <slot />
 </button>
 
 <style>

@@ -1,12 +1,12 @@
-<div class=col>
-	<slot/>
+<div class="col">
+  <slot />
 </div>
 
 <style>
 .col {
-	display: flex;
+  display: flex;
   flex-direction: column;
-	height: fit-content;
-	justify-content: center;
+  height: fit-content;
+  justify-content: center;
 }
 </style>

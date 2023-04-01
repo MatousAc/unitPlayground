@@ -1,104 +1,108 @@
 <script>
-  import { onMount, getContext } from 'svelte'
-  import { unitMacros } from '../js/stores'
-  import { isMobile } from '../js/helpers'
-  import { eqKey } from '../js/equation'
-  import { engine } from '../js/computeEngine'
-	import {
-    ejectionRangeFromOffset, 
-    positionFromOffset, 
-    nearestPhRange,
-    ph, phRE
-  } from '../js/left'
-  import Range from '../js/Range.js'
-	import Fragment from './Fragment.svelte'
+import { onMount, getContext } from 'svelte'
+import { unitMacros } from '../js/stores'
+import { isMobile } from '../js/helpers'
+import { eqKey } from '../js/equation'
+import { engine } from '../js/computeEngine'
+import {
+  ejectionRangeFromOffset,
+  positionFromOffset,
+  nearestPhRange,
+  ph,
+  phRE
+} from '../js/left'
+import Range from '../js/Range.js'
+import Fragment from './Fragment.svelte'
 
-  // each equation has a separate context
-  const eq = getContext(eqKey)
-  // internal vars
-  let left
+// each equation has a separate context
+const eq = getContext(eqKey)
+// internal vars
+let left
 
-  onMount(() => {
-    left.setOptions({
-      enablePopover: false,
-      macros: unitMacros,
-      computeEngine: engine,
-      onExport: (mf, latex, range) => `${mf.getValue(range, 'latex')}`
-    })
-
-    unitMacros.subscribe(val => {
-      left.setOptions({
-        macros: val,
-        computeEngine: engine
-      })
-    })
-    left.value = $eq.left
+onMount(() => {
+  left.setOptions({
+    enablePopover: false,
+    macros: unitMacros,
+    computeEngine: engine,
+    onExport: (mf, latex, range) => `${mf.getValue(range, 'latex')}`
   })
 
-  const process = () => {
-    $eq = {
-      left: left.value,
-      right: $eq.right,
-    }
-  }
-
-  const ejectTargetRange = (range, e) => {
-    let ejectedFragment = left.value.slice(range.start, range.end)
-    if (ejectedFragment === ph) return // don't eject placeholders
-    left.value = range.replace(left.value, ph)
-    let playground = left.parentNode.parentNode.parentNode
-    new Fragment({
-      props: {
-        x: e.x - playground.offsetLeft - 30,
-        y: e.y - playground.offsetTop - 100,
-        initVal: ejectedFragment
-      },
-      target: playground
+  unitMacros.subscribe((val) => {
+    left.setOptions({
+      macros: val,
+      computeEngine: engine
     })
-    process()
-  }
+  })
+  left.value = $eq.left
+})
 
-  let numClicks = 0
-  let singleClickTimer
-  const handleClick = e => {
-    numClicks++
-    if (numClicks === 1) {
-      singleClickTimer = setTimeout(() => {
-        numClicks = 0
-      }, 300)
-    } else if (numClicks > 1) {
-      clearTimeout(singleClickTimer)
+const process = () => {
+  $eq = {
+    left: left.value,
+    right: $eq.right
+  }
+}
+
+const ejectTargetRange = (range, e) => {
+  let ejectedFragment = left.value.slice(range.start, range.end)
+  if (ejectedFragment === ph) return // don't eject placeholders
+  left.value = range.replace(left.value, ph)
+  let playground = left.parentNode.parentNode.parentNode
+  new Fragment({
+    props: {
+      x: e.x - playground.offsetLeft - 30,
+      y: e.y - playground.offsetTop - 100,
+      initVal: ejectedFragment
+    },
+    target: playground
+  })
+  process()
+}
+
+let numClicks = 0
+let singleClickTimer
+const handleClick = (e) => {
+  numClicks++
+  if (numClicks === 1) {
+    singleClickTimer = setTimeout(() => {
       numClicks = 0
-      
-      let offset = left.offsetFromPoint(e.x, e.y)
-      let range = ejectionRangeFromOffset(left.value, left.getValue(0, offset, 'latex'))
-      ejectTargetRange(range, e)
-      left.selection = range.start
-    }
+    }, 300)
+  } else if (numClicks > 1) {
+    clearTimeout(singleClickTimer)
+    numClicks = 0
+
+    let offset = left.offsetFromPoint(e.x, e.y)
+    let range = ejectionRangeFromOffset(
+      left.value,
+      left.getValue(0, offset, 'latex')
+    )
+    ejectTargetRange(range, e)
+    left.selection = range.start
   }
-  export const getValue = (...args) => left.getValue(...args)
+}
+export const getValue = (...args) => left.getValue(...args)
 
-  const getPhCount = () => {
-    let re = new RegExp(phRE.source, "g")
-    const matches = left.value.match(re)
-    return matches ? matches.length : 0
-  }
+const getPhCount = () => {
+  let re = new RegExp(phRE.source, 'g')
+  const matches = left.value.match(re)
+  return matches ? matches.length : 0
+}
 
-  const insertFragment = event => {
-    let fragment = event.detail.fragmentValue
-    let x = event.detail.x
-    let y = event.detail.y
-    let offset = left.offsetFromPoint(x, y)
+const insertFragment = (event) => {
+  let fragment = event.detail.fragmentValue
+  let x = event.detail.x
+  let y = event.detail.y
+  let offset = left.offsetFromPoint(x, y)
 
-    let range
-    let pos = positionFromOffset(left.value, left.getValue(0, offset))
-    switch (getPhCount()) {
+  let range
+  let pos = positionFromOffset(left.value, left.getValue(0, offset))
+  switch (getPhCount()) {
     case 0:
       range = ejectionRangeFromOffset(left.value, left.getValue(0, offset))
       left.value = range.insertOnClosestSide(left.value, fragment, pos)
       break
     case 1: // fill the one placeholder
-      let re = new RegExp(phRE.source, "d")
+      let re = new RegExp(phRE.source, 'd')
       const indices = left.value.match(re).indices[0]
       range = new Range(indices[0], indices[1])
       left.value = range.replace(left.value, fragment)
@@ -106,16 +110,16 @@
     default: // fill the nearest placeholder
       range = nearestPhRange(left.value, pos)
       left.value = range.replace(left.value, fragment)
-    }
-    process()
   }
-  
-  const handleKeydown = e => {
-		if (e.ctrlKey === false) return 
-    // shortcuts
-    e.preventDefault()
-    let val
-    switch (e.keyCode) {
+  process()
+}
+
+const handleKeydown = (e) => {
+  if (e.ctrlKey === false) return
+  // shortcuts
+  e.preventDefault()
+  let val
+  switch (e.keyCode) {
     case 65: // select all
       left.executeCommand('selectAll')
       break
@@ -137,9 +141,9 @@
       // input.executeCommand('pasteFromClipboard')
       break
     default:
-      break;
-    }
+      break
   }
+}
 </script>
 
 <!-- svelte-ignore a11y-autofocus -->

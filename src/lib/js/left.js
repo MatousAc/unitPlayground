@@ -1,14 +1,13 @@
 import Range from './Range.js'
 
-export const ph = "\{\\Huge\\placeholder\{\}\}"
-export const phS = "\{\\Huge \\placeholder\{\}\}"
+export const ph = '{\\Huge\\placeholder{}}'
 export const phRE = /\{\\Huge\s*\\placeholder\{\}\}/
 // taken from https://stackoverflow.com/a/32859917/14062356
 const matchTo = (a, b, excludeArr) => {
   var i = 0
   if (a === b) return -1
   while (a[i] === b[i]) {
-    for(let j = 0; j < excludeArr.length; j++) {
+    for (let j = 0; j < excludeArr.length; j++) {
       if (excludeArr[j] === a[i]) return i
     }
     i++
@@ -17,22 +16,22 @@ const matchTo = (a, b, excludeArr) => {
 }
 
 function removeLeading(str, arr) {
-  let removedLen = 0;
-  let result = str;
-  let matchFound = true;
-  
+  let removedLen = 0
+  let result = str
+  let matchFound = true
+
   while (matchFound) {
-    matchFound = false;
+    matchFound = false
     for (let i = 0; i < arr.length; i++) {
       if (result.startsWith(arr[i])) {
-        result = result.substring(arr[i].length);
-        removedLen += arr[i].length;
-        matchFound = true;
+        result = result.substring(arr[i].length)
+        removedLen += arr[i].length
+        matchFound = true
       }
     }
   }
-  
-  return { result, removedLen };
+
+  return { result, removedLen }
 }
 
 export const positionFromOffset = (source, offsetLatex) => {
@@ -43,22 +42,27 @@ export const positionFromOffset = (source, offsetLatex) => {
   position = 0
   // console.log(`At ${position}: ${source.slice(0, position)}`)
   let ignorables = [
-    "\\frac{", "\\left(",
-    "\\left\\lbrack",
-    "\\left\\lbrace",
-    "}{", "{", "}", "^", " "
+    '\\frac{',
+    '\\left(',
+    '\\left\\lbrack',
+    '\\left\\lbrace',
+    '}{',
+    '{',
+    '}',
+    '^',
+    ' '
   ]
   let fullLatex = source
   while (offsetLatex.length !== 0) {
     // consume ignorables from both strings
     let { result, removedLen } = removeLeading(fullLatex, ignorables)
-    fullLatex = result; position += removedLen
+    fullLatex = result
+    position += removedLen
     result = removeLeading(offsetLatex, ignorables).result
     offsetLatex = result
 
     // only consume '\' if it isn't part of an ignorable
-    if (offsetLatex.slice(0, 1) === '\\' 
-      && fullLatex.slice(0, 1) === '\\') {
+    if (offsetLatex.slice(0, 1) === '\\' && fullLatex.slice(0, 1) === '\\') {
       position++
       offsetLatex = offsetLatex.slice(1)
       fullLatex = fullLatex.slice(1)
@@ -72,7 +76,7 @@ export const positionFromOffset = (source, offsetLatex) => {
   return position
 }
 
-const splitOnTopLevelOps = source => {
+const splitOnTopLevelOps = (source) => {
   let splitArray = []
   const re = /[+\-]|(?:\\cdot)|(?:\\times)(?![^{]*})/g
   let ops = source.matchAll(re)
@@ -80,17 +84,32 @@ const splitOnTopLevelOps = source => {
   if (opIter.done === true) return splitArray
   let op = opIter.value
 
-  let braces = 0, brackets = 0, parens = 0
+  let braces = 0,
+    brackets = 0,
+    parens = 0
   for (let i = 0; i < source.length; i++) {
     let c = source[i]
     switch (c) {
-      case '{': braces++; break;
-      case '}': braces--; break;
-      case '[': brackets++; break;
-      case ']': brackets--; break;
-      case '(': parens++; break;
-      case ')': parens--; break;
-      default: break;
+      case '{':
+        braces++
+        break
+      case '}':
+        braces--
+        break
+      case '[':
+        brackets++
+        break
+      case ']':
+        brackets--
+        break
+      case '(':
+        parens++
+        break
+      case ')':
+        parens--
+        break
+      default:
+        break
     }
 
     if (op.index === i) {
@@ -108,8 +127,9 @@ const splitOnTopLevelOps = source => {
 }
 
 const rangeFromPositionAndSplitArray = (pos, last, splitArray) => {
-  let range = new Range(0, last), endSet = false
-  splitArray.forEach(r => {
+  let range = new Range(0, last),
+    endSet = false
+  splitArray.forEach((r) => {
     if (pos <= r.start && !endSet) {
       range.end = r.start
       endSet = true
@@ -120,11 +140,12 @@ const rangeFromPositionAndSplitArray = (pos, last, splitArray) => {
 }
 
 const getFractionPieces = (source, range) => {
-  const re = /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\{\\Huge\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\{\\Huge\s*\\placeholder{}\})}(?<after>[^{}]*)/d
+  const re =
+    /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\{\\Huge\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\{\\Huge\s*\\placeholder{}\})}(?<after>[^{}]*)/d
 
   let fraction = source.slice(range.start, range.end)
   let groups = fraction.match(re, range.start, range.end).indices.groups
-  
+
   for (let group in groups) {
     groups[group] = new Range(
       groups[group][0] + range.start,
@@ -152,20 +173,26 @@ export const ejectionRangeFromOffset = (source, offsetLatex) => {
   let position = positionFromOffset(source, offsetLatex)
   // split on +-*
   let splitArray = splitOnTopLevelOps(source)
-  let range = rangeFromPositionAndSplitArray(position, source.length, splitArray)
+  let range = rangeFromPositionAndSplitArray(
+    position,
+    source.length,
+    splitArray
+  )
   // determine fraction part in necessary
-  if (source.slice(range.start, range.end).indexOf("\\frac{") === -1) return range
+  if (source.slice(range.start, range.end).indexOf('\\frac{') === -1)
+    return range
   let fractionPieces = getFractionPieces(source, range)
   return rangeFromPositionPieces(position, fractionPieces)
 }
 
 const distance = (pos, match) => {
-  let front = match.index, back = match[0].length + front
+  let front = match.index,
+    back = match[0].length + front
   return Math.min(Math.abs(pos - front), Math.abs(pos - back))
 }
 
 export const nearestPhRange = (source, position) => {
-  const re = new RegExp(phRE.source, "g")
+  const re = new RegExp(phRE.source, 'g')
   let match = re.exec(source)
   let nearest = match
   let minDist = distance(position, match)
