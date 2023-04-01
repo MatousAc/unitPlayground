@@ -1,10 +1,10 @@
 <script>
-  import UnitPlayground from 'lib/index.js'
+import UnitPlayground from 'lib/index.js'
 </script>
 
-<h1 class='text-4xl m-1 text-center'>Welcome to the Unit Playground!</h1>
-<div class=base>
-  <UnitPlayground/>
+<h1 class="text-4xl m-1 text-center">Welcome to the playground!</h1>
+<div class="base">
+  <UnitPlayground />
 </div>
 
 <style>
