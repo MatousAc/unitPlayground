@@ -6,7 +6,8 @@ const settings = writable({
   precision: 3,
   simplify: false,
   system: 'si',
-  theme: 'light'
+  theme: 'light',
+  fontSize: 18
 })
 
 export default settings;

@@ -22,7 +22,7 @@
     <span class='material-symbols-rounded icon'>
       {icon}
     </span>
-    <span class='label hide-under-900'>{theme} theme</span>
+    <span class='label hide-under-1000'>{theme} theme</span>
   </Row>
 </Button>
 
@@ -39,8 +39,8 @@ span.label {
 }
 
 /* responsive design */
-@media only screen and (max-width: 899px) {
-  .hide-under-900 {
+@media only screen and (max-width: 999px) {
+  .hide-under-1000 {
     display: none;
   }
 }

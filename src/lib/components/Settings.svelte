@@ -35,7 +35,7 @@
           add
         </span>
         <span style="padding-right: 5px;"
-          class='hide-under-900'
+          class='hide-under-1000'
         >Add Unit</span>
       </Row>
     </Button>
@@ -46,7 +46,7 @@
       </label>
       <input
         name=decimalPlaces
-        style="max-width: 4ch; margin: 3px; border-radius: 1em; padding-left: .5em"
+        style="max-width: 4ch; margin: 3px; border-radius: 1em; padding-left: .8rem"
         bind:value={$settings.precision}
         type=number step=1
         min=0
@@ -73,11 +73,27 @@
       </span>
       <Switch name=convertToSI bind:checked={$settings.simplify}/>
     </Row>
+    <Row>
+      <div class="font-selector">
+        {#each [16, 18, 20, 22, 24] as size}
+          <button style="font-size:{size}px" on:click={() => $settings.fontSize = size}>A</button>
+        {/each}
+    </Row>
     <ThemeSwitcher bind:theme={$settings.theme}/>
   </div>
 </div>
 
 <style>
+.font-selector {
+  background-color: rgba(255, 255, 255, 0.345);
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.7rem;
+}
+.font-selector > button {
+  height: 30px;
+  margin: 0 0.4rem;
+}
+
 .settingsIcon {
   position: absolute;
   top: 0;
@@ -94,6 +110,7 @@
 .settingsWrapper { 
   position: absolute;
   width: 100%;
+  font-size: 16px;
 }
 
 .settings.open {
@@ -120,9 +137,17 @@
   outline: 1px black;
 }
 
+:global(.settings > *:not(:first-child)) {
+  margin-left: 1rem;
+}
+
+:global(.settings > :nth-child(6)) {
+  margin-left: auto;
+}
+
 /* responsive design */
-@media only screen and (max-width: 899px) {
-  .hide-under-900 {
+@media only screen and (max-width: 999px) {
+  .hide-under-1000 {
     display: none;
   }
 }
