@@ -1,19 +1,18 @@
-// these functions create unit abbreviations, macros, and parsing data 
-// for starting lists of units or units added by the user at any time
+// these functions create unit abbreviations, macros, and parsing data for starting lists of units or units added by the user at any time
 // @ts-ignore
 import { ComputeEngine } from '@cortex-js/compute-engine'
-import { get } from 'svelte/store';
+import { get } from 'svelte/store'
 import {
   prefixDictionary,
   unitMacros,
   parseDict,
   userUnits
-} from './stores';
+} from './stores'
 import { unit } from './stores'
 
-///// processing f(x)s /////
+/// processing f(x)s ///
 export const aliasPrefixCombos = (name, attrs) => {
-  let unitStrings = [];
+  let unitStrings = []
   let names
   if (attrs.aliases != undefined) {
     names = [name, ...attrs.aliases]
@@ -22,9 +21,9 @@ export const aliasPrefixCombos = (name, attrs) => {
     if (attrs.prefixes != undefined) {
       get(prefixDictionary)[attrs.prefixes].forEach(prefix => {
         unitStrings.push(prefix + name)
-      });
+      })
     } else unitStrings.push(name)
-  });
+  })
   return unitStrings
 }
 
@@ -66,27 +65,26 @@ export const filterCEParsingInfo = unitParse => {
   return defaultParse
 }
 
-///// user defined units /////
+/// user defined units ///
 // adding a new unit requires these updates
-export let addUnit = (name, attrs) => {
-  console.log('Adding Unit')  
+export const addUnit = (name, attrs) => {
+  console.log(`Adding Unit ${name}`)  
   userUnits.update(units => {
     if (!isDefined(name)) {
       units[name] = attrs
     }
     return units
   })
-  console.log(get(userUnits))
 
   // display/parsing info
   let names = aliasPrefixCombos(name, attrs)
   unitMacros.update(macros => ({
     ...macros,
     ...makeMacros(names)
-  }));
+  }))
 
   parseDict.update(dict => [
     ...dict,
     ...makeParse(names)
-  ]);
+  ])
 }

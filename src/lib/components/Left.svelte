@@ -1,56 +1,52 @@
 <script>
+  import { onMount, getContext } from 'svelte'
   import { unitMacros } from '../js/stores'
   import { isMobile } from '../js/helpers'
-  import { onMount, getContext } from 'svelte'
   import { eqKey } from '../js/equation'
-  import { engine, parse } from '../js/computeEngine'
+  import { engine } from '../js/computeEngine'
 	import {
     ejectionIntervalFromOffset, 
     positionFromOffset, 
     nearestPhInterval
   } from '../js/left'
-	import Fragment from './Fragment.svelte';
+	import Fragment from './Fragment.svelte'
 
-  // left global vars
+  // each equation has a separate context
   const eq = getContext(eqKey)
-  $: left = $eq.left
-  $: right = $eq.right
-
-  let input
+  // internal vars
+  let left
   let ph = "\{\\Large\\placeholder\{\}\}"
   const phRE = /\{\\Large\s*\\placeholder\{\}\}/
 
   onMount(() => {
-    input.setOptions({
+    left.setOptions({
       enablePopover: false,
       macros: unitMacros,
       computeEngine: engine,
       onExport: (mf, latex, range) => `${mf.getValue(range, 'latex')}`
     })
 
-    
     unitMacros.subscribe(val => {
-      input.setOptions({
+      left.setOptions({
         macros: val,
         computeEngine: engine
       })
     })
-
-    input.value = left
+    left.value = $eq.left
   })
 
-  const feedback = () => {
+  const process = () => {
     $eq = {
-      left: input.value,
-      right: right,
+      left: left.value,
+      right: $eq.right,
     }
   }
 
   const ejectTargetInterval = (interval, e) => {
-    let ejectedFragment = input.value.slice(interval.start, interval.end)
+    let ejectedFragment = left.value.slice(interval.start, interval.end)
     if (ejectedFragment === ph) return // don't eject placeholders
-    input.value = input.value.slice(0, interval.start) + ph + input.value.slice(interval.end)  
-    let playground = input.parentNode.parentNode.parentNode
+    left.value = left.value.slice(0, interval.start) + ph + left.value.slice(interval.end)  
+    let playground = left.parentNode.parentNode.parentNode
     new Fragment({
       props: {
         x: e.x - playground.offsetLeft - 30,
@@ -59,33 +55,34 @@
       },
       target: playground
     })
+    process()
   }
 
-  let numClicks = 0;
+  let numClicks = 0
   let singleClickTimer
   const handleClick = e => {
-    numClicks++;
+    numClicks++
     if (numClicks === 1) {
       singleClickTimer = setTimeout(() => {
-        numClicks = 0;
+        numClicks = 0
       }, 300)
     } else if (numClicks > 1) {
-      clearTimeout(singleClickTimer);
-      numClicks = 0;
+      clearTimeout(singleClickTimer)
+      numClicks = 0
       
-      let offset = input.offsetFromPoint(e.x, e.y)
-      let interval = ejectionIntervalFromOffset(input.value, input.getValue(0, offset, 'latex'))
+      let offset = left.offsetFromPoint(e.x, e.y)
+      let interval = ejectionIntervalFromOffset(left.value, left.getValue(0, offset, 'latex'))
       ejectTargetInterval(interval, e)
-      input.selection = interval.start
+      left.selection = interval.start
     }
-  };
-  export const getValue = (...args) => input.getValue(...args)
+  }
+  export const getValue = (...args) => left.getValue(...args)
 
   const getPhCount = () => {
     let re = new RegExp(phRE.source, "g")
-    const matches = input.value.match(re)
+    const matches = left.value.match(re)
     return matches ? matches.length : 0
-  };
+  }
 
   const insertNearOffset = (offset, fragment) => {
 
@@ -95,51 +92,48 @@
     let fragment = event.detail.fragmentValue
     let x = event.detail.x
     let y = event.detail.y
-    let offset = input.offsetFromPoint(x, y)
+    let offset = left.offsetFromPoint(x, y)
 
     switch (getPhCount()) {
     case 0: insertNearOffset(offset, fragment); break
     case 1: // fill the one placeholder
       let re = new RegExp(phRE.source, "d")
-      const indices = input.value.match(re).indices[0]
-      input.value = input.value.slice(0, indices[0]) + 
-        fragment + input.value.slice(indices[1])
+      const indices = left.value.match(re).indices[0]
+      left.value = left.value.slice(0, indices[0]) + 
+        fragment + left.value.slice(indices[1])
       break
     default: // fill the nearest placeholder
-      let pos = positionFromOffset(input.value, input.getValue(0, offset))
-      let interval = nearestPhInterval(input.value, pos)
-      input.value = input.value.slice(0, interval.start) + fragment + input.value.slice(interval.end)
+      let pos = positionFromOffset(left.value, left.getValue(0, offset))
+      let interval = nearestPhInterval(left.value, pos)
+      left.value = left.value.slice(0, interval.start) + fragment + left.value.slice(interval.end)
     }
+    process()
   }
   
   const handleKeydown = e => {
-    console.log(e)
 		if (e.ctrlKey === false) return 
     // shortcuts
     e.preventDefault()
     let val
     switch (e.keyCode) {
     case 65: // select all
-      input.executeCommand('selectAll')
+      left.executeCommand('selectAll')
       break
     case 67: // copy
-      val = input.getValue(input.selection, 'latex')
+      val = left.getValue(left.selection, 'latex')
       // let cleanValue = val.replace(/\\mathrm{([A-z]+)}/g, '\\$1')
-      console.log("copying: ", val)
       navigator.clipboard.writeText(val)
       // input.executeCommand('copyToClipboard')
       break
     case 88: // cut
-      val = input.getValue(input.selection)
+      val = left.getValue(left.selection)
       navigator.clipboard.writeText(val)
-      input.setValue('')
+      left.setValue('')
       // input.executeCommand('cutToClipboard')
       break
     case 86: // paste
       // val = await navigator.clipboard.readText()
-      console.log("pasting: ", val)
       // input.setValue('3')
-      console.log(e.clipboardData.getData())
       // input.executeCommand('pasteFromClipboard')
       break
     default:
@@ -151,8 +145,8 @@
 <!-- svelte-ignore a11y-autofocus -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <math-field
-  bind:this={input}
-  on:input={feedback}
+  bind:this={left}
+  on:input={process}
   on:click|preventDefault={handleClick}
   on:fragmentDrop={insertFragment}
   on:blur
@@ -163,7 +157,5 @@
 <style>
 math-field {
   outline: none;
-  display: flex;
-  align-items: center;
 }
 </style>

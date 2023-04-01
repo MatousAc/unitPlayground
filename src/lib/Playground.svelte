@@ -5,7 +5,7 @@
   import settings from './js/settings'
 
   let playground
-  let createEquation = e => {
+  const createEquation = e => {
     new Equation({
       // credit to Johan Jaeger for the props syntax
       props: {

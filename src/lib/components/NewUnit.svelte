@@ -1,16 +1,16 @@
 <script>
-  import { get } from 'svelte/store';
-  import Modal from './Modal.svelte';
+  import { get } from 'svelte/store'
+  import { addUnit, aliasPrefixCombos } from '../js/unitEngine'
+  import { prefixDictionary } from '../js/stores'
+  import { getRandomSubarray, humanize } from '../js/helpers'
+  import Modal from './Modal.svelte'
   import Row from './Row.svelte'
   import Button from './Button.svelte'
   import Input from './Input.svelte'
   import Select from './Select.svelte'
   import Fill from './Fill.svelte'
-  import { addUnit, aliasPrefixCombos } from '../js/unitEngine';
-  import { prefixDictionary } from '../js/stores';
-  import { getRandomSubarray, humanize } from '../js/helpers'
   
-  // for processing new unit info
+  /// for processing new unit info ///
   let nameStr = '', sampleUnits = '', name = ''
   let amount, prefixGroup, attributes = {}
   
@@ -25,7 +25,7 @@
     let units = aliasPrefixCombos(name, attributes)
     sampleUnits = getRandomSubarray(units, 6)
   }
-
+  // bind modal to use its close()
   let modal
 </script>
 
@@ -80,12 +80,12 @@
 </Modal>
 
 <style>
-  .grid.examples {
-    display: grid;
-    gap: 0.5em;
-    grid-template-areas: 
-      "u0 u1"
-      "u2 u3"
-      "u4 u5";
-  }
+.grid.examples {
+  display: grid;
+  gap: 0.5em;
+  grid-template-areas: 
+    "u0 u1"
+    "u2 u3"
+    "u4 u5";
+}
 </style>

@@ -1,22 +1,22 @@
 <script>
-  import { unitMacros, parseDict } from '../js/stores'
   import { onMount, getContext } from 'svelte'
+  import { unitMacros, parseDict } from '../js/stores'
   import { eqKey, getResultUnits } from '../js/equation'
   import settings from '../js/settings'
   import { isMobile } from '../js/helpers'
-  import { engine, parse } from '../js/computeEngine'
+  import { parse } from '../js/computeEngine'
   
-  let input
+  let right
   const eq = getContext(eqKey)
 
   onMount(() => {
-    input.setOptions({
+    right.setOptions({
       enablePopover: false,
       macros: unitMacros
     })
 
     unitMacros.subscribe(val => {
-      input.setOptions({
+      right.setOptions({
         macros: val,
       })
     })
@@ -27,14 +27,18 @@
     parseDict.subscribe(() => reCalculate())
   })
 
-  let reCalculate = () => {
+  const reCalculate = () => {
     let json = parse($eq.left).json
-    console.log(`Left => JSON | ${$eq.left} => ${JSON.stringify(json)}`)
-    input.value = getResultUnits(json, input.value)
+    // console.log(`Left => JSON | ${$eq.left} => ${JSON.stringify(json)}`)
+    right.value = getResultUnits(json, right.value)
   }
 </script>
 
-<math-field bind:this={input}
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<math-field
+  bind:this={right}
+  read-only
+  on:click={() => right.previousElementSibling.focus()}
   on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
 />
@@ -42,7 +46,5 @@
 <style>
 math-field {
   outline: none;
-  display: flex;
-  align-items: center;
 }
 </style>

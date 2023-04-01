@@ -6,8 +6,8 @@ export let engine
 const restartEngine = parseInfo => {
   engine = new ComputeEngine({
     latexDictionary: parseInfo
-  });
-  engine.jsonSerializationOptions = { exclude: ['Rational'] };
+  })
+  engine.jsonSerializationOptions = { exclude: ['Rational'] }
   console.log("Engine restarted")
 }
 

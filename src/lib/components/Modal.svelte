@@ -1,44 +1,42 @@
 <script>
-// @ts-nocheck
-
+  // @ts-nocheck
+	import { onDestroy } from 'svelte'
   import { fade } from 'svelte/transition'
-	import { onDestroy } from 'svelte';
   import Button from './Button.svelte'
   import Row from './Row.svelte'
 
-	let modal;
-	export const close = () => modal.parentNode.removeChild(modal);
-
+	let modal
+	export const close = () => modal.parentNode.removeChild(modal)
 
 	const handle_keydown = e => {
 		if (e.key === 'Escape') {
-			close();
-			return;
+			close()
+			return
 		}
 
 		if (e.key === 'Tab') {
 			// trap focus
-			const nodes = modal.querySelectorAll('*');
-			const tabbable = Array.from(nodes).filter(n => n.tabIndex >= 0);
+			const nodes = modal.querySelectorAll('*')
+			const tabbable = Array.from(nodes).filter(n => n.tabIndex >= 0)
 
-			let index = tabbable.indexOf(document.activeElement);
-			if (index === -1 && e.shiftKey) index = 0;
+			let index = tabbable.indexOf(document.activeElement)
+			if (index === -1 && e.shiftKey) index = 0
 
-			index += tabbable.length + (e.shiftKey ? -1 : 1);
-			index %= tabbable.length;
+			index += tabbable.length + (e.shiftKey ? -1 : 1)
+			index %= tabbable.length
 
-			tabbable[index].focus();
-			e.preventDefault();
+			tabbable[index].focus()
+			e.preventDefault()
 		}
-	};
+	}
 
-	const previously_focused = typeof document !== 'undefined' && document.activeElement;
+	const previously_focused = typeof document !== 'undefined' && document.activeElement
 
 	if (previously_focused) {
 		onDestroy(() => {
 			// @ts-ignore
-			previously_focused.focus();
-		});
+			previously_focused.focus()
+		})
 	}
 </script>
 

@@ -7,7 +7,7 @@ const settings = writable({
   simplify: false,
   system: 'si',
   theme: 'light',
-  fontSize: 18
+  fontSize: 20
 })
 
-export default settings;
+export default settings

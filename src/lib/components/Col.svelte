@@ -1,5 +1,5 @@
 <div class=col>
-	<slot></slot>
+	<slot/>
 </div>
 
 <style>

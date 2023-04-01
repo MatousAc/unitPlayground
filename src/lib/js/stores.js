@@ -1,12 +1,13 @@
 import { writable, get } from 'svelte/store'
-///// trash stack management /////
-import Equation from '../components/Equation.svelte'
-import Fragment from '../components/Fragment.svelte';
-export const trashStack = writable([])
 
+/// trash stack management ///
+import Equation from '../components/Equation.svelte'
+import Fragment from '../components/Fragment.svelte'
+
+export const trashStack = writable([])
 export const swallow = component => {
   trashStack.update(list => {
-    list.push(component);
+    list.push(component)
     return list
   })
 }
@@ -22,17 +23,17 @@ export const vomit = dest => {
     target: dest
   }
   switch (last.component) {
-    case "Equation": new Equation(props); break;
-    case "Fragment": new Fragment(props); break;
+    case "Equation": new Equation(props); break
+    case "Fragment": new Fragment(props); break
   }
 }
 
 
-///// unitmath Setup /////
+/// unitmath Setup ///
 import units from 'unitmath'
 import settings from './settings'
-export let unit
 
+export let unit
 settings.subscribe(s => {
   unit = units.config({
     system: s.system,
@@ -46,7 +47,7 @@ settings.subscribe(s => {
 // console.log(unit.definitions())
 
 
-///// unit parsing information and math-field macros /////
+/// unit parsing information and math-field macros ///
 import {
   aliasPrefixCombos,
   makeMacros,
@@ -54,17 +55,17 @@ import {
   filterCEParsingInfo
 } from './unitEngine'
 
-let getPrefixDictionary = () => {
-  let prefixDict = {};
+const getPrefixDictionary = () => {
+  let prefixDict = {}
   for (const [group, prefixes] of Object.entries(unit.definitions().prefixes)) {
     prefixDict[group] = Object.keys(prefixes)
   }
-  return prefixDict;
+  return prefixDict
 }
 export const prefixDictionary = writable(getPrefixDictionary())
 
 
-let getDefaultUnits = () => {
+const getDefaultUnits = () => {
   let starterUnits = []
   for (const [name, attributes] of Object.entries(unit.definitions().units)) {
     starterUnits = [...starterUnits ,...aliasPrefixCombos(name, attributes)]

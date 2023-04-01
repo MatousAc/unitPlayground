@@ -5,7 +5,7 @@ import { typeOf } from './helpers'
 import { NonError, Fail, Hint, MissingOperand, UnitMismatch, UnrecognizedUnit } from './error'
 export const eqKey = Symbol() // each equation has a context
 
-let sigFigs, useScalar, simplify, system;
+let sigFigs, useScalar, simplify, system
 settings.subscribe(s => {
   useScalar = s.includeScalar
   sigFigs = s.precision
@@ -14,7 +14,7 @@ settings.subscribe(s => {
 })
 
 // json AST => single result
-export let getResultUnits = (json, currentResult) => {
+export const getResultUnits = (json, currentResult) => {
   if (inProgress(json)) return currentResult
 
   let result = ''
@@ -23,7 +23,7 @@ export let getResultUnits = (json, currentResult) => {
     // console.log('Unit', value)
     // console.log("unit object when being used")
     console.log(unit.definitions())
-    if (simplify) value = value.simplify();
+    if (simplify) value = value.simplify()
     result = toLaTeX(value)
     // console.log('Result:', result)
   } catch (e) {
@@ -51,7 +51,7 @@ export let getResultUnits = (json, currentResult) => {
 }
 
 // recursively processes json AST, returns a Unit
-let converge = ast => {
+const converge = ast => {
   // console.log("Ast:", ast)
   switch (typeOf(ast)) {
   case 'array': break
@@ -85,7 +85,7 @@ let converge = ast => {
     if (ast.length == 1) throw new NonError()
     return ast.slice(1).forEach(member => {
       converge(member) // till we hit an error
-    });
+    })
   
   case 'Power': return power(ast)
   case 'Sqrt': return converge(ast[1]).sqrt()
@@ -100,7 +100,7 @@ let converge = ast => {
   }
 }
 
-let power = (arr) => {
+const power = (arr) => {
   arr = [converge(arr[1]), converge(arr[2])].flat()
   return arr.flat().reduceRight((a, b) => {
     if (typeOf(b) === 'number') { b = unit(b) }
@@ -109,7 +109,7 @@ let power = (arr) => {
 }
 
 // formats a Unit object as LaTeX
-let toLaTeX = u => {
+const toLaTeX = u => {
   // console.log(u)
   let scalar = u.getValue()
   let units = u.units
@@ -124,7 +124,7 @@ let toLaTeX = u => {
     if (Math.abs(u.power) != 1) latex += `^{${Math.abs(u.power)}}`
     if (u.power > 0) {numerator += (latex)}
     else {denominator += (latex)}
-  });
+  })
 
   let uStr
   if (numerator == '' && denominator != '') numerator = '1'
@@ -140,6 +140,7 @@ function inProgress(json) {
     str == '' ||
     str.includes('Nothing') ||
     str.includes('HorizontalSpacing') ||
+    str.includes('\\placeholder{}') ||
     str.includes('["Delimiter"]')
   ) // might be nice to handle various errors here
 }

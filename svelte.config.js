@@ -1,5 +1,5 @@
-import adapter from '@sveltejs/adapter-cloudflare';
-import { vitePreprocess } from '@sveltejs/kit/vite';
+import adapter from '@sveltejs/adapter-cloudflare'
+import { vitePreprocess } from '@sveltejs/kit/vite'
 
 export default {
   kit: {
@@ -20,4 +20,4 @@ export default {
     }
   },
   preprocess: vitePreprocess()
-};
+}

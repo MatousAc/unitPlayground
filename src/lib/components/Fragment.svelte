@@ -1,12 +1,11 @@
 <script>
-  import { unitMacros } from '../js/stores'
-  import { draggable } from '@neodrag/svelte'
   import { onMount } from 'svelte'
-  import { swallow } from '../js/stores'
+  import { draggable } from '@neodrag/svelte'
+  import { unitMacros, swallow } from '../js/stores'
 
-  // define some internal values
-  let fragment
+  /// vars ///
   export let x, y, initVal
+  let fragment
   let initPosition = { x:x, y:y }
   let dragBounds = "parent"
   let parent
@@ -17,16 +16,14 @@
       macros: unitMacros
     })
 
-    
     unitMacros.subscribe(val => {
       fragment.setOptions({ macros: val })
     })
-
     fragment.value = initVal
     parent = fragment.parentNode
   })
   
-  // life f(x)s
+  /// destruction f(x)s ///
   const suicide = () => {
     dragBounds = undefined
     parent.removeChild(fragment)
@@ -49,7 +46,7 @@
     let equations = document.querySelectorAll('.equation')
     let hoveredEquation = null
     equations.forEach(equation => {
-      const { top, bottom, left, right } = equation.getBoundingClientRect();
+      const { top, bottom, left, right } = equation.getBoundingClientRect()
       if (x >= left && x <= right && y >= top && y <= bottom) {
         hoveredEquation = equation
       }
@@ -72,7 +69,6 @@
     if (equation === null) return
     let row = equation.children[0]
     let left = row.children[0]
-
     // trigger event on it
     let event = new CustomEvent("fragmentDrop", {
       detail: {
@@ -82,7 +78,7 @@
       }
     })
     left.dispatchEvent(event)
-    suicide() // die
+    suicide()
   }
 
   const drop = e => {

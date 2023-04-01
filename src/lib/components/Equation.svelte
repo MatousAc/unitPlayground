@@ -1,34 +1,33 @@
 <script>
+  import { writable, get } from 'svelte/store'
+  import { setContext } from 'svelte'
   import { draggable } from '@neodrag/svelte'
+  import { eqKey } from '../js/equation'
+  import { swallow } from '../js/stores'
   import Left from './Left.svelte'
   import Right from './Right.svelte'
   import Row from './Row.svelte'
-  import { writable, get } from 'svelte/store';
-  import { onMount, setContext } from 'svelte';
-  import { eqKey } from '../js/equation'
-  import { swallow } from '../js/stores'
 
-  // define some internal values
+  /// data-passing vars ///
   export let initVal = ''
   let eqVal = writable({
     left: initVal,
     right: ''
-  });
-
-  // a context for each equation
-  setContext(eqKey, eqVal);
-  
-  let equation
+  })
   export let x, y
   let initPosition = {
-    // make middle where equation was
-    x:x - 15, y:y - 25
+    // place center of eq on user's click 
+    x:x - 20, y:y - 25
   }
+  // each equation has a separate context
+  setContext(eqKey, eqVal)
+  // internal vars
+  let equation
   let dragBounds = "parent"
 
-  // destruction f(x)s
+  /// destruction f(x)s ///
   const suicide = () => {
-    // avoid getBoundingClientRect error
+    // avoid neodrag bounds error
     dragBounds = undefined
     equation.parentNode.removeChild(equation)
   }
@@ -36,10 +35,7 @@
   const destroyIfEmpty = () => {
     let row = equation.children[0]
     let leftRight = row.children
-    if (leftRight[0].value === '' && leftRight[1].value === '') {
-      // now remove yourself from the equation please
-      suicide()
-    }
+    if (leftRight[0].value === '' && leftRight[1].value === '') suicide()
   }
 
   const destroyIfInTrash = e => {
@@ -54,9 +50,6 @@
       suicide()
     }
   }
-
-  // hover class
-  let hover = false
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -65,7 +58,7 @@ bind:this={equation}
 on:click|stopPropagation
 on:blur={destroyIfEmpty}
 on:neodrag:end={destroyIfInTrash}
-class='equation{hover ? " hover" : ''}'
+class='equation'
 use:draggable={{
   bounds: dragBounds,
   cancel: '.noDrag',
@@ -97,10 +90,5 @@ use:draggable={{
 .equation:hover,
 :global(.equation.dragging) {
   border-color: var(--textClr);
-}
-
-/* for fragment hovering */
-.equation.hover:has(~ .fragment.dragging) {
-  font-size: 1.3em;
 }
 </style>

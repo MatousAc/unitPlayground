@@ -2,8 +2,8 @@
   import settings from '../js/settings'
   import Button from './Button.svelte'
   import Row from './Row.svelte'
-  export let theme = 'light'
 
+  export let theme = 'light'
   let icon
   let iconMap = {
     system : 'computer',

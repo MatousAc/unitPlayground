@@ -1,14 +1,13 @@
 <script>
-  import Row from './Row.svelte';
+  import Row from './Row.svelte'
 
-  export let onChange = () => {}
   export let name
   export let label
   export let val
   export let options = []
 </script>
 
-<Row justify='space-between'>
+<Row justify=space-between>
   <label for={name}>
     {label}
   </label>
@@ -16,7 +15,6 @@
     name={name}
     bind:value={val}
     class='ml-half'
-    on:change={onChange}
     >
     {#each options as {name, value}}
       <option {value}>{name}</option>

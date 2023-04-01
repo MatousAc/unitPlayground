@@ -3,7 +3,7 @@
 	import Logo from "./Logo.svelte"
 
   // component vars
-  let showMobileMenu = false;
+  let showMobileMenu = false
   let ulMouseDirection
   let oldUlXCord
   let ul
@@ -19,14 +19,14 @@
   const mediaQueryHandler = e => {
     // reset mobile state
     if (!e.matches) {
-      showMobileMenu = false;
+      showMobileMenu = false
     }
   }
 
   onMount(() => {
     // attach media query listener on mount hook
-    const mediaListener = window.matchMedia("(max-width: 599px)");
-    mediaListener.addListener(mediaQueryHandler);
+    const mediaListener = window.matchMedia("(max-width: 599px)")
+    mediaListener.addListener(mediaQueryHandler)
     // add event listener for mouse movement on links
     ul.addEventListener("mousemove", e => {
       ulMouseDirection = (e.pageX < oldUlXCord) ? "left" : "right"
@@ -56,9 +56,6 @@
     {/each}
   </ul>
 
-  <!-- theme -->
-  <!-- <ThemeSwitcher class="hidden md:flex md:ml-auto md:m-0"/> -->
-  
   <!-- reactivity -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div on:click={() => showMobileMenu = !showMobileMenu}

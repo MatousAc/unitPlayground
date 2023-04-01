@@ -9,9 +9,8 @@
 
   let thisBind
   let isOpen = false
-  let themes = ['light', 'navy']
 
-  let showNewUnitModal = () => {
+  const showNewUnitModal = () => {
     new NewUnit({ target: thisBind.parentNode })
   }
 </script>
@@ -41,12 +40,12 @@
     </Button>
     <Row>
       <label style="margin: 3px;"
-        for=decimalPlaces>
+        for=precision>
         Precision
       </label>
       <input
-        name=decimalPlaces
-        style="max-width: 4ch; margin: 3px; border-radius: 1em; padding-left: .8rem"
+        name=precision
+        class="precision"
         bind:value={$settings.precision}
         type=number step=1
         min=0
@@ -76,7 +75,11 @@
     <Row>
       <div class="font-selector">
         {#each [16, 18, 20, 22, 24] as size}
-          <button style="font-size:{size}px" on:click={() => $settings.fontSize = size}>A</button>
+          <button style="font-size:{size}px; text-decoration:{
+            ($settings.fontSize === size) ? "underline" : "none"
+            };" on:click={() => $settings.fontSize = size}>
+            A
+          </button>
         {/each}
     </Row>
     <ThemeSwitcher bind:theme={$settings.theme}/>
@@ -84,16 +87,6 @@
 </div>
 
 <style>
-.font-selector {
-  background-color: rgba(255, 255, 255, 0.345);
-  padding: 0.3rem 0.4rem;
-  border-radius: 0.7rem;
-}
-.font-selector > button {
-  height: 30px;
-  margin: 0 0.4rem;
-}
-
 .settingsIcon {
   position: absolute;
   top: 0;
@@ -150,5 +143,23 @@
   .hide-under-1000 {
     display: none;
   }
+}
+
+/* specific input styling */
+.font-selector {
+  background-color: rgba(255, 255, 255, 0.345);
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.7rem;
+}
+.font-selector > button {
+  height: 30px;
+  margin: 0 0.4rem;
+}
+.precision {
+  max-width: 4ch;
+  margin: 3px;
+  border-radius: 1em;
+  padding-left: .8rem;
+  outline: none;
 }
 </style>

@@ -1,10 +1,10 @@
-import Interval from './Interval.js';
+import Interval from './Interval.js'
 // taken from https://stackoverflow.com/a/32859917/14062356
-let findFirstDiffPos = (a, b) => {
-  var i = 0;
-  if (a === b) return -1;
-  while (a[i] === b[i]) i++;
-  return i;
+const findFirstDiffPos = (a, b) => {
+  var i = 0
+  if (a === b) return -1
+  while (a[i] === b[i]) i++
+  return i
 }
 
 export const positionFromOffset = (source, offsetLatex) => {
@@ -87,7 +87,7 @@ const intervalFromPositionAndSplitArray = (pos, last, splitArray) => {
       endSet = true
     }
     if (pos >= interval.end) start = interval.end
-  });
+  })
   return { start, end }
 }
 
@@ -126,7 +126,7 @@ export const ejectionIntervalFromOffset = (source, offsetLatex) => {
   // console.log("Invalid full latex", source)
   // console.log("Valid full latex", offsetLatex)
   // get the position within source LaTeX
-  let position = positionFromOffset(source, offsetLatex);
+  let position = positionFromOffset(source, offsetLatex)
   // split on +-*
   let splitArray = splitOnTopLevelOps(source)
   let interval = intervalFromPositionAndSplitArray(position, source.length, splitArray)
