@@ -84,18 +84,22 @@
     return matches ? matches.length : 0
   }
 
-  const insertNearOffset = (offset, fragment) => {
-
-  }
-
   const insertFragment = event => {
     let fragment = event.detail.fragmentValue
     let x = event.detail.x
     let y = event.detail.y
     let offset = left.offsetFromPoint(x, y)
 
+    let pos = positionFromOffset(left.value, left.getValue(0, offset))
     switch (getPhCount()) {
-    case 0: insertNearOffset(offset, fragment); break
+    case 0:
+      let int = ejectionIntervalFromOffset(left.value, left.getValue(0, offset))
+      if (Math.abs(int.start - pos) < Math.abs(int.end - pos)) {
+        left.value = left.value.slice(0, int.start) + fragment + left.value.slice(int.start)
+      } else {
+        left.value = left.value.slice(0, int.end) + fragment + left.value.slice(int.end)
+      }
+      break
     case 1: // fill the one placeholder
       let re = new RegExp(phRE.source, "d")
       const indices = left.value.match(re).indices[0]
@@ -103,7 +107,6 @@
         fragment + left.value.slice(indices[1])
       break
     default: // fill the nearest placeholder
-      let pos = positionFromOffset(left.value, left.getValue(0, offset))
       let interval = nearestPhInterval(left.value, pos)
       left.value = left.value.slice(0, interval.start) + fragment + left.value.slice(interval.end)
     }

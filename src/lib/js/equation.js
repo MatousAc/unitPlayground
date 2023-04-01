@@ -22,7 +22,7 @@ export const getResultUnits = (json, currentResult) => {
     let value = converge(json)
     // console.log('Unit', value)
     // console.log("unit object when being used")
-    console.log(unit.definitions())
+    // console.log(unit.definitions())
     if (simplify) value = value.simplify()
     result = toLaTeX(value)
     // console.log('Result:', result)
