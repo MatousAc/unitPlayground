@@ -114,7 +114,7 @@ let toLaTeX = u => {
   let scalar = u.getValue()
   let units = u.units
   // scalar string generation
-  scalar = (useScalar && scalar) ? `${parseFloat(scalar.toFixed(sigFigs))}` : ''
+  scalar = (useScalar && scalar) ? scalar.toFixed(sigFigs) : ''
   if (units.length == 0) return scalar
 
   // getting the right unit format for Latex
