@@ -1,77 +1,88 @@
 <script>
-  import { onMount } from "svelte"
-	import Logo from "./Logo.svelte"
+import { onMount } from 'svelte'
+import Logo from './Logo.svelte'
 
-  // component vars
-  let showMobileMenu = false
-  let ulMouseDirection
-  let oldUlXCord
-  let ul
+// component vars
+let showMobileMenu = false
+let ulMouseDirection
+let oldUlXCord
+let ul
 
-  // links
-  const links = [
-    { title: "Home", href: "/", target: "_self" },
-    { title: "Playground", href: "/playground", target: "_self" },
-    { title: "About", href: "/about", target: "_self" },
-    { title: "npm Package", href: "https://www.npmjs.com/package/unitplayground", target: "_blank" }
-  ]
-
-  const mediaQueryHandler = e => {
-    // reset mobile state
-    if (!e.matches) {
-      showMobileMenu = false
-    }
+// links
+const links = [
+  { title: 'Home', href: '/', target: '_self' },
+  { title: 'Playground', href: '/playground', target: '_self' },
+  { title: 'Info', href: '/info', target: '_self' },
+  {
+    title: 'npm Package',
+    href: 'https://www.npmjs.com/package/unitplayground',
+    target: '_blank'
   }
+]
 
-  onMount(() => {
-    // attach media query listener on mount hook
-    const mediaListener = window.matchMedia("(max-width: 599px)")
-    mediaListener.addListener(mediaQueryHandler)
-    // add event listener for mouse movement on links
-    ul.addEventListener("mousemove", e => {
-      ulMouseDirection = (e.pageX < oldUlXCord) ? "left" : "right"
-      oldUlXCord = e.pageX
-    })
+const mediaQueryHandler = (e) => {
+  // reset mobile state
+  if (!e.matches) {
+    showMobileMenu = false
+  }
+}
+
+onMount(() => {
+  // attach media query listener on mount hook
+  const mediaListener = window.matchMedia('(max-width: 599px)')
+  mediaListener.addListener(mediaQueryHandler)
+  // add event listener for mouse movement on links
+  ul.addEventListener('mousemove', (e) => {
+    ulMouseDirection = e.pageX < oldUlXCord ? 'left' : 'right'
+    oldUlXCord = e.pageX
   })
+})
 </script>
 
-<nav class="w-full text-2xl z-20 flex items-center px-4 sticky justify-between{showMobileMenu ? ' mobile' : ''}">
+<nav
+  class="w-full text-xl z-20 flex items-center px-4 sticky justify-between{showMobileMenu
+    ? ' mobile'
+    : ''}"
+>
   <!-- logo -->
   <a class="logo p-4 md:p-0" href="/">
-    <Logo class="h-7 md:h-8"/>
+    <Logo class="h-7 md:h-8" />
   </a>
 
   <!-- links -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <ul bind:this={ul}
+  <ul
+    bind:this={ul}
     class="links md:flex md:px-5 {ulMouseDirection}"
-    on:click={() => showMobileMenu = false}>
+    on:click={() => (showMobileMenu = false)}
+  >
     {#each links as link}
       <li>
-        <a class="py-2 px-4 md:p-6 block"
-          href={link.href}
-          target={link.target}
-          >{link.title}</a>
+        <a class="py-2 px-4 md:p-6 block" href={link.href} target={link.target}>
+          {link.title}
+        </a>
       </li>
     {/each}
   </ul>
 
   <!-- reactivity -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div on:click={() => showMobileMenu = !showMobileMenu}
-    class={`mobile-icon${showMobileMenu ? ' active' : ''}`}>
-    <div class="middle-line"></div>
+  <div
+    on:click={() => (showMobileMenu = !showMobileMenu)}
+    class={`mobile-icon${showMobileMenu ? ' active' : ''}`}
+  >
+    <div class="middle-line" />
   </div>
 </nav>
 
 <!-- page dimmer -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div 
-on:click={() => showMobileMenu = false}
-class="pageDimmer hidden fixed top-0 left-0 w-full z-10"
-></div>
+<div
+  on:click={() => (showMobileMenu = false)}
+  class="pageDimmer hidden fixed top-0 left-0 w-full z-10"
+/>
 
-<style lang=postcss>
+<style lang="postcss">
 nav {
   top: 0;
   background-color: var(--nav);
@@ -81,17 +92,16 @@ nav {
 
 nav ul.links {
   width: fit-content;
-} 
+}
 nav ul.links li {
   list-style-type: none;
   position: relative;
 }
 
-
 /* link underline animation for large displays */
 @media only screen and (min-width: 768px) {
   li:after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: var(--nav-underline-distance);
     left: 0;
@@ -105,10 +115,18 @@ nav ul.links li {
   li:hover:after {
     transform: scaleX(1);
   }
-  ul.right li:after       {transform-origin: right;}
-  ul.right li:hover:after {transform-origin: left;}
-  ul.left  li:after       {transform-origin: left;}
-  ul.left  li:hover:after {transform-origin: right;}
+  ul.right li:after {
+    transform-origin: right;
+  }
+  ul.right li:hover:after {
+    transform-origin: left;
+  }
+  ul.left li:after {
+    transform-origin: left;
+  }
+  ul.left li:hover:after {
+    transform-origin: right;
+  }
 }
 /* mobile icon animation */
 .mobile-icon {
@@ -121,7 +139,7 @@ nav ul.links li {
 .mobile-icon:after,
 .mobile-icon:before,
 .middle-line {
-  content: "";
+  content: '';
   position: absolute;
   width: 100%;
   height: 2px;
@@ -204,5 +222,4 @@ nav.mobile ~ div.pageDimmer {
     display: flex;
   }
 }
-
 </style>

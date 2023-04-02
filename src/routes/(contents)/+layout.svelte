@@ -1,16 +1,16 @@
 <script>
-  import '../../app.postcss'
-  import 'css/colors.css'
-  import Footer from 'components/Footer.svelte'
-  import Bar from 'components/Bar.svelte'
+import '../../app.postcss'
+import 'css/colors.css'
+import Footer from 'components/Footer.svelte'
+import Bar from 'components/Bar.svelte'
 </script>
 
 <main class="skeleton light flex flex-col">
-  <Bar/>
+  <Bar />
   <div class="content width-full px-2 mx-auto md:py-8 md:px-10">
-    <slot/>
+    <slot />
   </div>
-  <Footer/>
+  <Footer />
 </main>
 
 <style>
@@ -18,12 +18,12 @@
   color-scheme: light dark;
   background-color: var(--background);
   color: var(--text);
-  
+
   min-height: 100vh;
 }
 
 .content {
   max-width: 1300px;
-  width: 90wv;
+  width: 90vw;
 }
 </style>

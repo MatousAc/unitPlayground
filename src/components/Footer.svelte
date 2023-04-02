@@ -3,9 +3,9 @@ import Logo from './Logo.svelte'
 </script>
 
 <div class="footer w-full flex items-center py-2 px-4 justify-between mt-auto">
-  <h2 class="text-3xl">UnitPlayground</h2>
+  <h2 class="text-xl">UnitPlayground</h2>
 
-  <p>Copyright © 2023, Ac Hybl.</p>
+  <p class="text-base">Copyright © 2023, Ac Hybl.</p>
 
   <!-- logo -->
   <a class="logo p-4" href="/">
