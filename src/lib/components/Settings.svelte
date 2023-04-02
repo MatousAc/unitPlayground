@@ -1,88 +1,89 @@
 <script>
-  import settings from '../js/settings'
-  import Row from './Row.svelte'
-  import Switch from './Switch.svelte'
-	import ThemeSwitcher from './ThemeSwitcher.svelte'
-  import Select from './Select.svelte'
-  import Button from './Button.svelte'
-  import NewUnit from './NewUnit.svelte'
+import settings from '$pj/settings'
+import Row from '$pc/Row.svelte'
+import Switch from '$pc/Switch.svelte'
+import ThemeSwitcher from '$pc/ThemeSwitcher.svelte'
+import Select from '$pc/Select.svelte'
+import Button from '$pc/Button.svelte'
+import NewUnit from '$pc/NewUnit.svelte'
 
-  let thisBind
-  let isOpen = false
+let thisBind
+let isOpen = false
 
-  const showNewUnitModal = () => {
-    new NewUnit({ target: thisBind.parentNode })
-  }
+const showNewUnitModal = () => {
+  new NewUnit({ target: thisBind.parentNode })
+}
 </script>
-  
+
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div bind:this={ thisBind } class=settingsWrapper>
-  <span style="padding: 5px;"
-    class='material-symbols-rounded settingsIcon{(isOpen) ? ' open' : ''}'
-    on:click|stopPropagation={() => isOpen = !isOpen}>
+<div bind:this={thisBind} class="settingsWrapper">
+  <span
+    style="padding: 5px;"
+    class="material-symbols-rounded settingsIcon{isOpen ? ' open' : ''}"
+    on:click|stopPropagation={() => (isOpen = !isOpen)}
+  >
     settings
   </span>
-  <div 
-    class='settings{(isOpen) ? ' open' : ''}'
-    on:click|stopPropagation={() => {}}>
-    <Button 
-      onClick={showNewUnitModal}
-      outlined={true}>
+  <div
+    class="settings{isOpen ? ' open' : ''}"
+    on:click|stopPropagation={() => {}}
+  >
+    <Button onClick={showNewUnitModal} outlined={true}>
       <Row>
-        <span 
-          class='material-symbols-rounded'>
-          add
+        <span class="material-symbols-rounded">add</span>
+        <span style="padding-right: 5px;" class="hide-under-1000">
+          Add Unit
         </span>
-        <span style="padding-right: 5px;"
-          class='hide-under-1000'
-        >Add Unit</span>
       </Row>
     </Button>
     <Row>
-      <label style="margin: 3px;"
-        for=precision>
-        Precision
-      </label>
+      <label style="margin: 3px;" for="precision">Precision</label>
       <input
-        name=precision
+        name="precision"
         class="precision"
         bind:value={$settings.precision}
-        type=number step=1
-        min=0
-        max=9
+        type="number"
+        step="1"
+        min="0"
+        max="9"
       />
     </Row>
     <Row>
-      <span style="margin: 3px;">
-        Scalars
-      </span>
-      <Switch name=includeScalar bind:checked={$settings.includeScalar}/>
+      <span style="margin: 3px;">Scalars</span>
+      <Switch name="includeScalar" bind:checked={$settings.includeScalar} />
     </Row>
     <Row>
-      <Select name=system label=System bind:val={$settings.system}
+      <Select
+        name="system"
+        label="System"
+        bind:val={$settings.system}
         options={[
-          {name: 'SI', value: 'si'},
-          {name: 'US', value: 'us'},
-          {name: 'Cgs', value: 'cgs'}
-        ]}/>
+          { name: 'SI', value: 'si' },
+          { name: 'US', value: 'us' },
+          { name: 'Cgs', value: 'cgs' }
+        ]}
+      />
     </Row>
     <Row>
-      <span style="margin: 3px; white-space: nowrap;">
-        Base Units
-      </span>
-      <Switch name=convertToSI bind:checked={$settings.simplify}/>
+      <span style="margin: 3px; white-space: nowrap;">Base Units</span>
+      <Switch name="convertToSI" bind:checked={$settings.simplify} />
     </Row>
     <Row>
       <div class="font-selector">
         {#each [16, 18, 20, 22, 24] as size}
-          <button style="font-size:{size}px; text-decoration:{
-            ($settings.fontSize === size) ? "underline" : "none"
-            };" on:click={() => $settings.fontSize = size}>
+          <button
+            style="font-size:{size}px; text-decoration:{$settings.fontSize ===
+            size
+              ? 'underline'
+              : 'none'};"
+            on:click={() => ($settings.fontSize = size)}
+          >
             A
           </button>
         {/each}
+      </div>
     </Row>
-    <ThemeSwitcher bind:theme={$settings.theme}/>
+    <ThemeSwitcher bind:theme={$settings.theme} />
   </div>
 </div>
 
@@ -100,7 +101,7 @@
   transform: rotate(-270deg);
   transition-timing-function: cubic-bezier(0.97, -0.04, 0.15, 0.91);
 }
-.settingsWrapper { 
+.settingsWrapper {
   position: absolute;
   width: 100%;
   font-size: 16px;
@@ -159,7 +160,7 @@
   max-width: 4ch;
   margin: 3px;
   border-radius: 1em;
-  padding-left: .8rem;
+  padding-left: 0.8rem;
   outline: none;
 }
 </style>
