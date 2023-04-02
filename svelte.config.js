@@ -13,10 +13,12 @@ export default {
     alias: {
       // this will match a directory and its contents
       // (`my-directory/x` resolves to `path/to/my-directory/x`)
-      'lib': './src/lib',
-      'css': './src/css',
-      'components': './src/components',
-      '$': './src'
+      $: './src',
+      $lib: './src/lib',
+      $css: './src/css',
+      $comp: './src/components',
+      $pc: './src/lib/components',
+      $pj: './src/lib/js'
     }
   },
   preprocess: vitePreprocess()

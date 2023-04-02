@@ -15,6 +15,7 @@
   "svelteIndentScriptAndStyle": false,
   "htmlWhitespaceSensitivity": "ignore",
   "arrayExpand": "auto",
+  "arrowParens": "avoid",
   "rules": {
     "import/order": [
       "error",

@@ -1,18 +1,29 @@
 import { writable, get } from 'svelte/store'
+import { supabase } from '$lib/js/supabase'
+
+async function load() {
+  let resp = await supabase.from('countries').select()
+  let data = resp.data
+  console.log(data)
+  return {
+    countries: data ?? []
+  }
+}
+load()
 
 /// trash stack management ///
-import Equation from '../components/Equation.svelte'
-import Fragment from '../components/Fragment.svelte'
+import Equation from '$pc/Equation.svelte'
+import Fragment from '$pc/Fragment.svelte'
 
 export const trashStack = writable([])
-export const swallow = component => {
-  trashStack.update(list => {
+export const swallow = (component) => {
+  trashStack.update((list) => {
     list.push(component)
     return list
   })
 }
 
-export const vomit = dest => {
+export const vomit = (dest) => {
   let last = get(trashStack).pop()
   let props = {
     props: {
@@ -23,29 +34,31 @@ export const vomit = dest => {
     target: dest
   }
   switch (last.component) {
-    case "Equation": new Equation(props); break
-    case "Fragment": new Fragment(props); break
+    case 'Equation':
+      new Equation(props)
+      break
+    case 'Fragment':
+      new Fragment(props)
+      break
   }
 }
-
 
 /// unitmath Setup ///
 import units from 'unitmath'
 import settings from './settings'
 
 export let unit
-settings.subscribe(s => {
+settings.subscribe((s) => {
   unit = units.config({
     system: s.system,
     precision: s.precision,
-    simplifyThreshold: 2,
+    simplifyThreshold: 2
     // definitions: get(userUnits)
   })
 })
 
 // console.log(unit.config())
 // console.log(unit.definitions())
-
 
 /// unit parsing information and math-field macros ///
 import {
@@ -64,11 +77,10 @@ const getPrefixDictionary = () => {
 }
 export const prefixDictionary = writable(getPrefixDictionary())
 
-
 const getDefaultUnits = () => {
   let starterUnits = []
   for (const [name, attributes] of Object.entries(unit.definitions().units)) {
-    starterUnits = [...starterUnits ,...aliasPrefixCombos(name, attributes)]
+    starterUnits = [...starterUnits, ...aliasPrefixCombos(name, attributes)]
   }
   return starterUnits
 }
@@ -77,7 +89,7 @@ let defaultUnits = getDefaultUnits()
 let starterParse = makeParse(defaultUnits)
 export const unitMacros = writable(makeMacros(defaultUnits))
 export const parseDict = writable([
-  ...starterParse, 
+  ...starterParse,
   ...filterCEParsingInfo(starterParse)
 ])
 
@@ -92,7 +104,7 @@ export const userUnits = writable({
 })
 
 // change the unit obj when defs are changed
-userUnits.subscribe(defs => {
+userUnits.subscribe((defs) => {
   unit = unit.config({
     definitions: {
       units: defs

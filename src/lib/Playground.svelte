@@ -1,42 +1,75 @@
 <script>
-  import Equation from './components/Equation.svelte'
-  import Settings from './components/Settings.svelte'
-  import Trash from './components/Trash.svelte'
-  import settings from './js/settings'
+import { onMount } from 'svelte'
+import { invalidate } from '$app/navigation'
+import { supabase } from '$pj/supabase'
+import Equation from './components/Equation.svelte'
+import Settings from './components/Settings.svelte'
+import Trash from './components/Trash.svelte'
+import settings from './js/settings'
 
-  let playground
-  const createEquation = e => {
-    new Equation({
-      // credit to Johan Jaeger for the props syntax
-      props: {
-        x: e.offsetX,
-        y: e.offsetY,
-      },
-      target: playground,
-    })
+export const load = async ({ locals: { getSession } }) => {
+  return {
+    session: await getSession()
   }
+}
 
-  let theme
-  settings.subscribe(s => {
-    theme = s.theme
+export let data
+
+$: ({ supabase } = data)
+
+onMount(() => {
+  const {
+    data: { subscription }
+  } = supabase.auth.onAuthStateChange(() => {
+    invalidate('supabase:auth')
   })
+
+  return () => subscription.unsubscribe()
+})
+
+let playground
+const createEquation = e => {
+  new Equation({
+    // credit to Johan Jaeger for the props syntax
+    props: {
+      x: e.offsetX,
+      y: e.offsetY
+    },
+    target: playground
+  })
+}
+
+let theme
+settings.subscribe(s => {
+  theme = s.theme
+})
 </script>
 
 <svelte:head>
   <script src="//unpkg.com/mathlive@0.89.4"></script>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200' />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  />
 </svelte:head>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
   bind:this={playground}
   on:click={createEquation}
-  class='fillParent playground {theme}'
+  class="fillParent playground {theme}"
   style="font-size: {$settings.fontSize}px;"
 >
-  <Settings/>
-  <Trash/>
+  <Settings />
+  <Trash />
 </div>
+
+{#if !session}
+  <h1>I am not logged in</h1>
+{:else}
+  <h1>Welcome {session.user.email}</h1>
+  <p>I am logged in!</p>
+{/if}
 
 <style>
 .playground {

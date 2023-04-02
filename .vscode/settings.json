@@ -3,6 +3,7 @@
     "ignorables",
     "lbrack",
     "mathlive",
-    "neodrag"
+    "neodrag",
+    "supabase"
   ]
 }
