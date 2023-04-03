@@ -22,12 +22,14 @@ let modal
   </h2>
 
   <div slot="body">
-    <div>
-      Name: {name}
-    </div>
-    <div>
-      Email: {email}
-    </div>
+    <Row justify="space-between" style="padding: 1rem;">
+      <div>Name:</div>
+      <div>{name}</div>
+    </Row>
+    <Row justify="space-between" style="padding: 1rem;">
+      <div>Email:</div>
+      <div style="padding-left: 1rem;">{email}</div>
+    </Row>
   </div>
 
   <Row slot="footer" justify="flex-end">

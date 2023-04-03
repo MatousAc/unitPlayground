@@ -8,7 +8,7 @@ export let x, y, initVal
 let fragment
 let initPosition = { x: x, y: y }
 let dragBounds = 'parent'
-let parent
+let playground
 
 onMount(() => {
   fragment.setOptions({
@@ -16,20 +16,20 @@ onMount(() => {
     macros: unitMacros
   })
 
-  unitMacros.subscribe((val) => {
+  unitMacros.subscribe(val => {
     fragment.setOptions({ macros: val })
   })
   fragment.value = initVal
-  parent = fragment.parentNode
+  playground = fragment.parentNode
 })
 
 /// destruction f(x)s ///
 const suicide = () => {
   dragBounds = undefined
-  parent.removeChild(fragment)
+  playground.removeChild(fragment)
 }
 
-const destroyIfInTrash = (e) => {
+const destroyIfInTrash = e => {
   let trash = document.querySelector('.trashIcon')
   if (trash.matches(':hover')) {
     swallow({
@@ -45,7 +45,7 @@ const destroyIfInTrash = (e) => {
 const equationFromPosition = (x, y) => {
   let equations = document.querySelectorAll('.equation')
   let hoveredEquation = null
-  equations.forEach((equation) => {
+  equations.forEach(equation => {
     const { top, bottom, left, right } = equation.getBoundingClientRect()
     if (x >= left && x <= right && y >= top && y <= bottom) {
       hoveredEquation = equation
@@ -54,15 +54,15 @@ const equationFromPosition = (x, y) => {
   return hoveredEquation
 }
 
-const getCenterXY = (e) => {
-  let { top, left } = parent.getBoundingClientRect()
+const getCenterXY = e => {
+  let { top, left } = playground.getBoundingClientRect()
   let { height, width } = fragment.getBoundingClientRect()
   let x = e.detail.offsetX + left + width / 2
   let y = e.detail.offsetY + top + height / 2
   return { x, y }
 }
 
-const snapIfOverEquation = (e) => {
+const snapIfOverEquation = e => {
   let { x, y } = getCenterXY(e)
   // get the correct mathfield
   let equation = equationFromPosition(x, y)
@@ -81,7 +81,7 @@ const snapIfOverEquation = (e) => {
   suicide()
 }
 
-const drop = (e) => {
+const drop = e => {
   destroyIfInTrash(e)
   snapIfOverEquation(e)
 }

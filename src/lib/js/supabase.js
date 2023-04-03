@@ -11,6 +11,7 @@ export const supabase = createClient(
 
 export const user = writable(undefined)
 export const isAuthed = () => get(user) !== undefined
+
 export const signIn = async () => {
   if (isAuthed()) console.log('Switching accounts.')
   const { data, error } = await supabase.auth.signInWithOAuth({

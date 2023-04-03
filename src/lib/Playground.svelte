@@ -1,16 +1,26 @@
 <script>
 import { onMount } from 'svelte'
-import { supabase, user } from '$pj/supabase'
+import { supabase, user, isAuthed, signOut } from '$pj/supabase'
 import Equation from './components/Equation.svelte'
 import Settings from './components/Settings.svelte'
 import Trash from './components/Trash.svelte'
 import settings from './js/settings'
+import AuthenticationRequired from './components/AuthenticationRequired.svelte'
 
 onMount(async () => {
   const { data: authListener } = supabase.auth.onAuthStateChange(
     (event, session) => {
       $user = session?.user
-      console.log($user)
+      let email = $user?.email
+      if (email) {
+        let match = email.match(/^\S+@southern\.edu$/)
+        if (match === null) {
+          signOut()
+          alert(
+            'Only @southern.edu emails are allowed during the experimental period. You have been logged out.'
+          )
+        }
+      }
     },
     { initial: true }
   )
@@ -22,6 +32,10 @@ onMount(async () => {
 
 let playground
 const createEquation = e => {
+  if (!isAuthed()) {
+    new AuthenticationRequired({ target: playground })
+    return
+  }
   new Equation({
     // credit to Johan Jaeger for the props syntax
     props: {
