@@ -1,1 +1,0 @@
-import '$pj/supabase'

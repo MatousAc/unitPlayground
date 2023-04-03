@@ -1,25 +1,36 @@
+import { writable, get } from 'svelte/store'
+import { createClient } from '@supabase/supabase-js'
 import {
   PUBLIC_SUPABASE_ANON_KEY,
   PUBLIC_SUPABASE_URL
 } from '$env/static/public'
-import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit'
+export const supabase = createClient(
+  PUBLIC_SUPABASE_URL,
+  PUBLIC_SUPABASE_ANON_KEY
+)
 
-export const load = async ({ fetch, data, depends }) => {
-  depends('supabase:auth')
+export const user = writable(undefined)
+export const isAuthed = () => get(user) !== undefined
+export const signIn = async () => {
+  if (isAuthed()) console.log('Switching accounts.')
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google'
+  })
 
-  const supabase =
-    createSupabaseLoadClient <
-    Database >
-    {
-      supabaseUrl: PUBLIC_SUPABASE_URL,
-      supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
-      event: { fetch },
-      serverSession: data.session
-    }
+  if (error) {
+    console.error('Error signing in with Google:', error)
+  }
+}
 
-  const {
-    data: { session }
-  } = await supabase.auth.getSession()
+export const signOut = async () => {
+  if (!isAuthed()) return
+  const { error } = await supabase.auth.signOut()
+  return error
+}
 
-  return { supabase, session }
+export const getSession = async () => {
+  console.log('getting session')
+  const { data, error } = await supabase.auth.getSession()
+  console.log(data.session)
+  return data.session
 }

@@ -5,8 +5,8 @@ This library provides canvass-like a Svelte component that encourages a deeper u
 [![build](https://app.travis-ci.com/MatousAc/unitPlayground.svg?branch=main)](https://app.travis-ci.com/github/MatousAc/unitPlayground)
 [![issues](https://img.shields.io/github/issues/matousac/unitplayground)](https://github.com/MatousAc/unitPlayground/issues)
 [![dependencies](https://img.shields.io/librariesio/release/npm/unitplayground)](https://www.npmjs.com/package/unitplayground?activeTab=dependencies)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 <!-- [![license](https://img.shields.io/npm/l/svelte.svg)](LICENSE.md) -->
-
 
 <!-- toc -->
 [Installation & Usage](#installation--usage) | [About](#about) | [Acknowledgements](#acknowledgements) | [License](#license)

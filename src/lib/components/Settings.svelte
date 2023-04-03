@@ -1,4 +1,6 @@
 <script>
+// import { load } from '$lib/js/hooks.client'
+import { signIn, signOut, user } from '$pj/supabase'
 import settings from '$pj/settings'
 import Row from '$pc/Row.svelte'
 import Switch from '$pc/Switch.svelte'
@@ -6,12 +8,24 @@ import ThemeSwitcher from '$pc/ThemeSwitcher.svelte'
 import Select from '$pc/Select.svelte'
 import Button from '$pc/Button.svelte'
 import NewUnit from '$pc/NewUnit.svelte'
+import Profile from '$pc/Profile.svelte'
 
-let thisBind
+let thisBind, profileImage
 let isOpen = false
+let isAuthed = false
+
+user.subscribe(u => {
+  if ((isAuthed = u !== undefined)) {
+    let userData = u.identities[0].identity_data
+    profileImage = userData.avatar_url
+  }
+})
 
 const showNewUnitModal = () => {
   new NewUnit({ target: thisBind.parentNode })
+}
+const seeProfile = async () => {
+  new Profile({ target: thisBind.parentNode })
 }
 </script>
 
@@ -28,62 +42,91 @@ const showNewUnitModal = () => {
     class="settings{isOpen ? ' open' : ''}"
     on:click|stopPropagation={() => {}}
   >
-    <Button onClick={showNewUnitModal} outlined={true}>
+    <Row
+      class="general"
+      justify="start"
+      align="center"
+      style="margin-bottom: 1rem;"
+    >
       <Row>
-        <span class="material-symbols-rounded">add</span>
-        <span style="padding-right: 5px;" class="hide-under-1000">
-          Add Unit
-        </span>
+        <div class="font-selector">
+          {#each [16, 18, 20, 22, 24] as size}
+            <button
+              style="font-size:{size}px; text-decoration:{$settings.fontSize ===
+              size
+                ? 'underline'
+                : 'none'};"
+              on:click={() => ($settings.fontSize = size)}
+            >
+              A
+            </button>
+          {/each}
+        </div>
       </Row>
-    </Button>
-    <Row>
-      <label style="margin: 3px;" for="precision">Precision</label>
-      <input
-        name="precision"
-        class="precision"
-        bind:value={$settings.precision}
-        type="number"
-        step="1"
-        min="0"
-        max="9"
-      />
+      <ThemeSwitcher bind:theme={$settings.theme} />
+      {#if isAuthed}
+        <Button onClick={signOut} outlined={true}>
+          <Row>
+            <span class="material-symbols-rounded" style="margin-right:.3rem">
+              logout
+            </span>
+            <span style="padding-right: 5px;" class="hide-sm">Logout</span>
+          </Row>
+        </Button>
+        <Button onClick={seeProfile} outlined={false}>
+          <img class="profileImage" alt="" src={profileImage} />
+        </Button>
+      {:else}
+        <Button onClick={signIn} outlined={true}>
+          <Row>
+            <span class="material-symbols-rounded" style="margin-right:.3rem">
+              login
+            </span>
+            <span style="padding-right: 5px;" class="hide-sm">Login</span>
+          </Row>
+        </Button>
+      {/if}
     </Row>
-    <Row>
-      <span style="margin: 3px;">Scalars</span>
-      <Switch name="includeScalar" bind:checked={$settings.includeScalar} />
+    <Row class="functional" justify="start" align="center">
+      <Button onClick={showNewUnitModal} outlined={true}>
+        <Row>
+          <span class="material-symbols-rounded">add</span>
+          <span style="padding-right: 5px;" class="hide-sm">Add Unit</span>
+        </Row>
+      </Button>
+      <Row>
+        <label style="margin: 3px;" for="precision">Precision</label>
+        <input
+          name="precision"
+          class="precision"
+          bind:value={$settings.precision}
+          type="number"
+          step="1"
+          min="0"
+          max="9"
+        />
+      </Row>
+      <Row>
+        <span style="margin: 3px;">Scalars</span>
+        <Switch name="includeScalar" bind:checked={$settings.includeScalar} />
+      </Row>
+      <Row>
+        <Select
+          name="system"
+          label="System"
+          bind:val={$settings.system}
+          options={[
+            { name: 'SI', value: 'si' },
+            { name: 'US', value: 'us' },
+            { name: 'Cgs', value: 'cgs' }
+          ]}
+        />
+      </Row>
+      <Row>
+        <span style="margin: 3px; white-space: nowrap;">Base Units</span>
+        <Switch name="convertToSI" bind:checked={$settings.simplify} />
+      </Row>
     </Row>
-    <Row>
-      <Select
-        name="system"
-        label="System"
-        bind:val={$settings.system}
-        options={[
-          { name: 'SI', value: 'si' },
-          { name: 'US', value: 'us' },
-          { name: 'Cgs', value: 'cgs' }
-        ]}
-      />
-    </Row>
-    <Row>
-      <span style="margin: 3px; white-space: nowrap;">Base Units</span>
-      <Switch name="convertToSI" bind:checked={$settings.simplify} />
-    </Row>
-    <Row>
-      <div class="font-selector">
-        {#each [16, 18, 20, 22, 24] as size}
-          <button
-            style="font-size:{size}px; text-decoration:{$settings.fontSize ===
-            size
-              ? 'underline'
-              : 'none'};"
-            on:click={() => ($settings.fontSize = size)}
-          >
-            A
-          </button>
-        {/each}
-      </div>
-    </Row>
-    <ThemeSwitcher bind:theme={$settings.theme} />
   </div>
 </div>
 
@@ -115,9 +158,6 @@ const showNewUnitModal = () => {
   z-index: 1;
   top: 0;
   left: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background-color: var(--textClr);
   box-shadow: 0px 5px 8px 0 grey;
   color: var(--backClr);
@@ -131,17 +171,22 @@ const showNewUnitModal = () => {
   outline: 1px black;
 }
 
-:global(.settings > *:not(:first-child)) {
+/* settings children */
+:global(.settings > .general > *:not(:first-child)) {
+  margin-left: 2rem;
+}
+
+:global(.settings > .general > :first-child) {
+  margin-right: auto;
+}
+
+:global(.settings > .functional > *:not(:first-child)) {
   margin-left: 1rem;
 }
 
-:global(.settings > :nth-child(6)) {
-  margin-left: auto;
-}
-
 /* responsive design */
-@media only screen and (max-width: 999px) {
-  .hide-under-1000 {
+@media only screen and (max-width: 767px) {
+  .hide-sm {
     display: none;
   }
 }
@@ -149,11 +194,10 @@ const showNewUnitModal = () => {
 /* specific input styling */
 .font-selector {
   background-color: rgba(255, 255, 255, 0.345);
-  padding: 0.3rem 0.4rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 0.7rem;
 }
 .font-selector > button {
-  height: 30px;
   margin: 0 0.4rem;
 }
 .precision {
@@ -162,5 +206,10 @@ const showNewUnitModal = () => {
   border-radius: 1em;
   padding-left: 0.8rem;
   outline: none;
+}
+
+.settings .profileImage {
+  width: 33px;
+  border-radius: 1em;
 }
 </style>

@@ -13,7 +13,7 @@ import {
 export const eqKey = Symbol() // each equation has a context
 
 let sigFigs, useScalar, simplify, system
-settings.subscribe((s) => {
+settings.subscribe(s => {
   useScalar = s.includeScalar
   sigFigs = s.precision
   simplify = s.simplify
@@ -36,7 +36,7 @@ export const getResultUnits = (json, currentResult) => {
   } catch (e) {
     switch (e.constructor) {
       case NonError:
-        console.warn(e.message)
+        // console.warn(e.message)
         break
       case UnitMismatch:
         console.error(e.message)
@@ -57,7 +57,7 @@ export const getResultUnits = (json, currentResult) => {
         console.error('User failed.')
         break
       default:
-      // console.error(e)
+        console.error(e)
     }
   }
 
@@ -65,7 +65,7 @@ export const getResultUnits = (json, currentResult) => {
 }
 
 // recursively processes json AST, returns a Unit
-const converge = (ast) => {
+const converge = ast => {
   // console.log("Ast:", ast)
   switch (typeOf(ast)) {
     case 'array':
@@ -100,7 +100,7 @@ const converge = (ast) => {
       })
     case 'Sequence':
       if (ast.length == 1) throw new NonError()
-      return ast.slice(1).forEach((member) => {
+      return ast.slice(1).forEach(member => {
         converge(member) // till we hit an error
       })
 
@@ -124,7 +124,7 @@ const converge = (ast) => {
   }
 }
 
-const power = (arr) => {
+const power = arr => {
   arr = [converge(arr[1]), converge(arr[2])].flat()
   return arr.flat().reduceRight((a, b) => {
     if (typeOf(b) === 'number') {
@@ -135,7 +135,7 @@ const power = (arr) => {
 }
 
 // formats a Unit object as LaTeX
-const toLaTeX = (u) => {
+const toLaTeX = u => {
   // console.log(u)
   let scalar = u.getValue()
   let units = u.units
@@ -146,7 +146,7 @@ const toLaTeX = (u) => {
   // getting the right unit format for Latex
   let numerator = '',
     denominator = ''
-  units.forEach((u) => {
+  units.forEach(u => {
     let latex = `\\${u.prefix}${u.unit.name}`
     if (Math.abs(u.power) != 1) latex += `^{${Math.abs(u.power)}}`
     if (u.power > 0) {
@@ -179,7 +179,7 @@ function inProgress(json) {
 }
 
 // handed an ast, this determines the proper error
-const handleError = (ast) => {
+const handleError = ast => {
   console.log('Error AST', ast)
   if (ast[0] === 'Error') {
     if (typeOf(ast[1]) === 'array') handleError(ast[1])

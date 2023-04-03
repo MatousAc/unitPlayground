@@ -1,29 +1,18 @@
 import { writable, get } from 'svelte/store'
-import { supabase } from '$lib/js/supabase'
-
-async function load() {
-  let resp = await supabase.from('countries').select()
-  let data = resp.data
-  console.log(data)
-  return {
-    countries: data ?? []
-  }
-}
-load()
 
 /// trash stack management ///
 import Equation from '$pc/Equation.svelte'
 import Fragment from '$pc/Fragment.svelte'
 
 export const trashStack = writable([])
-export const swallow = (component) => {
-  trashStack.update((list) => {
+export const swallow = component => {
+  trashStack.update(list => {
     list.push(component)
     return list
   })
 }
 
-export const vomit = (dest) => {
+export const vomit = dest => {
   let last = get(trashStack).pop()
   let props = {
     props: {
@@ -48,7 +37,7 @@ import units from 'unitmath'
 import settings from './settings'
 
 export let unit
-settings.subscribe((s) => {
+settings.subscribe(s => {
   unit = units.config({
     system: s.system,
     precision: s.precision,
@@ -104,7 +93,7 @@ export const userUnits = writable({
 })
 
 // change the unit obj when defs are changed
-userUnits.subscribe((defs) => {
+userUnits.subscribe(defs => {
   unit = unit.config({
     definitions: {
       units: defs

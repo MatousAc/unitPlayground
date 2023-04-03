@@ -1,13 +1,18 @@
 <!-- adapted from https://codepen.io/AllThingsSmitty/pen/MmxxOz/ -->
 <script>
-  export let checked
-  export let name
+export let checked
+export let name
 </script>
 
-<div class='container ml-3px'>
-  <label class=switch for={name}>
-    <input type=checkbox id={name} bind:checked={checked}/>
-    <div class='slider round'></div>
+<div class="container ml-3px">
+  <label class="switch" for={name}>
+    <input
+      type="checkbox"
+      id={name}
+      bind:checked
+      style="margin-right: 0.5rem;"
+    />
+    <div class="slider round" />
   </label>
 </div>
 
@@ -24,7 +29,7 @@
 }
 
 .switch input {
-  display:none;
+  display: none;
 }
 
 .slider {
@@ -35,7 +40,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -45,7 +50,7 @@
   height: 18px;
   left: 4px;
   position: absolute;
-  transition: .4s;
+  transition: 0.4s;
   width: 18px;
 }
 
@@ -58,7 +63,7 @@ input:checked + .slider:before {
 }
 
 .slider.round {
-  border-radius:28px;
+  border-radius: 28px;
 }
 
 .slider.round:before {

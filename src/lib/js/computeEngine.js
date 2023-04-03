@@ -8,7 +8,7 @@ const restartEngine = parseInfo => {
     latexDictionary: parseInfo
   })
   engine.jsonSerializationOptions = { exclude: ['Rational'] }
-  console.log("Engine restarted")
+  // console.log("Engine restarted")
 }
 
 parseDict.subscribe(parseInfo => {
