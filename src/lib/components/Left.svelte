@@ -1,23 +1,25 @@
 <script>
 import { onMount, getContext } from 'svelte'
-import { unitMacros } from '../js/stores'
-import { isMobile } from '../js/helpers'
-import { eqKey } from '../js/equation'
-import { engine } from '../js/computeEngine'
+import { isAuthed } from '$pj/supabase'
+import { unitMacros } from '$pj/stores'
+import { isMobile } from '$pj/helpers'
+import { eqKey } from '$pj/equation'
+import { engine } from '$pj/computeEngine'
 import {
   ejectionRangeFromOffset,
   positionFromOffset,
   nearestPhRange,
   ph,
   phRE
-} from '../js/left'
-import Range from '../js/Range.js'
+} from '$pj/left'
+import Range from '$pj/Range.js'
 import Fragment from './Fragment.svelte'
+import AuthenticationRequired from './AuthenticationRequired.svelte'
 
 // each equation has a separate context
 const eq = getContext(eqKey)
 // internal vars
-let left
+let left, playground
 
 onMount(() => {
   left.setOptions({
@@ -27,13 +29,14 @@ onMount(() => {
     onExport: (mf, latex, range) => `${mf.getValue(range, 'latex')}`
   })
 
-  unitMacros.subscribe((val) => {
+  unitMacros.subscribe(val => {
     left.setOptions({
       macros: val,
       computeEngine: engine
     })
   })
   left.value = $eq.left
+  playground = left.parentNode.parentNode.parentNode
 })
 
 const process = () => {
@@ -61,12 +64,15 @@ const ejectTargetRange = (range, e) => {
 
 let numClicks = 0
 let singleClickTimer
-const handleClick = (e) => {
+const handleClick = e => {
   numClicks++
   if (numClicks === 1) {
     singleClickTimer = setTimeout(() => {
       numClicks = 0
     }, 300)
+    if (!isAuthed()) {
+      new AuthenticationRequired({ target: playground })
+    }
   } else if (numClicks > 1) {
     clearTimeout(singleClickTimer)
     numClicks = 0
@@ -88,7 +94,7 @@ const getPhCount = () => {
   return matches ? matches.length : 0
 }
 
-const insertFragment = (event) => {
+const insertFragment = event => {
   let fragment = event.detail.fragmentValue
   let x = event.detail.x
   let y = event.detail.y
@@ -114,7 +120,7 @@ const insertFragment = (event) => {
   process()
 }
 
-const handleKeydown = (e) => {
+const handleKeydown = e => {
   if (e.ctrlKey === false) return
   // shortcuts
   e.preventDefault()

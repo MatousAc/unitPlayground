@@ -1,5 +1,4 @@
 <script>
-// import { load } from '$lib/js/hooks.client'
 import { signIn, signOut, user } from '$pj/supabase'
 import settings from '$pj/settings'
 import Row from '$pc/Row.svelte'
@@ -10,7 +9,7 @@ import Button from '$pc/Button.svelte'
 import NewUnit from '$pc/NewUnit.svelte'
 import Profile from '$pc/Profile.svelte'
 
-let thisBind, profileImage
+let dis, profileImage
 let isOpen = false
 let isAuthed = false
 
@@ -22,15 +21,15 @@ user.subscribe(u => {
 })
 
 const showNewUnitModal = () => {
-  new NewUnit({ target: thisBind.parentNode })
+  new NewUnit({ target: dis.parentNode })
 }
 const seeProfile = async () => {
-  new Profile({ target: thisBind.parentNode })
+  new Profile({ target: dis.parentNode })
 }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div bind:this={thisBind} class="settingsWrapper">
+<div bind:this={dis} class="settingsWrapper">
   <span
     style="padding: 5px;"
     class="material-symbols-rounded settingsIcon{isOpen ? ' open' : ''}"

@@ -21,14 +21,15 @@ const handle_keydown = e => {
 <div transition:fade class="modalBase" on:click={close} bind:this={modal}>
   <div on:click|stopPropagation class="modal" role="dialog" aria-modal="true">
     <Row justify="space-between">
-      <slot name="header" />
+      <div class="header">
+        <slot name="header" />
+      </div>
       <Button autofocus onClick={close} class="closeButton">
         <span class="material-symbols-rounded">close</span>
       </Button>
     </Row>
-    <hr />
+    <hr style="border-color: black;" />
     <slot name="body" />
-    <hr />
     <div class="footer">
       <slot name="footer" />
     </div>
@@ -63,7 +64,11 @@ const handle_keydown = e => {
   font-variation-settings: 'wght' 600;
 }
 
+.header {
+  font-size: 2rem;
+}
+
 .footer {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 </style>
