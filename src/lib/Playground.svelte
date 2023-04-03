@@ -1,30 +1,23 @@
 <script>
 import { onMount } from 'svelte'
-import { invalidate } from '$app/navigation'
-import { supabase } from '$pj/supabase'
+import { supabase, user } from '$pj/supabase'
 import Equation from './components/Equation.svelte'
 import Settings from './components/Settings.svelte'
 import Trash from './components/Trash.svelte'
 import settings from './js/settings'
 
-export const load = async ({ locals: { getSession } }) => {
-  return {
-    session: await getSession()
+onMount(async () => {
+  const { data: authListener } = supabase.auth.onAuthStateChange(
+    (event, session) => {
+      $user = session?.user
+      console.log($user)
+    },
+    { initial: true }
+  )
+
+  return () => {
+    authListener.unsubscribe()
   }
-}
-
-export let data
-
-$: ({ supabase } = data)
-
-onMount(() => {
-  const {
-    data: { subscription }
-  } = supabase.auth.onAuthStateChange(() => {
-    invalidate('supabase:auth')
-  })
-
-  return () => subscription.unsubscribe()
 })
 
 let playground
@@ -64,13 +57,12 @@ settings.subscribe(s => {
   <Trash />
 </div>
 
-{#if !session}
+<!-- {#if !session}
   <h1>I am not logged in</h1>
 {:else}
   <h1>Welcome {session.user.email}</h1>
   <p>I am logged in!</p>
-{/if}
-
+{/if} -->
 <style>
 .playground {
   width: 100%;

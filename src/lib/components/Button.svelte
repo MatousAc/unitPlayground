@@ -3,7 +3,11 @@ export let onClick
 export let outlined = false
 </script>
 
-<button on:click={onClick} class="{$$props.class}{outlined ? ' outlined' : ''}">
+<button
+  on:click={onClick}
+  class="{$$props.class}{outlined ? ' outlined' : ''}"
+  style={$$props.style}
+>
   <slot />
 </button>
 
@@ -21,9 +25,9 @@ button {
   justify-content: center;
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 768px) {
   button.outlined {
-    border: 2px solid white;
+    border: 2px solid currentColor;
     border-radius: 2em;
   }
 }

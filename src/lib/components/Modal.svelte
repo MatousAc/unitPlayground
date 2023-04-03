@@ -1,63 +1,37 @@
 <script>
-  // @ts-nocheck
-	import { onDestroy } from 'svelte'
-  import { fade } from 'svelte/transition'
-  import Button from './Button.svelte'
-  import Row from './Row.svelte'
+// @ts-nocheck
+import { fade } from 'svelte/transition'
+import Button from './Button.svelte'
+import Row from './Row.svelte'
 
-	let modal
-	export const close = () => modal.parentNode.removeChild(modal)
+let modal
+export const close = () => modal.parentNode.removeChild(modal)
 
-	const handle_keydown = e => {
-		if (e.key === 'Escape') {
-			close()
-			return
-		}
-
-		if (e.key === 'Tab') {
-			// trap focus
-			const nodes = modal.querySelectorAll('*')
-			const tabbable = Array.from(nodes).filter(n => n.tabIndex >= 0)
-
-			let index = tabbable.indexOf(document.activeElement)
-			if (index === -1 && e.shiftKey) index = 0
-
-			index += tabbable.length + (e.shiftKey ? -1 : 1)
-			index %= tabbable.length
-
-			tabbable[index].focus()
-			e.preventDefault()
-		}
-	}
-
-	const previously_focused = typeof document !== 'undefined' && document.activeElement
-
-	if (previously_focused) {
-		onDestroy(() => {
-			// @ts-ignore
-			previously_focused.focus()
-		})
-	}
+const handle_keydown = e => {
+  if (e.key === 'Escape') {
+    close()
+    return
+  }
+}
 </script>
 
-<svelte:window on:keydown={handle_keydown}/>
+<svelte:window on:keydown={handle_keydown} />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div transition:fade class=modalBase
-  on:click={close} bind:this={modal}>
-  <div on:click|stopPropagation class=modal role=dialog aria-modal=true>
-    <Row justify=space-between>
-      <slot name="header"></slot>
-      <Button autofocus onClick={close} class=closeButton>
-        <span class=material-symbols-rounded>
-          close
-        </span>
+<div transition:fade class="modalBase" on:click={close} bind:this={modal}>
+  <div on:click|stopPropagation class="modal" role="dialog" aria-modal="true">
+    <Row justify="space-between">
+      <slot name="header" />
+      <Button autofocus onClick={close} class="closeButton">
+        <span class="material-symbols-rounded">close</span>
       </Button>
     </Row>
-  	<hr>
-  	<slot name="body"></slot>
-  	<hr>
-    <slot name="footer"></slot>
+    <hr />
+    <slot name="body" />
+    <hr />
+    <div class="footer">
+      <slot name="footer" />
+    </div>
   </div>
 </div>
 
@@ -86,6 +60,10 @@
   position: relative;
   top: -1.5em;
   right: -1em;
-  font-variation-settings: 'wght' 600; 
+  font-variation-settings: 'wght' 600;
+}
+
+.footer {
+  margin-top: 1rem;
 }
 </style>

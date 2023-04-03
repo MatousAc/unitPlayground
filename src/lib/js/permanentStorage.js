@@ -1,5 +1,5 @@
 /// permanent storage ///
-import { supabase } from '$lib/js/supabase'
+import { supabase } from '$/lib/js/hooks.client'
 
 let data = ''
 
