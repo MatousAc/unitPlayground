@@ -1,11 +1,11 @@
 <script>
 import { onMount } from 'svelte'
 import { supabase, user, isAuthed, signOut } from '$pj/supabase'
-import Equation from './components/Equation.svelte'
-import Settings from './components/Settings.svelte'
-import Trash from './components/Trash.svelte'
-import settings from './js/settings'
-import AuthenticationRequired from './components/AuthenticationRequired.svelte'
+import settings from '$pj/settings'
+import Equation from '$pc/Equation.svelte'
+import Settings from '$pc/Settings.svelte'
+import Trash from '$pc/Trash.svelte'
+import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
 
 onMount(async () => {
   const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -45,11 +45,6 @@ const createEquation = e => {
     target: playground
   })
 }
-
-let theme
-settings.subscribe(s => {
-  theme = s.theme
-})
 </script>
 
 <svelte:head>
@@ -64,8 +59,8 @@ settings.subscribe(s => {
 <div
   bind:this={playground}
   on:click={createEquation}
-  class="fillParent playground {theme}"
-  style="font-size: {$settings.fontSize}px;"
+  class="fillParent playground {$settings.theme}"
+  style="font-size: {$settings.font}px;"
 >
   <Settings />
   <Trash />

@@ -5,6 +5,7 @@
     "lbrack",
     "mathlive",
     "neodrag",
-    "supabase"
+    "supabase",
+    "usersettings"
   ]
 }

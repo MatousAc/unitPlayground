@@ -13,10 +13,14 @@ export const user = writable(undefined)
 export const isAuthed = () => get(user) !== undefined
 
 export const signIn = async () => {
-  if (isAuthed()) console.log('Switching accounts.')
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google'
-  })
+  const { data, error } = await supabase.auth.signInWithOAuth(
+    {
+      provider: 'google'
+    },
+    {
+      redirectTo: window.location.href
+    }
+  )
 
   if (error) {
     console.error('Error signing in with Google:', error)

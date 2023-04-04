@@ -10,6 +10,7 @@ export let name
       type="checkbox"
       id={name}
       bind:checked
+      on:change
       style="margin-right: 0.5rem;"
     />
     <div class="slider round" />

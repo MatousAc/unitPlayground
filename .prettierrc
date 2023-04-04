@@ -1,21 +1,11 @@
 {
-  "useTabs": false,
-  "singleQuote": true,
-  "trailingComma": "none",
-  "semi": false,
-  "printWidth": 80,
-  "plugins": ["prettier-plugin-svelte"],
-  "pluginSearchDirs": ["."],
-  "svelteSortOrder": "scripts-markup-styles",
-  "svelteStrictMode": false,
-  "svelteIgnoreWarnings": true,
-  "svelteAllowShorthand": true,
-  "svelteNoQuotes": true,
-  "svelteQuoteProps": "as-needed",
-  "svelteIndentScriptAndStyle": false,
-  "htmlWhitespaceSensitivity": "ignore",
   "arrayExpand": "auto",
   "arrowParens": "avoid",
+  "brace-style": "1tbs",
+  "htmlWhitespaceSensitivity": "ignore",
+  "plugins": ["prettier-plugin-svelte"],
+  "pluginSearchDirs": ["."],
+  "printWidth": 80,
   "rules": {
     "import/order": [
       "error",
@@ -24,5 +14,16 @@
         "newlines-between": "never"
       }
     ]
-  }
+  },
+  "semi": false,
+  "singleQuote": true,
+  "svelteAllowShorthand": true,
+  "svelteIgnoreWarnings": true,
+  "svelteIndentScriptAndStyle": false,
+  "svelteNoQuotes": true,
+  "svelteQuoteProps": "as-needed",
+  "svelteSortOrder": "scripts-markup-styles",
+  "svelteStrictMode": false,
+  "trailingComma": "none",
+  "useTabs": false
 }
