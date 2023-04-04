@@ -1,37 +1,37 @@
 <script>
-  import { onMount, getContext } from 'svelte'
-  import { unitMacros, parseDict } from '../js/stores'
-  import { eqKey, getResultUnits } from '../js/equation'
-  import settings from '../js/settings'
-  import { isMobile } from '../js/helpers'
-  import { parse } from '../js/computeEngine'
-  
-  let right
-  const eq = getContext(eqKey)
+import { onMount, getContext } from 'svelte'
+import { unitMacros, parseDict } from '$pj/stores'
+import { eqKey, getResultUnits } from '$pj/equation'
+import settings from '$pj/settings'
+import { isMobile } from '$pj/helpers'
+import { parse } from '$pj/computeEngine'
 
-  onMount(() => {
-    right.setOptions({
-      enablePopover: false,
-      macros: unitMacros
-    })
+let right
+const eq = getContext(eqKey)
 
-    unitMacros.subscribe(val => {
-      right.setOptions({
-        macros: val,
-      })
-    })
-
-    // all the places we need to recalculate
-    eq.subscribe(() => reCalculate())
-    settings.subscribe(() => reCalculate())
-    parseDict.subscribe(() => reCalculate())
+onMount(() => {
+  right.setOptions({
+    enablePopover: false,
+    macros: unitMacros
   })
 
-  const reCalculate = () => {
-    let json = parse($eq.left).json
-    // console.log(`Left => JSON | ${$eq.left} => ${JSON.stringify(json)}`)
-    right.value = getResultUnits(json, right.value)
-  }
+  unitMacros.subscribe(val => {
+    right.setOptions({
+      macros: val
+    })
+  })
+
+  // all the places we need to recalculate
+  eq.subscribe(() => reCalculate())
+  settings.subscribe(() => reCalculate())
+  parseDict.subscribe(() => reCalculate())
+})
+
+const reCalculate = () => {
+  let json = parse($eq.left).json
+  // console.log(`Left => JSON | ${$eq.left} => ${JSON.stringify(json)}`)
+  right.value = getResultUnits(json, right.value)
+}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

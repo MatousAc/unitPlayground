@@ -1,4 +1,4 @@
-import Range from './Range.js'
+import Range from '$pj/Range.js'
 
 export const ph = '{\\Huge\\placeholder{}}'
 export const phRE = /\{\\Huge\s*\\placeholder\{\}\}/
@@ -76,7 +76,7 @@ export const positionFromOffset = (source, offsetLatex) => {
   return position
 }
 
-const splitOnTopLevelOps = (source) => {
+const splitOnTopLevelOps = source => {
   let splitArray = []
   const re = /[+\-]|(?:\\cdot)|(?:\\times)(?![^{]*})/g
   let ops = source.matchAll(re)
@@ -129,7 +129,7 @@ const splitOnTopLevelOps = (source) => {
 const rangeFromPositionAndSplitArray = (pos, last, splitArray) => {
   let range = new Range(0, last),
     endSet = false
-  splitArray.forEach((r) => {
+  splitArray.forEach(r => {
     if (pos <= r.start && !endSet) {
       range.end = r.start
       endSet = true

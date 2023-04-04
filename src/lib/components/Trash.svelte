@@ -1,14 +1,15 @@
 <script>
-  import { vomit } from '../js/stores.js'
+import { vomit } from '$pj/stores.js'
 
-  let trash
+let trash
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<span 
+<span
   bind:this={trash}
-  class='material-symbols-rounded trashIcon'
-  on:click|stopPropagation={() => vomit(trash.parentNode)}>
+  class="material-symbols-rounded trashIcon"
+  on:click|stopPropagation={() => vomit(trash.parentNode)}
+>
   delete
 </span>
 
@@ -24,7 +25,7 @@
   border: 2px solid;
   color: var(--dangerClr);
   padding: var(--scale);
-  padding-top: .2em;
+  padding-top: 0.2em;
   border-radius: 100%;
   transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
@@ -36,7 +37,7 @@
 
 .trashIcon:has(~ .equation.dragging),
 .trashIcon:has(~ .fragment.dragging) {
-  padding-top: calc(.07 * var(--scale));
+  padding-top: calc(0.07 * var(--scale));
   font-size: 2.3em;
 }
 

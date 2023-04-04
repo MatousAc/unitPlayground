@@ -1,5 +1,5 @@
 <script>
-import { signIn, signOut, user } from '$pj/supabase'
+import { signIn, signOut, user } from '$/lib/js/auth'
 import settings, { updateSettings } from '$pj/settings'
 import Row from '$pc/Row.svelte'
 import Switch from '$pc/Switch.svelte'

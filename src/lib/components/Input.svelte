@@ -1,5 +1,5 @@
 <script>
-import Row from './Row.svelte'
+import Row from '$pc/Row.svelte'
 
 export let name
 export let label

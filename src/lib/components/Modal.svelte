@@ -1,8 +1,8 @@
 <script>
 // @ts-nocheck
 import { fade } from 'svelte/transition'
-import Button from './Button.svelte'
-import Row from './Row.svelte'
+import Button from '$pc/Button.svelte'
+import Row from '$pc/Row.svelte'
 
 let modal
 export const close = () => modal.parentNode.removeChild(modal)

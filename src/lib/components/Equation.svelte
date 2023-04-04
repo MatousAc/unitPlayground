@@ -2,11 +2,11 @@
 import { writable, get } from 'svelte/store'
 import { setContext } from 'svelte'
 import { draggable } from '@neodrag/svelte'
-import { eqKey } from '../js/equation'
-import { swallow } from '../js/stores'
-import Left from './Left.svelte'
-import Right from './Right.svelte'
-import Row from './Row.svelte'
+import { eqKey } from '$pj/equation'
+import { swallow } from '$pj/trash'
+import Left from '$pc/Left.svelte'
+import Right from '$pc/Right.svelte'
+import Row from '$pc/Row.svelte'
 
 /// data-passing vars ///
 export let initVal = ''
@@ -39,7 +39,7 @@ const destroyIfEmpty = () => {
   if (leftRight[0].value === '' && leftRight[1].value === '') suicide()
 }
 
-const destroyIfInTrash = (e) => {
+const destroyIfInTrash = e => {
   let trash = document.querySelector('.trashIcon')
   if (trash.matches(':hover')) {
     swallow({

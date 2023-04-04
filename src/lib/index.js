@@ -1,2 +1,2 @@
 // Reexport your entry components here
-export { default } from './Playground.svelte'
+export { default } from '$lib/Playground.svelte'

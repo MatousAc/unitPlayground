@@ -1,14 +1,14 @@
 <script>
 import { get } from 'svelte/store'
-import { addUnit, aliasPrefixCombos } from '../js/unitEngine'
-import { prefixDictionary } from '../js/stores'
-import { getRandomSubarray, humanize } from '../js/helpers'
-import Modal from './Modal.svelte'
-import Row from './Row.svelte'
-import Button from './Button.svelte'
-import Input from './Input.svelte'
-import Select from './Select.svelte'
-import Fill from './Fill.svelte'
+import { addUnit, aliasPrefixCombos } from '$pj/unitEngine'
+import { prefixDictionary } from '$pj/stores'
+import { getRandomSubarray, humanize } from '$pj/helpers'
+import Modal from '$pc/Modal.svelte'
+import Row from '$pc/Row.svelte'
+import Button from '$pc/Button.svelte'
+import Input from '$pc/Input.svelte'
+import Select from '$pc/Select.svelte'
+import Fill from '$pc/Fill.svelte'
 
 /// for processing new unit info ///
 let nameStr = '',

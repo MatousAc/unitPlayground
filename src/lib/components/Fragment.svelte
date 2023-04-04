@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte'
 import { draggable } from '@neodrag/svelte'
-import { unitMacros, swallow } from '../js/stores'
+import { unitMacros, swallow } from '$pj/stores'
 
 /// vars ///
 export let x, y, initVal

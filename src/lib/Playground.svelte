@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte'
-import { supabase, user, isAuthed, signOut } from '$pj/supabase'
+import { supabase, user, isAuthed, signOut } from '$pj/auth'
 import settings from '$pj/settings'
 import Equation from '$pc/Equation.svelte'
 import Settings from '$pc/Settings.svelte'
@@ -12,6 +12,7 @@ onMount(async () => {
     (event, session) => {
       $user = session?.user
       let email = $user?.email
+      // for now, we only allow SAU emails
       if (email) {
         let match = email.match(/^\S+@southern\.edu$/)
         if (match === null) {

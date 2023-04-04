@@ -9,7 +9,7 @@ import {
   MissingOperand,
   UnitMismatch,
   UnrecognizedUnit
-} from './error'
+} from '$pj/error'
 export const eqKey = Symbol() // each equation has a context
 
 let sigFigs, useScalar, simplify, system
