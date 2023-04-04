@@ -1,9 +1,9 @@
 <script>
-import Modal from './Modal.svelte'
-import Row from './Row.svelte'
-import Button from './Button.svelte'
-import { signIn } from '$pj/supabase'
-import Col from './Col.svelte'
+import { signIn } from '$pj/auth'
+import Modal from '$pc/Modal.svelte'
+import Row from '$pc/Row.svelte'
+import Button from '$pc/Button.svelte'
+import Col from '$pc/Col.svelte'
 
 // bind modal to use its close()
 let modal

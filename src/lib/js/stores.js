@@ -1,40 +1,8 @@
-import { writable, get } from 'svelte/store'
-
-/// trash stack management ///
-import Equation from '$pc/Equation.svelte'
-import Fragment from '$pc/Fragment.svelte'
-
-export const trashStack = writable([])
-export const swallow = component => {
-  trashStack.update(list => {
-    list.push(component)
-    return list
-  })
-}
-
-export const vomit = dest => {
-  let last = get(trashStack).pop()
-  let props = {
-    props: {
-      x: last.offsetX,
-      y: last.offsetY,
-      initVal: last.value
-    },
-    target: dest
-  }
-  switch (last.component) {
-    case 'Equation':
-      new Equation(props)
-      break
-    case 'Fragment':
-      new Fragment(props)
-      break
-  }
-}
-
+/// file handles custom && default unit stores ///
 /// unitmath Setup ///
+import { writable, get } from 'svelte/store'
 import units from 'unitmath'
-import settings from './settings'
+import settings from '$pj/settings'
 
 export let unit
 settings.subscribe(s => {
@@ -52,7 +20,7 @@ import {
   makeMacros,
   makeParse,
   filterCEParsingInfo
-} from './unitEngine'
+} from '$pj/unitEngine'
 
 const getPrefixDictionary = () => {
   let prefixDict = {}
@@ -64,11 +32,11 @@ const getPrefixDictionary = () => {
 export const prefixDictionary = writable(getPrefixDictionary())
 
 const getDefaultUnits = () => {
-  let starterUnits = []
+  let defaultUnits = []
   for (const [name, attributes] of Object.entries(unit.definitions().units)) {
-    starterUnits = [...starterUnits, ...aliasPrefixCombos(name, attributes)]
+    defaultUnits = [...defaultUnits, ...aliasPrefixCombos(name, attributes)]
   }
-  return starterUnits
+  return defaultUnits
 }
 // define starting stores for unit info
 let defaultUnits = getDefaultUnits()

@@ -1,10 +1,12 @@
 <script>
 import { onMount, getContext } from 'svelte'
-import { isAuthed } from '$pj/supabase'
+import { isAuthed } from '$pj/auth'
 import { unitMacros } from '$pj/stores'
 import { isMobile } from '$pj/helpers'
 import { eqKey } from '$pj/equation'
 import { engine } from '$pj/computeEngine'
+import Range from '$pj/Range.js'
+import Fragment from '$pc/Fragment.svelte'
 import {
   ejectionRangeFromOffset,
   positionFromOffset,
@@ -12,9 +14,7 @@ import {
   ph,
   phRE
 } from '$pj/left'
-import Range from '$pj/Range.js'
-import Fragment from './Fragment.svelte'
-import AuthenticationRequired from './AuthenticationRequired.svelte'
+import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
 
 // each equation has a separate context
 const eq = getContext(eqKey)

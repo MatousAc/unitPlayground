@@ -1,8 +1,8 @@
 <script>
-import Modal from './Modal.svelte'
-import Row from './Row.svelte'
-import Button from './Button.svelte'
-import { signIn, signOut, user } from '$pj/supabase'
+import { signIn, user } from '$pj/auth'
+import Modal from '$pc/Modal.svelte'
+import Row from '$pc/Row.svelte'
+import Button from '$pc/Button.svelte'
 
 let name, email, src
 user.subscribe(u => {
