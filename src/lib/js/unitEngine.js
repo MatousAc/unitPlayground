@@ -2,13 +2,8 @@
 // @ts-ignore
 import { ComputeEngine } from '@cortex-js/compute-engine'
 import { get } from 'svelte/store'
-import {
-  prefixDictionary,
-  unitMacros,
-  parseDict,
-  userUnits
-} from './stores'
-import { unit } from './stores'
+import { prefixDictionary, unitMacros, parseDict, userUnits } from '$pj/stores'
+import { unit } from '$pj/stores'
 
 /// processing f(x)s ///
 export const aliasPrefixCombos = (name, attrs) => {
@@ -37,7 +32,7 @@ export const makeMacros = unitList => {
 
 export const makeParse = unitList => {
   let parseInfo = []
-  unitList.forEach((alias) => {
+  unitList.forEach(alias => {
     parseInfo.push({
       trigger: `\\${alias}`,
       parse: ['UNIT', alias]
@@ -59,16 +54,14 @@ export const filterCEParsingInfo = unitParse => {
   let defaultParse = ComputeEngine.getLatexDictionary()
   // below we have to filter out latex commands that
   // conflict with units so that parsing works properly
-  defaultParse = defaultParse.filter(def =>
-    !map.has(`${def['trigger']}`)
-  )
+  defaultParse = defaultParse.filter(def => !map.has(`${def['trigger']}`))
   return defaultParse
 }
 
 /// user defined units ///
 // adding a new unit requires these updates
 export const addUnit = (name, attrs) => {
-  console.log(`Adding Unit ${name}`)  
+  console.log(`Adding Unit ${name}`)
   userUnits.update(units => {
     if (!isDefined(name)) {
       units[name] = attrs
@@ -83,8 +76,5 @@ export const addUnit = (name, attrs) => {
     ...makeMacros(names)
   }))
 
-  parseDict.update(dict => [
-    ...dict,
-    ...makeParse(names)
-  ])
+  parseDict.update(dict => [...dict, ...makeParse(names)])
 }

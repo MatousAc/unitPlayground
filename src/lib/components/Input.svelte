@@ -13,7 +13,7 @@ export let autofocus = false
     {label}
   </label>
   <!-- svelte-ignore a11y-autofocus -->
-  <input {name} bind:value={val} placeholder={ph} {autofocus} />
+  <input {name} bind:value={val} on:change placeholder={ph} {autofocus} />
 </Row>
 
 <style>

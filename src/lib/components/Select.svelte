@@ -11,7 +11,7 @@ export let options = []
   <label for={name} style="margin-right: 0.5rem;">
     {label}
   </label>
-  <select {name} bind:value={val}>
+  <select {name} bind:value={val} on:change>
     {#each options as { name, value }}
       <option {value}>{name}</option>
     {/each}
@@ -25,5 +25,8 @@ select {
   border-radius: 1em;
   background-color: inherit;
   border: 2px solid currentColor;
+}
+select > option {
+  color: black;
 }
 </style>

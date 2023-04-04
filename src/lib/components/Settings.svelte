@@ -1,6 +1,6 @@
 <script>
 import { signIn, signOut, user } from '$pj/supabase'
-import settings from '$pj/settings'
+import settings, { updateSettings } from '$pj/settings'
 import Row from '$pc/Row.svelte'
 import Switch from '$pc/Switch.svelte'
 import ThemeSwitcher from '$pc/ThemeSwitcher.svelte'
@@ -13,17 +13,32 @@ let dis, profileImage
 let isOpen = false
 let isAuthed = false
 
-user.subscribe(u => {
+let scalar, precision, simplify, system, font
+settings.subscribe(s => ({ scalar, precision, simplify, system, font } = s))
+user.subscribe(async u => {
   if ((isAuthed = u !== undefined)) {
     let userData = u.identities[0].identity_data
     profileImage = userData.avatar_url
+    const response = await fetch(profileImage, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+      }
+    })
+
+    if (response.ok) {
+      // make blob to reference
+      const blob = await response.blob()
+      const objectUrl = URL.createObjectURL(blob)
+      profileImage = objectUrl
+    } else console.error('Profile image error:', response.status)
   }
 })
 
 const showNewUnitModal = () => {
   new NewUnit({ target: dis.parentNode })
 }
-const seeProfile = async () => {
+const seeProfile = () => {
   new Profile({ target: dis.parentNode })
 }
 </script>
@@ -49,20 +64,20 @@ const seeProfile = async () => {
     >
       <Row>
         <div class="font-selector">
-          {#each [16, 18, 20, 22, 24] as size}
+          {#each [16, 18, 20, 22, 24] as font}
             <button
-              style="font-size:{size}px; text-decoration:{$settings.fontSize ===
-              size
+              style="font-size:{font}px; text-decoration:{$settings.font ===
+              font
                 ? 'underline'
                 : 'none'};"
-              on:click={() => ($settings.fontSize = size)}
+              on:click={() => updateSettings({ font })}
             >
               A
             </button>
           {/each}
         </div>
       </Row>
-      <ThemeSwitcher bind:theme={$settings.theme} />
+      <ThemeSwitcher />
       {#if isAuthed}
         <Button onClick={signOut} outlined={true}>
           <Row>
@@ -98,7 +113,8 @@ const seeProfile = async () => {
         <input
           name="precision"
           class="precision"
-          bind:value={$settings.precision}
+          on:change={() => updateSettings({ precision })}
+          bind:value={precision}
           type="number"
           step="1"
           min="0"
@@ -107,13 +123,18 @@ const seeProfile = async () => {
       </Row>
       <Row>
         <span style="margin: 3px;">Scalars</span>
-        <Switch name="includeScalar" bind:checked={$settings.includeScalar} />
+        <Switch
+          name="scalar"
+          bind:checked={scalar}
+          on:change={() => updateSettings({ scalar })}
+        />
       </Row>
       <Row>
         <Select
           name="system"
           label="System"
-          bind:val={$settings.system}
+          on:change={() => updateSettings({ system })}
+          bind:val={system}
           options={[
             { name: 'SI', value: 'si' },
             { name: 'US', value: 'us' },
@@ -123,7 +144,11 @@ const seeProfile = async () => {
       </Row>
       <Row>
         <span style="margin: 3px; white-space: nowrap;">Base Units</span>
-        <Switch name="convertToSI" bind:checked={$settings.simplify} />
+        <Switch
+          name="convertToSI"
+          bind:checked={simplify}
+          on:change={() => updateSettings({ simplify })}
+        />
       </Row>
     </Row>
   </div>

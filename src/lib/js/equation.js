@@ -1,7 +1,7 @@
 // useful f(x)s
-import settings from './settings'
-import { unit } from './stores'
-import { typeOf } from './helpers'
+import { unit } from '$pj/stores'
+import settings from '$pj/settings'
+import { typeOf } from '$pj/helpers'
 import {
   NonError,
   Fail,
@@ -14,7 +14,7 @@ export const eqKey = Symbol() // each equation has a context
 
 let sigFigs, useScalar, simplify, system
 settings.subscribe(s => {
-  useScalar = s.includeScalar
+  useScalar = s.scalar
   sigFigs = s.precision
   simplify = s.simplify
   system = s.system
