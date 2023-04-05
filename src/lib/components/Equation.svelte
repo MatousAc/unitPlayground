@@ -1,5 +1,5 @@
 <script>
-import { getContext, setContext } from 'svelte'
+import { setContext } from 'svelte'
 import { writable, get } from 'svelte/store'
 import { draggable } from '@neodrag/svelte'
 import { eqKey } from '$pj/equation'
