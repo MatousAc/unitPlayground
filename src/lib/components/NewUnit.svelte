@@ -20,7 +20,6 @@ let amount,
   longestUnit = 0
 
 const setSampleUnits = () => {
-  console.log('sample units stuff')
   let names = nameStr.trim().split(' ')
   attributes = {
     aliases: names.slice(1),
@@ -33,7 +32,6 @@ const setSampleUnits = () => {
   longestUnit = sampleUnits.reduce((maxLength, currentString) => {
     return currentString.length > maxLength ? currentString.length : maxLength
   }, 0)
-  console.log(sampleUnits)
 }
 
 // bind modal to use its close()

@@ -24,5 +24,6 @@ input {
   border-radius: 0.5em;
   background-color: inherit;
   border: 2px solid currentColor;
+  font-size: 1.5rem;
 }
 </style>
