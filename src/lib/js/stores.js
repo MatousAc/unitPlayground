@@ -3,8 +3,14 @@
 import { writable, get } from 'svelte/store'
 import units from 'unitmath'
 import settings from '$pj/settings'
-// import { supabase } from '$pj/auth'
+import {
+  aliasPrefixCombos,
+  makeMacros,
+  makeParse,
+  filterCEParsingInfo
+} from '$pj/unitEngine'
 
+// unit obj
 export let unit
 settings.subscribe(s => {
   unit = units.config({
@@ -16,13 +22,6 @@ settings.subscribe(s => {
 })
 
 /// unit parsing information and math-field macros ///
-import {
-  aliasPrefixCombos,
-  makeMacros,
-  makeParse,
-  filterCEParsingInfo
-} from '$pj/unitEngine'
-
 const getPrefixDictionary = () => {
   let prefixDict = {}
   for (const [group, prefixes] of Object.entries(unit.definitions().prefixes)) {
@@ -49,20 +48,13 @@ export const parseDict = writable([
 ])
 
 // store for user-defined units
-export const userUnits = writable({
-  lightyear: { value: '9460730472580800 m' },
-  profo: {
-    value: '70 in',
-    prefixGroup: 'LONG',
-    aliases: ['profos', 'Profo', 'Profos']
-  }
-})
+export const userUnits = writable({})
 
-// change the unit obj when defs are changed
-userUnits.subscribe(defs => {
+// save new unit obj
+userUnits.subscribe(async definitions => {
   unit = unit.config({
     definitions: {
-      units: defs
+      units: definitions
     }
   })
 })

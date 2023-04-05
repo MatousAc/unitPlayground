@@ -2,8 +2,14 @@
 // @ts-ignore
 import { ComputeEngine } from '@cortex-js/compute-engine'
 import { get } from 'svelte/store'
-import { prefixDictionary, unitMacros, parseDict, userUnits } from '$pj/stores'
-import { unit } from '$pj/stores'
+import { supabase, user, isAuthed } from '$pj/auth'
+import {
+  prefixDictionary,
+  unitMacros,
+  parseDict,
+  userUnits,
+  unit
+} from '$pj/stores'
 
 /// processing f(x)s ///
 export const aliasPrefixCombos = (name, attrs) => {
@@ -60,12 +66,15 @@ export const filterCEParsingInfo = unitParse => {
 
 /// user defined units ///
 // adding a new unit requires these updates
-export const addUnit = (name, attrs) => {
+export const addUnit = async (name, attrs) => {
+  if (isDefined(name)) {
+    alert('This unit is already defined.')
+    return
+  }
   userUnits.update(units => {
-    if (!isDefined(name)) {
-      console.log(`Adding Unit ${name}`)
-      units[name] = attrs
-    }
+    // FIXME what if value units don't exist?
+    console.log(`Adding Unit ${name}`)
+    units[name] = attrs
     return units
   })
 
@@ -77,4 +86,42 @@ export const addUnit = (name, attrs) => {
   }))
 
   parseDict.update(dict => [...dict, ...makeParse(names)])
+
+  // push to db
+  if (!isAuthed()) return
+  const { data, error } = await supabase
+    .from('customunits')
+    .insert([{ id: get(user).id, name, ...attrs }])
 }
+
+// database sync for custom units
+user.subscribe(async u => {
+  if (!isAuthed()) return
+  let { data: customunits, error } = await supabase
+    .from('customunits')
+    .select('name, value, prefixes, aliases')
+    .eq('id', u.id)
+
+  let definitions = {},
+    newMacros = {},
+    newParse = []
+  // for each custom unit
+  customunits.forEach(u => {
+    // add to unit obj
+    let name = u.name
+    let attrs = {
+      value: u.value,
+      prefixes: u.prefixes,
+      aliases: u.aliases
+    }
+    definitions[name] = attrs
+    // create display/parsing info
+    let names = aliasPrefixCombos(name, attrs)
+    newMacros = { ...newMacros, ...makeMacros(names) }
+    newParse = [...newParse, ...makeParse(names)]
+  })
+
+  unitMacros.update(macros => ({ ...macros, ...newMacros }))
+  parseDict.update(dict => [...dict, ...newParse])
+  userUnits.set(definitions)
+})

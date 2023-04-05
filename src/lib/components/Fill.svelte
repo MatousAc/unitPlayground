@@ -1,10 +1,10 @@
 <div>
-  <slot/>
+  <slot />
 </div>
 
 <style>
 div {
-  width: 100%;
+  max-width: -webkit-fill-available;
   margin: 1em;
 }
 </style>

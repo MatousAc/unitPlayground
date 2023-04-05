@@ -3,6 +3,8 @@ import { writable, get } from 'svelte/store'
 import Equation from '$pc/Equation.svelte'
 import Fragment from '$pc/Fragment.svelte'
 
+// FIXME store trash stack in supabase
+// also store current playground in supabase
 export const trashStack = writable([])
 export const swallow = component => {
   trashStack.update(list => {

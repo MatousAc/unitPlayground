@@ -1,17 +1,20 @@
 <script>
-  export let justify='center'
-  export let align='center'
+export let justify = 'center'
+export let align = 'center'
 </script>
 
-<div class='row justify-{justify} align-{align} {$$props.class}'>
-	<slot></slot>
+<div
+  class="row justify-{justify} align-{align} {$$props.class}"
+  style={$$props.style}
+>
+  <slot />
 </div>
 
 <style>
 .row {
-	display: flex;
-	flex-direction: row;
-	width: auto;
+  display: flex;
+  flex-direction: row;
+  width: auto;
 }
 
 .justify-center {
@@ -65,5 +68,4 @@
 .align-right {
   align-items: right;
 }
-
 </style>

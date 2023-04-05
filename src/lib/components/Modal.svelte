@@ -50,9 +50,8 @@ const handle_keydown = e => {
 
 .modal {
   background-color: white;
-  padding: 2em;
-  max-width: 60%;
-  max-height: 80%;
+  padding: 2em 4em;
+  max-width: 80%;
   border-radius: 0.5em;
   box-shadow: 0 0 10px 10px #0000000a;
 }

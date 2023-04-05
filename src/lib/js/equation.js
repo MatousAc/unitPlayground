@@ -111,6 +111,7 @@ const converge = ast => {
     case 'Negate':
       return converge(ast[1]).mul(-1)
     case 'UNIT':
+      // FIXME sometimes custom units cannot be found
       return unit(ast[1])
     case 'List':
       return ast.slice(1)
