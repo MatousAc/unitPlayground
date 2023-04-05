@@ -1,12 +1,12 @@
 <script>
-import { signIn, user } from '$pj/auth'
+import { signIn, user, getIDData } from '$pj/auth'
 import Modal from '$pc/Modal.svelte'
 import Row from '$pc/Row.svelte'
 import Button from '$pc/Button.svelte'
 
 let name, email, src
 user.subscribe(u => {
-  let userData = u.identities[0].identity_data
+  let userData = getIDData()
   name = userData.full_name
   email = userData.email
   src = userData.avatar_url

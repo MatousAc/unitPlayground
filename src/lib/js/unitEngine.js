@@ -90,15 +90,15 @@ export const addUnit = async (name, attrs) => {
   // push to db
   if (!isAuthed()) return
   const { data, error } = await supabase
-    .from('customunits')
+    .from('custom_units')
     .insert([{ id: get(user).id, name, ...attrs }])
 }
 
 // database sync for custom units
 user.subscribe(async u => {
   if (!isAuthed()) return
-  let { data: customunits, error } = await supabase
-    .from('customunits')
+  let { data: customUnits, error } = await supabase
+    .from('custom_units')
     .select('name, value, prefixes, aliases')
     .eq('id', u.id)
 
@@ -106,7 +106,7 @@ user.subscribe(async u => {
     newMacros = {},
     newParse = []
   // for each custom unit
-  customunits.forEach(u => {
+  customUnits.forEach(u => {
     // add to unit obj
     let name = u.name
     let attrs = {

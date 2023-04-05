@@ -11,6 +11,10 @@ export const supabase = createClient(
 
 export const user = writable(undefined)
 export const isAuthed = () => get(user) !== undefined
+export const getIDData = () => {
+  if (!isAuthed()) return false
+  else return get(user).identities[0].identity_data
+}
 
 export const signIn = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth(
