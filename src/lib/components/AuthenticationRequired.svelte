@@ -18,11 +18,12 @@ let modal
     <Col justify="space-between">
       <div>
         UnitPlayground is in its experimental phase. In order to perform the
-        experiment, users must authenticate with a southern.edu account.
+        experiment, users must authenticate with a <b>southern.edu</b>
+         email.
       </div>
       <div>
-        All Google accounts will be allowed in three weeks when the experiment
-        is over.
+        All other Google accounts will be allowed in three weeks when the
+        experiment is over.
       </div>
     </Col>
   </div>

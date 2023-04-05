@@ -12,6 +12,14 @@ export const supabase = createClient(
 
 export const user = writable(undefined)
 export const isAuthed = () => get(user) !== undefined
+export const isSAU = () => {
+  if (!isAuthed()) return false
+  let email = get(user).email
+  // for now, we only allow SAU emails
+  let match = email.match(/^\S+@southern\.edu$/)
+  return match !== null
+}
+export const canPlay = () => isAuthed() && isSAU()
 export const getIDData = () => {
   if (!isAuthed()) return false
   else return get(user).identities[0].identity_data

@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte'
-import { supabase, user, isAuthed, signOut } from '$pj/auth'
+import { supabase, user, isAuthed, canPlay } from '$pj/auth'
 import settings from '$pj/settings'
 import { logSessionLength } from '$pj/dataCollection'
 import Equation from '$pc/Equation.svelte'
@@ -19,17 +19,6 @@ onMount(() => {
     (event, session) => {
       $user = session?.user
       // console.log($user)
-      let email = $user?.email
-      // for now, we only allow SAU emails
-      if (email) {
-        let match = email.match(/^\S+@southern\.edu$/)
-        if (match === null) {
-          signOut()
-          alert(
-            'Only @southern.edu emails are allowed during the experimental period. You have been logged out.'
-          )
-        }
-      }
     },
     { initial: true }
   )
@@ -41,7 +30,7 @@ onMount(() => {
 
 let playground
 const createEquation = e => {
-  if (!isAuthed()) {
+  if (!canPlay()) {
     new AuthenticationRequired({ target: playground })
     return
   }
