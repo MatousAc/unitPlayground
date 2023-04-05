@@ -1,6 +1,6 @@
 // this file defines a store for app settings
 import { writable, get } from 'svelte/store'
-import { supabase, user, isAuthed } from '$/lib/js/auth'
+import { supabase, user, isAuthed } from '$pj/auth'
 
 const settings = writable({
   scalar: true,
@@ -12,7 +12,7 @@ const settings = writable({
 })
 
 user.subscribe(async u => {
-  console.log('User updated.')
+  console.log('User updated.', get(user))
   if (!isAuthed()) return
   let sets
   if (!(sets = await fetchSettings(u))) {
@@ -46,6 +46,7 @@ const fetchSettings = async user => {
 export const updateSettings = async setting => {
   settings.update(s => ({ ...s, ...setting }))
   if (!isAuthed()) return
+  console.log('about to update settings', setting)
   await supabase.from('settings').update(setting).eq('id', get(user).id)
 }
 
