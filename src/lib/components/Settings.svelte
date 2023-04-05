@@ -13,25 +13,33 @@ let dis, profileImage
 let isOpen = false
 let isAuthed = false
 
-let scalar, precision, simplify, system, font
-settings.subscribe(s => ({ scalar, precision, simplify, system, font } = s))
+let scalar, precision, simplify, system
+settings.subscribe(s => ({ scalar, precision, simplify, system } = s))
 user.subscribe(async u => {
   if ((isAuthed = u !== undefined)) {
+    // here we attempt to get a user's profile image
     let userData = u.identities[0].identity_data
     profileImage = userData.avatar_url
-    const response = await fetch(profileImage, {
+    fetch(profileImage, {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-      }
+      },
+      mode: 'cors'
     })
-
-    if (response.ok) {
-      // make blob to reference
-      const blob = await response.blob()
-      const objectUrl = URL.createObjectURL(blob)
-      profileImage = objectUrl
-    } else console.error('Profile image error:', response.status)
+      .then(response => {
+        if (response.ok) {
+          // make blob to reference
+          const blob = response.blob()
+          const objectUrl = URL.createObjectURL(blob)
+          profileImage = objectUrl
+        } else {
+          profileImage = false
+        }
+      })
+      .catch(e => {
+        profileImage = false
+      })
   }
 })
 
@@ -88,7 +96,13 @@ const seeProfile = () => {
           </Row>
         </Button>
         <Button onClick={seeProfile} outlined={false}>
-          <img class="profileImage" alt="" src={profileImage} />
+          {#if profileImage}
+            <img class="profileImage" alt="" src={profileImage} />
+          {:else}
+            <span class="material-symbols-rounded" style="font-size: 2.7rem">
+              account_circle
+            </span>
+          {/if}
         </Button>
       {:else}
         <Button onClick={signIn} outlined={true}>
