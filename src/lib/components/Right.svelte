@@ -1,5 +1,6 @@
 <script>
 import { onMount, getContext } from 'svelte'
+import { get } from 'svelte/store'
 import { unitMacros, parseDict } from '$pj/stores'
 import { eqKey, getResultUnits } from '$pj/equation'
 import settings from '$pj/settings'
@@ -7,7 +8,7 @@ import { isMobile } from '$pj/helpers'
 import { parse } from '$pj/computeEngine'
 
 let right
-const eq = getContext(eqKey)
+const { l, r } = getContext(eqKey)
 
 onMount(() => {
   right.setOptions({
@@ -22,15 +23,16 @@ onMount(() => {
   })
 
   // all the places we need to recalculate
-  eq.subscribe(() => reCalculate())
-  settings.subscribe(() => reCalculate())
-  parseDict.subscribe(() => reCalculate())
+  l.subscribe(l => reCalculate())
+  settings.subscribe(s => reCalculate())
+  parseDict.subscribe(p => reCalculate())
 })
 
 const reCalculate = () => {
-  let json = parse($eq.left).json
-  // console.log(`Left => JSON | ${$eq.left} => ${JSON.stringify(json)}`)
+  let json = parse(get(l)).json
+  // console.log(`Left => JSON | ${get(l)} => ${JSON.stringify(json)}`)
   right.value = getResultUnits(json, right.value)
+  r.set(right.value)
 }
 </script>
 

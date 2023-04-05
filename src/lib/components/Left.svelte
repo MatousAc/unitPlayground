@@ -1,5 +1,6 @@
 <script>
 import { onMount, getContext } from 'svelte'
+import { get } from 'svelte/store'
 import { isAuthed } from '$pj/auth'
 import { unitMacros } from '$pj/stores'
 import { isMobile } from '$pj/helpers'
@@ -17,7 +18,7 @@ import {
 import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
 
 // each equation has a separate context
-const eq = getContext(eqKey)
+const { l, r } = getContext(eqKey)
 // internal vars
 let left, playground
 
@@ -35,15 +36,12 @@ onMount(() => {
       computeEngine: engine
     })
   })
-  left.value = $eq.left
+  left.value = get(l)
   playground = left.parentNode.parentNode.parentNode
 })
 
 const process = () => {
-  $eq = {
-    left: left.value,
-    right: $eq.right
-  }
+  l.set(left.value)
 }
 
 const ejectTargetRange = (range, e) => {
