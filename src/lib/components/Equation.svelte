@@ -6,6 +6,7 @@ import { eqKey } from '$pj/equation'
 import { swallow } from '$pj/trash'
 import { logUserActivity } from '$pj/dataCollection'
 import { isAuthed } from '$pj/auth'
+import Hint from '$pc/Hint.svelte'
 import Left from '$pc/Left.svelte'
 import Right from '$pc/Right.svelte'
 import Row from '$pc/Row.svelte'
@@ -23,7 +24,8 @@ let initPosition = {
   y: y - 25
 }
 // internal vars
-let equation
+let equation,
+  showHint = false
 let dragBounds = 'parent'
 
 /// destruction f(x)s ///
@@ -54,6 +56,12 @@ const destroyIfInTrash = e => {
     suicide()
   }
 }
+
+const handleKey = e => {
+  if (e.keyCode === 120) {
+    showHint = !showHint
+  }
+}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -62,6 +70,7 @@ const destroyIfInTrash = e => {
   on:click|stopPropagation
   on:blur={process}
   on:neodrag:end={destroyIfInTrash}
+  on:keydown={handleKey}
   class="equation"
   use:draggable={{
     bounds: dragBounds,
@@ -77,6 +86,9 @@ const destroyIfInTrash = e => {
     <Left on:blur={process} />
     <Right on:blur={process} />
   </Row>
+  {#if showHint}
+    <Hint />
+  {/if}
 </div>
 
 <style>

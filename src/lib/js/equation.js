@@ -12,6 +12,7 @@ import {
 } from '$pj/error'
 export const eqKey = Symbol() // each equation has a context
 
+// let LTX = ''
 let sigFigs, useScalar, simplify, system
 settings.subscribe(s => {
   useScalar = s.scalar
@@ -26,6 +27,7 @@ export const getResultUnits = (json, currentResult) => {
 
   let result = ''
   try {
+    // LTX = ''
     let value = converge(json)
     // console.log('Unit', value)
     // console.log("unit object when being used")
@@ -87,6 +89,7 @@ const converge = ast => {
     case 'Subtract':
     case 'Multiply':
     case 'Divide':
+      // LTX += op
       return ast.slice(1).reduce((a, b) => {
         a = converge(a)
         b = converge(b)
