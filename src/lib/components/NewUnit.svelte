@@ -16,9 +16,11 @@ let nameStr = '',
   name = ''
 let amount,
   prefixGroup,
-  attributes = {}
+  attributes = {},
+  longestUnit = 0
 
 const setSampleUnits = () => {
+  console.log('sample units stuff')
   let names = nameStr.trim().split(' ')
   attributes = {
     aliases: names.slice(1),
@@ -28,7 +30,12 @@ const setSampleUnits = () => {
   name = names[0]
   let units = aliasPrefixCombos(name, attributes)
   sampleUnits = getRandomSubarray(units, 6)
+  longestUnit = sampleUnits.reduce((maxLength, currentString) => {
+    return currentString.length > maxLength ? currentString.length : maxLength
+  }, 0)
+  console.log(sampleUnits)
 }
+
 // bind modal to use its close()
 let modal
 </script>
@@ -44,7 +51,7 @@ let modal
         name="name"
         label="Unit Names"
         ph="inch inches in"
-        onChange={setSampleUnits}
+        on:change={setSampleUnits}
       />
     </Fill>
     <Fill>
@@ -53,7 +60,7 @@ let modal
         name="amount"
         label="Amount"
         ph="2.54 cm"
-        onChange={setSampleUnits}
+        on:change={setSampleUnits}
       />
     </Fill>
     <Fill>
@@ -61,7 +68,7 @@ let modal
         bind:val={prefixGroup}
         name="prefixGroup"
         label="Prefixes"
-        onChange={setSampleUnits}
+        on:change={setSampleUnits}
         options={Object.keys(get(prefixDictionary)).map(prefix => ({
           name: humanize(prefix),
           value: prefix
@@ -69,14 +76,17 @@ let modal
       />
     </Fill>
     <Fill>
-      <Row justify="flex-start" align="flex-start">
-        <span style="padding-right: 1em;">Examples</span>
-        <div class="grid examples">
-          {#each sampleUnits as unit, i}
-            <span style="grid-area: u{i};">{unit}</span>
-          {/each}
-        </div>
-      </Row>
+      <!-- <Row justify="flex-start" align="flex-start"> -->
+      <span>Examples of the units you are creating:</span>
+      <div
+        class="grid examples"
+        style="grid-template-columns: repeat(auto-fit, minmax({longestUnit}ch, max-content));"
+      >
+        {#each sampleUnits as unit, i}
+          <span>{unit}</span>
+        {/each}
+      </div>
+      <!-- </Row> -->
     </Fill>
   </div>
 
@@ -96,10 +106,15 @@ let modal
 <style>
 .grid.examples {
   display: grid;
-  gap: 0.5em;
-  grid-template-areas:
-    'u0 u1'
-    'u2 u3'
-    'u4 u5';
+  grid-auto-rows: min-content;
+  grid-gap: 1em;
+}
+
+.grid.examples > span {
+  border: 2px solid currentColor;
+  border-radius: 1rem;
+  padding: 0.2rem 0.5rem;
+  max-width: fit-content;
+  min-width: fit-content;
 }
 </style>
