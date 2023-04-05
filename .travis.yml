@@ -3,5 +3,5 @@ language: node_js
 node_js:
   - 16
 
-script: 
+script:
   - npm run build
