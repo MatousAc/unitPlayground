@@ -2,23 +2,16 @@
 import { onMount } from 'svelte'
 import { supabase, user, isAuthed, signOut } from '$pj/auth'
 import settings from '$pj/settings'
-import { startTime } from '$pj/dataCollection'
+import { logSessionLength } from '$pj/dataCollection'
 import Equation from '$pc/Equation.svelte'
 import Settings from '$pc/Settings.svelte'
 import Trash from '$pc/Trash.svelte'
 import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
 
-onMount(async () => {
+onMount(() => {
   window.addEventListener('beforeunload', async e => {
     if (!isAuthed()) return
-    let now = new Date()
-    const elapsed_time = Math.round((now - $startTime) / 1000)
-    const log_time = now.toISOString()
-
-    const { data, error } = await supabase
-      .from('session_length')
-      .insert([{ id: $user.id, log_time, email: $user.email, elapsed_time }])
-    if (error) console.log(error)
+    logSessionLength()
   })
 
   // auth listener

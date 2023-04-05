@@ -1,27 +1,27 @@
 <script>
+import { getContext, setContext } from 'svelte'
 import { writable, get } from 'svelte/store'
-import { setContext } from 'svelte'
 import { draggable } from '@neodrag/svelte'
 import { eqKey } from '$pj/equation'
 import { swallow } from '$pj/trash'
+import { logUserActivity } from '$pj/dataCollection'
+import { isAuthed } from '$pj/auth'
 import Left from '$pc/Left.svelte'
 import Right from '$pc/Right.svelte'
 import Row from '$pc/Row.svelte'
 
 /// data-passing vars ///
+// each equation has a separate context
 export let initVal = ''
-let eqVal = writable({
-  left: initVal,
-  right: ''
-})
+const l = writable(initVal)
+const r = writable('')
+setContext(eqKey, { l, r })
 export let x, y
 let initPosition = {
   // place center of eq on user's click
   x: x - 20,
   y: y - 25
 }
-// each equation has a separate context
-setContext(eqKey, eqVal)
 // internal vars
 let equation
 let dragBounds = 'parent'
@@ -33,10 +33,13 @@ const suicide = () => {
   equation.parentNode.removeChild(equation)
 }
 
-const destroyIfEmpty = () => {
-  let row = equation.children[0]
-  let leftRight = row.children
-  if (leftRight[0].value === '' && leftRight[1].value === '') suicide()
+const isEmpty = () => {
+  return get(l).length === 0 && get(r).length === 0
+}
+
+const process = () => {
+  if (isEmpty()) suicide()
+  else if (isAuthed()) logUserActivity({ l, r })
 }
 
 const destroyIfInTrash = e => {
@@ -57,7 +60,7 @@ const destroyIfInTrash = e => {
 <div
   bind:this={equation}
   on:click|stopPropagation
-  on:blur={destroyIfEmpty}
+  on:blur={process}
   on:neodrag:end={destroyIfInTrash}
   class="equation"
   use:draggable={{
@@ -71,8 +74,8 @@ const destroyIfInTrash = e => {
   }}
 >
   <Row>
-    <Left on:blur={destroyIfEmpty} />
-    <Right on:blur={destroyIfEmpty} />
+    <Left on:blur={process} />
+    <Right on:blur={process} />
   </Row>
 </div>
 
