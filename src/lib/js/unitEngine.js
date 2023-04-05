@@ -42,7 +42,7 @@ export const makeParse = unitList => {
 }
 
 export const isDefined = u => {
-  return unit.definitions().units.hasOwnProperty(unit)
+  return unit.definitions().units.hasOwnProperty(u)
 }
 
 export const filterCEParsingInfo = unitParse => {
@@ -61,9 +61,9 @@ export const filterCEParsingInfo = unitParse => {
 /// user defined units ///
 // adding a new unit requires these updates
 export const addUnit = (name, attrs) => {
-  console.log(`Adding Unit ${name}`)
   userUnits.update(units => {
     if (!isDefined(name)) {
+      console.log(`Adding Unit ${name}`)
       units[name] = attrs
     }
     return units

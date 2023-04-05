@@ -3,6 +3,7 @@
 import { writable, get } from 'svelte/store'
 import units from 'unitmath'
 import settings from '$pj/settings'
+// import { supabase } from '$pj/auth'
 
 export let unit
 settings.subscribe(s => {
