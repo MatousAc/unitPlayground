@@ -49,7 +49,7 @@ const destroyIfInTrash = e => {
       component: 'Equation',
       offsetX: e.detail.offsetX,
       offsetY: e.detail.offsetY - 20,
-      value: get(eqVal).left
+      value: get(l)
     })
     suicide()
   }
