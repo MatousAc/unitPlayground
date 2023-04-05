@@ -4,12 +4,9 @@ import Modal from '$pc/Modal.svelte'
 import Row from '$pc/Row.svelte'
 import Button from '$pc/Button.svelte'
 import Col from '$pc/Col.svelte'
-
-// bind modal to use its close()
-let modal
 </script>
 
-<Modal bind:this={modal}>
+<Modal>
   <h2 slot="header">
     <div>Please Sign In</div>
   </h2>
@@ -19,7 +16,7 @@ let modal
       <div>
         UnitPlayground is in its experimental phase. In order to perform the
         experiment, users must authenticate with a <b>southern.edu</b>
-         email.
+        email.
       </div>
       <div>
         All other Google accounts will be allowed in three weeks when the

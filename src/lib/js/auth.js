@@ -31,7 +31,8 @@ export const signIn = async () => {
       provider: 'google'
     },
     {
-      redirectTo: window.location.href
+      redirectTo: window.location.href,
+      prompt: 'select_account'
     }
   )
 
@@ -42,6 +43,7 @@ export const signIn = async () => {
 
 export const signOut = async () => {
   if (!isAuthed()) return
+  console.log('signing out')
   const { error } = await supabase.auth.signOut()
   return error
 }
