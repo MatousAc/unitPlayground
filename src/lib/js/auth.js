@@ -28,7 +28,9 @@ export const getIDData = () => {
 export const signIn = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth(
     {
-      provider: 'google'
+      provider: 'google',
+      scopes: ['email'],
+      login_hint: ''
     },
     {
       redirectTo: window.location.href,

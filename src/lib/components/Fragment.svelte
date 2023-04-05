@@ -110,7 +110,7 @@ const drop = e => {
 
 <style>
 .fragment {
-  /* FIXME: https://github.com/arnog/mathlive/issues/1136 */
+  /* fixme: https://github.com/arnog/mathlive/issues/1136 */
   user-select: none;
 
   width: fit-content;
