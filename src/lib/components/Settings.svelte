@@ -1,5 +1,5 @@
 <script>
-import { signIn, signOut, user } from '$/lib/js/auth'
+import { signIn, signOut, user, getIDData } from '$/lib/js/auth'
 import settings, { updateSettings } from '$pj/settings'
 import Row from '$pc/Row.svelte'
 import Switch from '$pc/Switch.svelte'
@@ -18,7 +18,7 @@ settings.subscribe(s => ({ scalar, precision, simplify, system } = s))
 user.subscribe(async u => {
   if ((isAuthed = u !== undefined)) {
     // here we attempt to get a user's profile image
-    let userData = u.identities[0].identity_data
+    let userData = getIDData()
     profileImage = userData.avatar_url
     fetch(profileImage, {
       headers: {
