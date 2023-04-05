@@ -12,8 +12,8 @@ const settings = writable({
 })
 
 user.subscribe(async u => {
-  console.log('User updated.', get(user))
   if (!isAuthed()) return
+  console.log(`user ${get(user).email} is currently logged in`)
   let sets
   if (!(sets = await fetchSettings(u))) {
     await initSettings(u)
@@ -46,7 +46,6 @@ const fetchSettings = async user => {
 export const updateSettings = async setting => {
   settings.update(s => ({ ...s, ...setting }))
   if (!isAuthed()) return
-  console.log('about to update settings', setting)
   await supabase.from('settings').update(setting).eq('id', get(user).id)
 }
 
