@@ -6,7 +6,7 @@ import { swallow } from '$pj/trash'
 
 /// vars ///
 export let x, y, initVal
-let fragment
+let fragment, wrapper
 let initPosition = { x: x, y: y }
 let dragBounds = 'parent'
 let playground
@@ -21,13 +21,13 @@ onMount(() => {
     fragment.setOptions({ macros: val })
   })
   fragment.value = initVal
-  playground = fragment.parentNode
+  playground = fragment.parentNode.parentNode
 })
 
 /// destruction f(x)s ///
 const suicide = () => {
   dragBounds = undefined
-  playground.removeChild(fragment)
+  playground.removeChild(wrapper)
 }
 
 const destroyIfInTrash = e => {
@@ -57,7 +57,7 @@ const equationFromPosition = (x, y) => {
 
 const getCenterXY = e => {
   let { top, left } = playground.getBoundingClientRect()
-  let { height, width } = fragment.getBoundingClientRect()
+  let { height, width } = wrapper.getBoundingClientRect()
   let x = e.detail.offsetX + left + width / 2
   let y = e.detail.offsetY + top + height / 2
   return { x, y }
@@ -90,12 +90,10 @@ const drop = e => {
 
 <!-- svelte-ignore a11y-autofocus -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<math-field
+<div
+  bind:this={wrapper}
   class="fragment"
-  bind:this={fragment}
   on:neodrag:end={drop}
-  on:click|stopPropagation
-  read-only
   draggable="true"
   use:draggable={{
     bounds: dragBounds,
@@ -105,21 +103,33 @@ const drop = e => {
     defaultPosition: initPosition,
     applyUserSelectHack: true
   }}
-/>
+>
+  <math-field bind:this={fragment} on:click|stopPropagation read-only />
+  <div on:click|stopPropagation class="cover" />
+</div>
 
 <style>
 .fragment {
-  /* FIXME */
+  /* FIXME: https://github.com/arnog/mathlive/issues/1136 */
   user-select: none;
 
   width: fit-content;
   height: fit-content;
   position: absolute;
-  padding: 0.2rem 0.3em;
+  padding: 0.4rem 0.5rem;
   border-radius: 0.5rem;
   transition: border, background-color 0.5s;
   border: 3px solid #cddef2;
   background-color: white;
+}
+
+.cover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
 }
 
 :global(.fragment.dragging) {
