@@ -83,7 +83,6 @@ export const addUnit = async (name, attrs) => {
     return false
   }
   userUnits.update(units => {
-    // FIXME what if value units don't exist?
     console.log(`Adding Unit ${name}`)
     units[name] = attrs
     return units

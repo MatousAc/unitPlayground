@@ -33,7 +33,7 @@ export const signIn = async () => {
       login_hint: ''
     },
     {
-      redirectTo: window.location.href,
+      // redirectTo: window.location.href,
       prompt: 'select_account'
     }
   )
