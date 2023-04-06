@@ -67,7 +67,7 @@ export const getResultUnits = (json, currentResult) => {
 }
 
 // recursively processes json AST, returns a Unit
-const converge = ast => {
+export const converge = ast => {
   // console.log("Ast:", ast)
   switch (typeOf(ast)) {
     case 'array':

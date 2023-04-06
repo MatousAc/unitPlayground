@@ -1,7 +1,7 @@
 import { writable, get } from 'svelte/store'
 import { createClient } from '@supabase/supabase-js'
 import {
-  // FIXME env vars should be built into package
+  // fixme env vars should be built into package
   PUBLIC_SUPABASE_ANON_KEY,
   PUBLIC_SUPABASE_URL
 } from '$env/static/public'
