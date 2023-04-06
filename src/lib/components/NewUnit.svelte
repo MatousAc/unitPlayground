@@ -6,6 +6,7 @@ import { prefixDictionary, unitMacros } from '$pj/stores'
 import { getRandomSubarray, humanize, isMobile } from '$pj/helpers'
 import { engine, parse } from '$pj/computeEngine'
 import { converge } from '$pj/equation'
+import { Fail, MissingOperand, UnitMismatch, UnrecognizedUnit } from '$pj/error'
 import Modal from '$pc/Modal.svelte'
 import Row from '$pc/Row.svelte'
 import Button from '$pc/Button.svelte'
@@ -28,6 +29,7 @@ onMount(() => {
       computeEngine: engine
     })
   })
+  // amount.value = '\\placeholder[value]{2.54\\cm}' // fixme when updating to MathLive 90.*.*
 })
 
 /// for processing new unit info ///
@@ -40,10 +42,25 @@ let prefixGroup,
 
 const setSampleUnits = () => {
   let names = nameStr.trim().split(' ')
+  let amt
+  try {
+    amt = converge(parse(amount.value).json).toString()
+    amount.style.backgroundColor = 'transparent'
+  } catch (e) {
+    switch (e.constructor) {
+      case UnitMismatch:
+      case UnrecognizedUnit:
+      case MissingOperand:
+      case Fail:
+        console.error(e.message)
+        amount.style.backgroundColor = '#ffd5d5'
+        return
+    }
+  }
   attributes = {
     aliases: names.slice(1),
     prefixes: prefixGroup,
-    value: converge(parse(amount.value).json).toString()
+    value: amt
   }
   name = names[0]
   let units = aliasPrefixCombos(name, attributes)
@@ -74,12 +91,24 @@ let modal
     <Fill>
       <Row justify="space-between">
         <span>Definition</span>
-        <math-field
-          bind:this={amount}
-          placeholder="2.54 cm"
-          on:change={setSampleUnits}
-          virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
-        />
+        <div class="amountWrapper">
+          <!-- fixme, use fill-in-the-blanks after update -->
+          <div class="amount-placeholder" data-id="amount-placeholder">
+            2.54\cm
+          </div>
+          <math-field
+            bind:this={amount}
+            on:change={setSampleUnits}
+            on:focus={() => {
+              const placeholder = document.querySelector(
+                '[data-id="amount-placeholder"]'
+              )
+              if (placeholder) placeholder.remove()
+            }}
+            style={amount?.value === '' ? '' : 'background: white;'}
+            virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
+          />
+        </div>
       </Row>
     </Fill>
     <Fill>
@@ -135,11 +164,32 @@ let modal
   min-width: fit-content;
 }
 
+.amountWrapper {
+  position: relative;
+  min-width: 50%;
+  min-height: 48px;
+}
+
 math-field {
   padding: 0.5rem 1rem;
   border: 2px solid black;
+  background: transparent;
   border-radius: 1rem;
   min-width: 60%;
+  font-size: large;
+  width: 100%;
+  height: 100%;
+}
+
+math-field:focus {
+  background: white;
+}
+
+.amount-placeholder {
+  position: absolute;
+  color: #9ca3af;
+  top: 20%;
+  left: 10%;
   font-size: large;
 }
 </style>

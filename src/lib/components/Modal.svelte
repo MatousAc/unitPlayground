@@ -46,6 +46,7 @@ const handle_keydown = e => {
   background: #0000001c;
   justify-content: center;
   align-items: center;
+  font-size: x-large;
 }
 
 .modal {
@@ -64,7 +65,7 @@ const handle_keydown = e => {
 }
 
 .header {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .footer {

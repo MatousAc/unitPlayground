@@ -9,10 +9,8 @@ import Button from '$pc/Button.svelte'
 import NewUnit from '$pc/NewUnit.svelte'
 import Profile from '$pc/Profile.svelte'
 
-let dis, profileImage
-let isOpen = false
-let isAuthed = false
-
+let dis, profileImage, isAuthed
+let visible = false
 let scalar, precision, simplify, system
 settings.subscribe(s => ({ scalar, precision, simplify, system } = s))
 user.subscribe(async u => {
@@ -54,16 +52,13 @@ const seeProfile = () => {
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div bind:this={dis} class="settingsWrapper">
   <span
-    style="padding: 5px;"
-    class="material-symbols-rounded settingsIcon{isOpen ? ' open' : ''}"
-    on:click|stopPropagation={() => (isOpen = !isOpen)}
+    style="padding: 0.4rem;"
+    class="material-symbols-rounded settingsIcon{visible ? ' visible' : ''}"
+    on:click|stopPropagation={() => (visible = !visible)}
   >
     settings
   </span>
-  <div
-    class="settings{isOpen ? ' open' : ''}"
-    on:click|stopPropagation={() => {}}
-  >
+  <div class="settings{visible ? ' visible' : ''}" on:click|stopPropagation>
     <Row
       class="general"
       justify="start"
@@ -72,7 +67,7 @@ const seeProfile = () => {
     >
       <Row>
         <div class="font-selector">
-          {#each [16, 18, 20, 22, 24] as font}
+          {#each [18, 22, 25, 29, 32] as font}
             <button
               style="font-size:{font}px; text-decoration:{$settings.font ===
               font
@@ -99,7 +94,7 @@ const seeProfile = () => {
           {#if profileImage}
             <img class="profileImage" alt="" src={profileImage} />
           {:else}
-            <span class="material-symbols-rounded" style="font-size: 2.7rem">
+            <span class="material-symbols-rounded" style="font-size: 2.3rem">
               account_circle
             </span>
           {/if}
@@ -175,9 +170,10 @@ const seeProfile = () => {
   right: 0;
   cursor: pointer;
   z-index: 2;
-  transition-duration: 0.4s;
+  transition-duration: 0.3s;
+  font-size: xx-large;
 }
-.open.settingsIcon {
+.settingsIcon.visible {
   filter: invert(1);
   transform: rotate(-270deg);
   transition-timing-function: cubic-bezier(0.97, -0.04, 0.15, 0.91);
@@ -188,7 +184,7 @@ const seeProfile = () => {
   font-size: 16px;
 }
 
-.settings.open {
+.settings.visible {
   transform: translateY(0) !important;
 }
 .settings {
@@ -199,9 +195,9 @@ const seeProfile = () => {
   background-color: var(--textClr);
   box-shadow: 0px 5px 8px 0 grey;
   color: var(--backClr);
-  padding: 1em 2em 1em 1em;
+  padding: 1em 2.5em 1em 1em;
   transform: translateY(-105%);
-  transition-duration: 0.2s;
+  transition-duration: 0.3s;
   transition-timing-function: ease-out;
 }
 
@@ -211,7 +207,7 @@ const seeProfile = () => {
 
 /* settings children */
 :global(.settings > .general > *:not(:first-child)) {
-  margin-left: 2rem;
+  margin-left: 1.5rem;
 }
 
 :global(.settings > .general > :first-child) {
@@ -232,7 +228,7 @@ const seeProfile = () => {
 /* specific input styling */
 .font-selector {
   background-color: rgba(255, 255, 255, 0.345);
-  padding: 0.2rem 0.4rem;
+  padding: 0.1rem 0.4rem;
   border-radius: 0.7rem;
 }
 .font-selector > button {

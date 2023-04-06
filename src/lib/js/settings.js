@@ -8,7 +8,7 @@ const settings = writable({
   simplify: false,
   system: 'si',
   theme: 'light',
-  font: 20
+  font: 22
 })
 
 user.subscribe(async u => {
