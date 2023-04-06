@@ -47,8 +47,20 @@ export const makeParse = unitList => {
   return parseInfo
 }
 
-export const isDefined = u => {
-  return unit.definitions().units.hasOwnProperty(u)
+export const isUnitDefined = u => {
+  console.log(unit.definitions().units)
+  let units = unit.definitions().units
+  if (units.hasOwnProperty(u)) return true
+  // must check all aliases
+  for (const key in units) {
+    if (units.hasOwnProperty(key)) {
+      const cur = units[key]
+      if (cur.aliases && cur.aliases.includes(u)) {
+        return true
+      }
+    }
+  }
+  return false
 }
 
 export const filterCEParsingInfo = unitParse => {
@@ -67,9 +79,9 @@ export const filterCEParsingInfo = unitParse => {
 /// user defined units ///
 // adding a new unit requires these updates
 export const addUnit = async (name, attrs) => {
-  if (isDefined(name)) {
-    alert('This unit is already defined.')
-    return
+  if (isUnitDefined(name)) {
+    await alert('This unit is already defined.')
+    return false
   }
   userUnits.update(units => {
     // FIXME what if value units don't exist?
@@ -88,10 +100,11 @@ export const addUnit = async (name, attrs) => {
   parseDict.update(dict => [...dict, ...makeParse(names)])
 
   // push to db
-  if (!isAuthed()) return
+  if (!isAuthed()) return true
   const { data, error } = await supabase
     .from('custom_units')
     .insert([{ id: get(user).id, name, ...attrs }])
+  return true
 }
 
 // database sync for custom units

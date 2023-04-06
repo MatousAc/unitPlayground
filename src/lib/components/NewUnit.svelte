@@ -16,6 +16,7 @@ import Fill from '$pc/Fill.svelte'
 
 // mathfield value
 let amount
+let isAmountValid = false
 onMount(() => {
   amount.setOptions({
     enablePopover: false,
@@ -46,6 +47,7 @@ const setSampleUnits = () => {
   try {
     amt = converge(parse(amount.value).json).toString()
     amount.style.backgroundColor = 'transparent'
+    isAmountValid = true
   } catch (e) {
     switch (e.constructor) {
       case UnitMismatch:
@@ -54,6 +56,7 @@ const setSampleUnits = () => {
       case Fail:
         console.error(e.message)
         amount.style.backgroundColor = '#ffd5d5'
+        isAmountValid = false
         return
     }
   }
@@ -98,7 +101,7 @@ let modal
           </div>
           <math-field
             bind:this={amount}
-            on:change={setSampleUnits}
+            on:input={setSampleUnits}
             on:focus={() => {
               const placeholder = document.querySelector(
                 '[data-id="amount-placeholder"]'
@@ -138,9 +141,8 @@ let modal
 
   <Row slot="footer" justify="flex-end">
     <Button
-      onClick={() => {
-        addUnit(name, attributes)
-        modal.close()
+      onClick={async () => {
+        if (isAmountValid && (await addUnit(name, attributes))) modal.close()
       }}
     >
       <span class="material-symbols-rounded">add</span>

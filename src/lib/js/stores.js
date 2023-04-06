@@ -17,7 +17,6 @@ settings.subscribe(s => {
     system: s.system,
     precision: s.precision,
     simplifyThreshold: 2
-    // definitions: get(userUnits)
   })
 })
 
