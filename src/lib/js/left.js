@@ -170,18 +170,14 @@ const rangeFromPositionPieces = (pos, frac) => {
 export const ejectionRangeFromOffset = (source, offsetLatex) => {
   // get the position within source LaTeX
   let position = positionFromOffset(source, offsetLatex)
-  console.log(`At ${position}: ${source.slice(0, position)}`)
   // split on +-*
   let opSplit = getTopLevelOpSplit(source)
-  console.log('opSplit', opSplit)
   let range = rangeFromPositionAndOpSplit(position, source.length, opSplit)
-  console.dir(range.toString())
-  console.log(`which is ${source.slice(range.start, range.end)}`)
+  // console.dir(range.toString())
   // determine fraction part in necessary
   if (source.slice(range.start, range.end).indexOf('\\frac{') === -1)
     return range
   let fractionPieces = getFractionPieces(source, range)
-  console.log(fractionPieces)
   return rangeFromPositionPieces(position, fractionPieces)
 }
 
