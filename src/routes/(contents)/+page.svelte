@@ -11,6 +11,6 @@ import UnitPlayground from '$lib/index.js'
 .base {
   max-width: 100%;
   width: 90vw;
-  height: 50vh;
+  height: 70vh;
 }
 </style>
