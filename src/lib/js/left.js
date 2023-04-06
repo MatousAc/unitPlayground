@@ -76,7 +76,7 @@ export const positionFromOffset = (source, offsetLatex) => {
   return position
 }
 
-const splitOnTopLevelOps = source => {
+const getTopLevelOpSplit = source => {
   let splitArray = []
   const re = /[+\-]|(?:\\cdot)|(?:\\times)(?![^{]*})/g
   let ops = source.matchAll(re)
@@ -113,12 +113,10 @@ const splitOnTopLevelOps = source => {
     }
 
     if (op.index === i) {
-      // console.log(`i: ${i} c: ${c} op[0]: ${op[0]} op i: ${op.index} bbp:${braces},${brackets},${parens}`)
-      if (braces === 0 || braces === 0 || parens === 0) {
+      if (braces === 0 && braces === 0 && parens === 0) {
         splitArray.push(new Range(i, i + op[0].length))
       }
       opIter = ops.next()
-      // console.log("splitArray", splitArray)
       op = opIter.value
       if (opIter.done === true) break
     }
@@ -126,7 +124,7 @@ const splitOnTopLevelOps = source => {
   return splitArray
 }
 
-const rangeFromPositionAndSplitArray = (pos, last, splitArray) => {
+const rangeFromPositionAndOpSplit = (pos, last, splitArray) => {
   let range = new Range(0, last),
     endSet = false
   splitArray.forEach(r => {
@@ -172,12 +170,8 @@ export const ejectionRangeFromOffset = (source, offsetLatex) => {
   // get the position within source LaTeX
   let position = positionFromOffset(source, offsetLatex)
   // split on +-*
-  let splitArray = splitOnTopLevelOps(source)
-  let range = rangeFromPositionAndSplitArray(
-    position,
-    source.length,
-    splitArray
-  )
+  let opSplit = getTopLevelOpSplit(source)
+  let range = rangeFromPositionAndOpSplit(position, source.length, opSplit)
   // determine fraction part in necessary
   if (source.slice(range.start, range.end).indexOf('\\frac{') === -1)
     return range

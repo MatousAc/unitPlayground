@@ -48,7 +48,6 @@ export const makeParse = unitList => {
 }
 
 export const isUnitDefined = u => {
-  console.log(unit.definitions().units)
   let units = unit.definitions().units
   if (units.hasOwnProperty(u)) return true
   // must check all aliases

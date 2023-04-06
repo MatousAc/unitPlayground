@@ -18,18 +18,15 @@ export default class Range {
   }
 
   replace(source, replacement) {
-    return source.slice(0, this.start) + 
-      replacement + source.slice(this.end)
+    return source.slice(0, this.start) + replacement + source.slice(this.end)
   }
-  
+
   insertStart(source, replacement) {
-    return source.slice(0, this.start) + 
-      replacement + source.slice(this.start)
+    return source.slice(0, this.start) + replacement + source.slice(this.start)
   }
 
   insertEnd(source, replacement) {
-    return source.slice(0, this.end) + 
-      replacement + source.slice(this.end)
+    return source.slice(0, this.end) + replacement + source.slice(this.end)
   }
 
   insertOnClosestSide(source, replacement, pos) {
@@ -39,4 +36,8 @@ export default class Range {
   }
 
   distance = (a, b) => Math.abs(a - b)
+
+  toString = () => {
+    return `start: ${this.start}\nend: ${this.end}`
+  }
 }
