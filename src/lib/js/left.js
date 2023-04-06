@@ -43,6 +43,7 @@ export const positionFromOffset = (source, offsetLatex) => {
   // console.log(`At ${position}: ${source.slice(0, position)}`)
   let ignorables = [
     '\\frac{',
+    '\\sqrt',
     '\\left(',
     '\\left\\lbrack',
     '\\left\\lbrace',
@@ -139,7 +140,7 @@ const rangeFromPositionAndOpSplit = (pos, last, splitArray) => {
 
 const getFractionPieces = (source, range) => {
   const re =
-    /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|[^{}]+|\{\\Huge\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|[^{}]+)+|\{\\Huge\s*\\placeholder{}\})}(?<after>[^{}]*)/d
+    /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|\\sqrt{.*}|[^{}]+|\{\\Huge\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|\\sqrt{.*}|[^{}]+)+|\{\\Huge\s*\\placeholder{}\})}(?<after>[^{}]*)/d
 
   let fraction = source.slice(range.start, range.end)
   let groups = fraction.match(re, range.start, range.end).indices.groups
@@ -169,13 +170,18 @@ const rangeFromPositionPieces = (pos, frac) => {
 export const ejectionRangeFromOffset = (source, offsetLatex) => {
   // get the position within source LaTeX
   let position = positionFromOffset(source, offsetLatex)
+  console.log(`At ${position}: ${source.slice(0, position)}`)
   // split on +-*
   let opSplit = getTopLevelOpSplit(source)
+  console.log('opSplit', opSplit)
   let range = rangeFromPositionAndOpSplit(position, source.length, opSplit)
+  console.dir(range.toString())
+  console.log(`which is ${source.slice(range.start, range.end)}`)
   // determine fraction part in necessary
   if (source.slice(range.start, range.end).indexOf('\\frac{') === -1)
     return range
   let fractionPieces = getFractionPieces(source, range)
+  console.log(fractionPieces)
   return rangeFromPositionPieces(position, fractionPieces)
 }
 

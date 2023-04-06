@@ -37,7 +37,7 @@ export default class Range {
 
   distance = (a, b) => Math.abs(a - b)
 
-  toString = () => {
+  toString() {
     return `start: ${this.start}\nend: ${this.end}`
   }
 }
