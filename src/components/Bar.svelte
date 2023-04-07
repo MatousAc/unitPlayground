@@ -1,6 +1,7 @@
 <script>
 import { onMount } from 'svelte'
-import Logo from './Logo.svelte'
+import Logo from '$comp/Logo.svelte'
+import ThemeSwitcher from '$comp/ThemeSwitcher.svelte'
 
 // component vars
 let showMobileMenu = false
@@ -10,17 +11,17 @@ let ul
 
 // links
 const links = [
-  { title: 'Home', href: '/', target: '_self' },
   { title: 'Playground', href: '/playground', target: '_self' },
   { title: 'Info', href: '/info', target: '_self' },
   {
     title: 'npm Package',
     href: 'https://www.npmjs.com/package/unitplayground',
     target: '_blank'
-  }
+  },
+  { title: 'Contact', href: '/contact', target: '_self' }
 ]
 
-const mediaQueryHandler = (e) => {
+const mediaQueryHandler = e => {
   // reset mobile state
   if (!e.matches) {
     showMobileMenu = false
@@ -32,7 +33,7 @@ onMount(() => {
   const mediaListener = window.matchMedia('(max-width: 599px)')
   mediaListener.addListener(mediaQueryHandler)
   // add event listener for mouse movement on links
-  ul.addEventListener('mousemove', (e) => {
+  ul.addEventListener('mousemove', e => {
     ulMouseDirection = e.pageX < oldUlXCord ? 'left' : 'right'
     oldUlXCord = e.pageX
   })
@@ -45,7 +46,7 @@ onMount(() => {
     : ''}"
 >
   <!-- logo -->
-  <a class="logo p-4 md:p-0" href="/">
+  <a class="logo hidden md:block p-4 md:p-0 mr-auto" href="/">
     <Logo class="h-7 md:h-8" />
   </a>
 
@@ -64,7 +65,7 @@ onMount(() => {
       </li>
     {/each}
   </ul>
-
+  <ThemeSwitcher style="min-height: 35px; margin: 0.5rem;" />
   <!-- reactivity -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div

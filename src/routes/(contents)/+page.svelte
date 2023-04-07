@@ -1,16 +1,12 @@
 <script>
-import UnitPlayground from '$lib/index.js'
 </script>
 
-<h1 class="text-4xl m-1 text-center">Welcome to the playground!</h1>
-<div class="base">
-  <UnitPlayground />
-</div>
+<h1>UnitPlayground</h1>
+<p>
+  This library provides canvass-like a Svelte component that encourages a deeper
+  understanding of units. This "unit playground" aims to aid problem solvers by
+  providing instant unit feedback, hints, and rearrangeable equations.
+</p>
 
 <style>
-.base {
-  max-width: 100%;
-  width: 90vw;
-  height: 70vh;
-}
 </style>

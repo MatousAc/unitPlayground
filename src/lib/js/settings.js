@@ -6,7 +6,7 @@ const settings = writable({
   scalar: true,
   precision: 2,
   simplify: true,
-  system: 'auto',
+  system: 'si',
   theme: 'light',
   font: 22
 })

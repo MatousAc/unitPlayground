@@ -17,6 +17,7 @@ export default {
       $lib: './src/lib',
       $css: './src/css',
       $comp: './src/components',
+      $js: './src/js',
       $pc: './src/lib/components',
       $pj: './src/lib/js'
     }
