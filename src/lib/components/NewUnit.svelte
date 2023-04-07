@@ -116,9 +116,11 @@ let modal
     </Fill>
     <Fill>
       <Select
+        style="font-size: 0.8em;"
         bind:val={prefixGroup}
         name="prefixGroup"
         label="Prefixes"
+        pill={false}
         on:change={setSampleUnits}
         options={Object.keys(get(prefixDictionary)).map(prefix => ({
           name: humanize(prefix),
@@ -176,7 +178,7 @@ math-field {
   padding: 0.5rem 1rem;
   border: 2px solid black;
   background: transparent;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   min-width: 60%;
   font-size: large;
   width: 100%;

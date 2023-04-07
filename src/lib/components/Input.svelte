@@ -21,7 +21,7 @@ input {
   border-width: 1px;
   margin-left: 1em;
   padding: 0.5em;
-  border-radius: 0.5em;
+  border-radius: 0.5rem;
   background-color: inherit;
   border: 2px solid currentColor;
   font-size: large;

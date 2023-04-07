@@ -14,31 +14,25 @@ let visible = false
 let scalar, precision, simplify, system
 settings.subscribe(s => ({ scalar, precision, simplify, system } = s))
 user.subscribe(async u => {
-  if ((isAuthed = u !== undefined)) {
-    // here we attempt to get a user's profile image
-    let userData = getIDData()
-    profileImage = userData.avatar_url
-    fetch(profileImage, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-      },
-      mode: 'cors'
-    })
-      .then(response => {
-        if (response.ok) {
-          // make blob to reference
-          const blob = response.blob()
-          const objectUrl = URL.createObjectURL(blob)
-          profileImage = objectUrl
-        } else {
-          profileImage = false
-        }
-      })
-      .catch(e => {
+  if (!(isAuthed = u !== undefined)) return
+
+  // below we attempt to get a user's profile image
+  let userData = getIDData()
+  profileImage = userData.avatar_url
+  fetch(profileImage, { mode: 'no-cors' })
+    .then(response => {
+      if (response.ok) {
+        // make blob to reference
+        const blob = response.blob()
+        const objectUrl = URL.createObjectURL(blob)
+        profileImage = objectUrl
+      } else {
         profileImage = false
-      })
-  }
+      }
+    })
+    .catch(e => {
+      profileImage = false
+    })
 })
 
 const showNewUnitModal = () => {
@@ -118,6 +112,20 @@ const seeProfile = () => {
         </Row>
       </Button>
       <Row>
+        <Select
+          name="system"
+          label="Unit System"
+          on:change={() => updateSettings({ system })}
+          bind:val={system}
+          options={[
+            { name: 'auto', value: 'auto' },
+            { name: 'SI', value: 'si' },
+            { name: 'US', value: 'us' },
+            { name: 'Cgs', value: 'cgs' }
+          ]}
+        />
+      </Row>
+      <Row>
         <label style="margin: 3px;" for="precision">Precision</label>
         <input
           name="precision"
@@ -139,22 +147,9 @@ const seeProfile = () => {
         />
       </Row>
       <Row>
-        <Select
-          name="system"
-          label="System"
-          on:change={() => updateSettings({ system })}
-          bind:val={system}
-          options={[
-            { name: 'SI', value: 'si' },
-            { name: 'US', value: 'us' },
-            { name: 'Cgs', value: 'cgs' }
-          ]}
-        />
-      </Row>
-      <Row>
-        <span style="margin: 3px; white-space: nowrap;">Base Units</span>
+        <span style="margin: 3px; white-space: nowrap;">Simplify</span>
         <Switch
-          name="convertToSI"
+          name="simplify"
           bind:checked={simplify}
           on:change={() => updateSettings({ simplify })}
         />

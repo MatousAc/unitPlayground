@@ -47,19 +47,21 @@ export const makeParse = unitList => {
   return parseInfo
 }
 
-export const isUnitDefined = u => {
-  let units = get(unitmath).definitions().units
-  if (units.hasOwnProperty(u)) return true
-  // must check all aliases
-  for (const key in units) {
-    if (units.hasOwnProperty(key)) {
-      const cur = units[key]
-      if (cur.aliases && cur.aliases.includes(u)) {
-        return true
-      }
+const getDefinedUnit = units => {
+  let defs = get(unitmath).definitions().units
+  // check if the unit is a top-level unit
+  for (let unit of units) {
+    if (defs.hasOwnProperty(unit)) return unit
+  }
+  // check all aliases for a match
+  for (let key in defs) {
+    const cur = defs[key]?.aliases
+    if (!cur) continue
+    for (let unit of units) {
+      if (cur.includes(unit)) return unit
     }
   }
-  return false
+  return null
 }
 
 export const filterCEParsingInfo = unitParse => {
@@ -78,8 +80,10 @@ export const filterCEParsingInfo = unitParse => {
 /// user defined units ///
 // adding a new unit requires these updates
 export const addUnit = async (name, attrs) => {
-  if (isUnitDefined(name)) {
-    await alert('This unit is already defined.')
+  let definedUnit = getDefinedUnit([name, ...attrs.aliases])
+  console.log('definedUnit', definedUnit)
+  if (definedUnit) {
+    await alert(`The unit "${definedUnit}" is already defined.`)
     return false
   }
   userUnits.update(units => {

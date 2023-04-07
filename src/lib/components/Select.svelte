@@ -5,13 +5,19 @@ export let name
 export let label
 export let val
 export let options = []
+export let pill = true
 </script>
 
 <Row justify="space-between">
   <label for={name} style="margin-right: 0.5rem;">
     {label}
   </label>
-  <select {name} bind:value={val} on:change>
+  <select
+    {name}
+    bind:value={val}
+    on:change
+    style="{pill ? 'border-radius: 1em;' : ''}{$$props.style}"
+  >
     {#each options as { name, value }}
       <option {value}>{name}</option>
     {/each}
@@ -20,9 +26,8 @@ export let options = []
 
 <style>
 select {
-  font-size: 0.8em;
   padding: 0.3em;
-  border-radius: 1em;
+  border-radius: 0.5rem;
   background-color: inherit;
   border: 2px solid currentColor;
 }

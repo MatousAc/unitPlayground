@@ -1,11 +1,10 @@
 <script>
 import { onMount, getContext } from 'svelte'
 import { get } from 'svelte/store'
-import { unitMacros, parseDict } from '$pj/stores'
+import { unitmath, unitMacros, parseDict } from '$pj/stores'
 import { eqKey, getResultUnits } from '$pj/equation'
-import settings from '$pj/settings'
 import { isMobile } from '$pj/helpers'
-import { restartEngine, parse } from '$pj/computeEngine'
+import { parse } from '$pj/computeEngine'
 
 let right
 const { l, r } = getContext(eqKey)
@@ -24,7 +23,10 @@ onMount(() => {
 
   // all the places we need to recalculate
   l.subscribe(l => reCalculate())
-  settings.subscribe(s => reCalculate())
+  unitmath.subscribe(u => {
+    console.log('recalculating due to unitmath change')
+    reCalculate()
+  })
   parseDict.subscribe(p => reCalculate())
 })
 
