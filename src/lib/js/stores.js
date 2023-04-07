@@ -35,11 +35,7 @@ userUnits.subscribe(async definitions => {
       }
     })
   )
-  console.log('custom definitions updated: ', get(unitmath).definitions().units)
 })
-unitmath.subscribe(um =>
-  console.log('um definitions changed: ', um.definitions().units)
-)
 
 /// unit parsing information and math-field macros ///
 const getPrefixDictionary = () => {

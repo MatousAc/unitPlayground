@@ -73,7 +73,6 @@ export const converge = ast => {
     case 'unit':
       return ast
     case 'number':
-      console.log('definitions when being used: ', unit.definitions().units)
       return unit(ast)
     case 'string':
       throw new UnrecognizedUnit(ast)

@@ -5,7 +5,7 @@ import { isAuthed } from '$pj/auth'
 import { unitMacros } from '$pj/stores'
 import { isMobile } from '$pj/helpers'
 import { eqKey } from '$pj/equation'
-import { engine } from '$pj/computeEngine'
+import { engine, restartEngine } from '$pj/computeEngine'
 import Range from '$pj/Range.js'
 import Fragment from '$pc/Fragment.svelte'
 import {
@@ -119,34 +119,8 @@ const insertFragment = event => {
 }
 
 const handleKeydown = e => {
-  if (e.ctrlKey === false) return
-  // shortcuts
-  e.preventDefault()
-  let val
-  switch (e.keyCode) {
-    case 65: // select all
-      left.executeCommand('selectAll')
-      break
-    case 67: // copy
-      val = left.getValue(left.selection, 'latex')
-      // let cleanValue = val.replace(/\\mathrm{([A-z]+)}/g, '\\$1')
-      navigator.clipboard.writeText(val)
-      // input.executeCommand('copyToClipboard')
-      break
-    case 88: // cut
-      val = left.getValue(left.selection)
-      navigator.clipboard.writeText(val)
-      left.setValue('')
-      // input.executeCommand('cutToClipboard')
-      break
-    case 86: // paste
-      // val = await navigator.clipboard.readText()
-      // input.setValue('3')
-      // input.executeCommand('pasteFromClipboard')
-      break
-    default:
-      break
-  }
+  // fixme: hitting Ctrl+C breaks the engine - make issue
+  if (e.keyCode === 67) restartEngine()
 }
 </script>
 
@@ -157,6 +131,7 @@ const handleKeydown = e => {
   on:input={process}
   on:click|preventDefault={handleClick}
   on:fragmentDrop={insertFragment}
+  on:keydown={handleKeydown}
   on:blur
   virtual-keyboard-mode={isMobile() ? 'auto' : 'off'}
   autofocus

@@ -5,7 +5,7 @@ import { unitMacros, parseDict } from '$pj/stores'
 import { eqKey, getResultUnits } from '$pj/equation'
 import settings from '$pj/settings'
 import { isMobile } from '$pj/helpers'
-import { parse } from '$pj/computeEngine'
+import { restartEngine, parse } from '$pj/computeEngine'
 
 let right
 const { l, r } = getContext(eqKey)
@@ -30,8 +30,8 @@ onMount(() => {
 
 const reCalculate = () => {
   let json = parse(get(l)).json
-  console.log(`Left => JSON | ${get(l)} => ${JSON.stringify(json)}`)
-  console.log('typeof json', typeof json, 'json', json)
+
+  // console.log(`Left => JSON | ${get(l)} => ${JSON.stringify(json)}`)
   right.value = getResultUnits(json, right.value)
   r.set(right.value)
 }
