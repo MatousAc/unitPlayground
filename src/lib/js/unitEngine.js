@@ -2,14 +2,9 @@
 // @ts-ignore
 import { ComputeEngine } from '@cortex-js/compute-engine'
 import { get } from 'svelte/store'
+import Prefix from '$pj/Prefix'
 import { supabase, user, isAuthed } from '$pj/auth'
-import {
-  prefixDictionary,
-  unitMacros,
-  parseDict,
-  userUnits,
-  unitmath
-} from '$pj/stores'
+import { unitMacros, parseDict, userUnits, unitmath } from '$pj/stores'
 
 /// processing f(x)s ///
 export const aliasPrefixCombos = (name, attrs) => {
@@ -20,7 +15,7 @@ export const aliasPrefixCombos = (name, attrs) => {
   } else names = [name]
   names.forEach(name => {
     if (attrs.prefixes != undefined) {
-      get(prefixDictionary)[attrs.prefixes].forEach(prefix => {
+      Prefix.dictionary[attrs.prefixes].forEach(prefix => {
         unitStrings.push(prefix + name)
       })
     } else unitStrings.push(name)
@@ -81,13 +76,13 @@ export const filterCEParsingInfo = unitParse => {
 // adding a new unit requires these updates
 export const addUnit = async (name, attrs) => {
   let definedUnit = getDefinedUnit([name, ...attrs.aliases])
-  console.log('definedUnit', definedUnit)
   if (definedUnit) {
     await alert(`The unit "${definedUnit}" is already defined.`)
     return false
   }
   userUnits.update(units => {
     console.log(`Adding Unit ${name}`)
+    // fixme: add to unit system once you update unitmath
     units[name] = attrs
     return units
   })
@@ -103,9 +98,17 @@ export const addUnit = async (name, attrs) => {
 
   // push to db
   if (!isAuthed()) return true
-  const { data, error } = await supabase
-    .from('custom_units')
-    .insert([{ id: get(user).id, name, ...attrs }])
+  const { data, error } = await supabase.from('custom_units').insert([
+    {
+      id: get(user).id,
+      name,
+      value: attrs.value,
+      prefixes: attrs.prefixes,
+      aliases: attrs.aliases,
+      format_prefixes: attrs.formatPrefixes
+    }
+  ])
+  if (error) console.log(error)
   return true
 }
 
@@ -114,7 +117,7 @@ user.subscribe(async u => {
   if (!isAuthed()) return
   let { data: customUnits, error } = await supabase
     .from('custom_units')
-    .select('name, value, prefixes, aliases')
+    .select('name, value, prefixes, aliases, format_prefixes')
     .eq('id', u.id)
 
   let definitions = {},
@@ -127,7 +130,8 @@ user.subscribe(async u => {
     let attrs = {
       value: u.value,
       prefixes: u.prefixes,
-      aliases: u.aliases
+      aliases: u.aliases,
+      formatPrefixes: u.format_prefixes
     }
     definitions[name] = attrs
     // create display/parsing info

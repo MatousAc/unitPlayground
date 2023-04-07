@@ -138,7 +138,7 @@ const power = arr => {
 
 // formats a Unit object as LaTeX
 const toLaTeX = u => {
-  // console.log(u)
+  u = unit(u.toString()) // so we format with prefixes
   let scalar = u.getValue()
   let units = u.units
   // scalar string generation

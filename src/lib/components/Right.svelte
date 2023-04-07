@@ -23,10 +23,7 @@ onMount(() => {
 
   // all the places we need to recalculate
   l.subscribe(l => reCalculate())
-  unitmath.subscribe(u => {
-    console.log('recalculating due to unitmath change')
-    reCalculate()
-  })
+  unitmath.subscribe(u => reCalculate())
   parseDict.subscribe(p => reCalculate())
 })
 

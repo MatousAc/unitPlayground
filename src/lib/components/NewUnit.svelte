@@ -1,9 +1,9 @@
 <script>
 import { onMount } from 'svelte'
-import { get } from 'svelte/store'
-import { addUnit, aliasPrefixCombos } from '$pj/unitEngine'
-import { prefixDictionary, unitMacros } from '$pj/stores'
-import { getRandomSubarray, humanize, isMobile } from '$pj/helpers'
+import Prefix from '$pj/Prefix'
+import { addUnit } from '$pj/unitEngine'
+import { unitMacros } from '$pj/stores'
+import { getRandomSubarray, isMobile } from '$pj/helpers'
 import { engine, parse } from '$pj/computeEngine'
 import { converge } from '$pj/equation'
 import { Fail, MissingOperand, UnitMismatch, UnrecognizedUnit } from '$pj/error'
@@ -34,12 +34,8 @@ onMount(() => {
 })
 
 /// for processing new unit info ///
-let nameStr = '',
-  sampleUnits = '',
-  name = ''
-let prefixGroup,
-  attributes = {},
-  longestUnit = 0
+let { nameStr = '', units = '', name = '' } = {}
+let { prefixGroup, attributes = {}, longestUnit = 0 } = {}
 
 const setSampleUnits = () => {
   let names = nameStr.trim().split(' ')
@@ -63,13 +59,16 @@ const setSampleUnits = () => {
   attributes = {
     aliases: names.slice(1),
     prefixes: prefixGroup,
-    value: amt
+    value: amt,
+    formatPrefixes: Prefix.getFormatPrefixes(prefixGroup)
+    // autoAddToUnitSystem: 'auto'
   }
   name = names[0]
-  let units = aliasPrefixCombos(name, attributes)
-  sampleUnits = getRandomSubarray(units, 6)
-  longestUnit = sampleUnits.reduce((maxLength, currentString) => {
-    return currentString.length > maxLength ? currentString.length : maxLength
+  units = attributes.formatPrefixes.flatMap(p => names.map(n => `${p}${n}`))
+
+  units = getRandomSubarray(units, 6)
+  longestUnit = units.reduce((maxLen, cur) => {
+    return cur.length > maxLen ? cur.length : maxLen
   }, 0)
 }
 
@@ -122,8 +121,8 @@ let modal
         label="Prefixes"
         pill={false}
         on:change={setSampleUnits}
-        options={Object.keys(get(prefixDictionary)).map(prefix => ({
-          name: humanize(prefix),
+        options={Object.keys(Prefix.dictionary).map(prefix => ({
+          name: Prefix.humanize(prefix),
           value: prefix
         }))}
       />
@@ -134,7 +133,7 @@ let modal
         class="grid examples"
         style="grid-template-columns: repeat(auto-fit, minmax({longestUnit}ch, max-content));"
       >
-        {#each sampleUnits as unit, i}
+        {#each units as unit, i}
           <span>{unit}</span>
         {/each}
       </div>

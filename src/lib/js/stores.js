@@ -1,6 +1,6 @@
 /// file handles custom && default unit stores ///
 /// unitmath Setup ///
-import { writable, get } from 'svelte/store'
+import { writable } from 'svelte/store'
 import units from 'unitmath'
 import settings from '$pj/settings'
 import {
@@ -18,7 +18,9 @@ settings.subscribe(s => {
     um.config({
       system: s.system,
       precision: s.precision,
-      simplifyThreshold: 2
+      simplifyThreshold: 2,
+      // fixme: check if this works once we update unitmath
+      formatPrefixDefault: true
     })
   )
 })
@@ -26,7 +28,7 @@ settings.subscribe(s => {
 // store for user-defined units
 export const userUnits = writable({})
 
-// save new unit obj
+// update unit obj
 userUnits.subscribe(async definitions => {
   unitmath.update(um =>
     um.config({
@@ -38,17 +40,6 @@ userUnits.subscribe(async definitions => {
 })
 
 /// unit parsing information and math-field macros ///
-const getPrefixDictionary = () => {
-  let prefixDict = {}
-  for (const [group, prefixes] of Object.entries(
-    units.definitions().prefixes
-  )) {
-    prefixDict[group] = Object.keys(prefixes)
-  }
-  return prefixDict
-}
-export const prefixDictionary = writable(getPrefixDictionary())
-
 const getDefaultUnits = () => {
   let defaultUnits = []
   for (const [name, attributes] of Object.entries(units.definitions().units)) {
