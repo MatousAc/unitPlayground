@@ -1,5 +1,6 @@
 // useful f(x)s
-import { unit } from '$pj/stores'
+import { get } from 'svelte/store'
+import { unitmath } from '$pj/stores'
 import settings from '$pj/settings'
 import { typeOf } from '$pj/helpers'
 import {
@@ -13,13 +14,14 @@ import {
 export const eqKey = Symbol() // each equation has a context
 
 // let LTX = ''
-let sigFigs, useScalar, simplify, system
+let sigFigs, useScalar, simplify, system, unit
 settings.subscribe(s => {
   useScalar = s.scalar
   sigFigs = s.precision
   simplify = s.simplify
   system = s.system
 })
+unitmath.subscribe(um => (unit = um))
 
 // json AST => single result
 export const getResultUnits = (json, currentResult) => {
@@ -29,12 +31,8 @@ export const getResultUnits = (json, currentResult) => {
   try {
     // LTX = ''
     let value = converge(json)
-    // console.log('Unit', value)
-    // console.log("unit object when being used")
-    // console.log(unit.definitions())
     if (simplify) value = value.simplify()
     result = toLaTeX(value)
-    // console.log('Result:', result)
   } catch (e) {
     switch (e.constructor) {
       case NonError:
@@ -75,6 +73,7 @@ export const converge = ast => {
     case 'unit':
       return ast
     case 'number':
+      console.log('definitions when being used: ', unit.definitions().units)
       return unit(ast)
     case 'string':
       throw new UnrecognizedUnit(ast)

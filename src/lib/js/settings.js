@@ -5,7 +5,7 @@ import { supabase, user, isAuthed, canPlay } from '$pj/auth'
 const settings = writable({
   scalar: true,
   precision: 2,
-  simplify: false,
+  simplify: true,
   system: 'si',
   theme: 'light',
   font: 22

@@ -10,20 +10,43 @@ import {
   filterCEParsingInfo
 } from '$pj/unitEngine'
 
-// unit obj
-export let unit
+// start with library default
+export let unitmath = writable(units)
 settings.subscribe(s => {
-  unit = units.config({
-    system: s.system,
-    precision: s.precision,
-    simplifyThreshold: 2
-  })
+  // only change settings
+  unitmath.update(um =>
+    um.config({
+      system: s.system,
+      precision: s.precision,
+      simplifyThreshold: 2
+    })
+  )
 })
+
+// store for user-defined units
+export const userUnits = writable({})
+
+// save new unit obj
+userUnits.subscribe(async definitions => {
+  unitmath.update(um =>
+    um.config({
+      definitions: {
+        units: definitions
+      }
+    })
+  )
+  console.log('custom definitions updated: ', get(unitmath).definitions().units)
+})
+unitmath.subscribe(um =>
+  console.log('um definitions changed: ', um.definitions().units)
+)
 
 /// unit parsing information and math-field macros ///
 const getPrefixDictionary = () => {
   let prefixDict = {}
-  for (const [group, prefixes] of Object.entries(unit.definitions().prefixes)) {
+  for (const [group, prefixes] of Object.entries(
+    units.definitions().prefixes
+  )) {
     prefixDict[group] = Object.keys(prefixes)
   }
   return prefixDict
@@ -32,7 +55,7 @@ export const prefixDictionary = writable(getPrefixDictionary())
 
 const getDefaultUnits = () => {
   let defaultUnits = []
-  for (const [name, attributes] of Object.entries(unit.definitions().units)) {
+  for (const [name, attributes] of Object.entries(units.definitions().units)) {
     defaultUnits = [...defaultUnits, ...aliasPrefixCombos(name, attributes)]
   }
   return defaultUnits
@@ -45,15 +68,3 @@ export const parseDict = writable([
   ...starterParse,
   ...filterCEParsingInfo(starterParse)
 ])
-
-// store for user-defined units
-export const userUnits = writable({})
-
-// save new unit obj
-userUnits.subscribe(async definitions => {
-  unit = unit.config({
-    definitions: {
-      units: definitions
-    }
-  })
-})

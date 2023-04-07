@@ -8,7 +8,7 @@ import {
   unitMacros,
   parseDict,
   userUnits,
-  unit
+  unitmath
 } from '$pj/stores'
 
 /// processing f(x)s ///
@@ -48,7 +48,7 @@ export const makeParse = unitList => {
 }
 
 export const isUnitDefined = u => {
-  let units = unit.definitions().units
+  let units = get(unitmath).definitions().units
   if (units.hasOwnProperty(u)) return true
   // must check all aliases
   for (const key in units) {

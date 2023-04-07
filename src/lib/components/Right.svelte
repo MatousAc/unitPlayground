@@ -30,7 +30,8 @@ onMount(() => {
 
 const reCalculate = () => {
   let json = parse(get(l)).json
-  // console.log(`Left => JSON | ${get(l)} => ${JSON.stringify(json)}`)
+  console.log(`Left => JSON | ${get(l)} => ${JSON.stringify(json)}`)
+  console.log('typeof json', typeof json, 'json', json)
   right.value = getResultUnits(json, right.value)
   r.set(right.value)
 }
