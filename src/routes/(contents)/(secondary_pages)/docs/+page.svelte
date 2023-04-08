@@ -1,3 +1,25 @@
+<script>
+import Code from '$comp/Code.svelte'
+import bash from 'svelte-highlight/languages/bash'
+import javascript from 'svelte-highlight/languages/javascript'
+
+const upCode = `<script>
+import UnitPlayground from 'unitplayground'
+<\/script>
+
+<div class="base">
+  <UnitPlayground/>
+</div>
+
+<style>
+.base {
+  max-width: 100%;
+  width: 90vw;
+  height: 50vh;
+}
+<\/style>`
+</script>
+
 <h1>UnitPlayground Docs</h1>
 <p>
   This library provides canvass-like a Svelte component that encourages a deeper
@@ -42,35 +64,19 @@
   Currently, this package is only available in Svelte projects. Simply install
   with npm.
 </p>
-<pre><code>npm i unitplayground</code></pre>
+<Code language={bash} code="npm i unitplayground" />
 <h3>Add to your project</h3>
 <p>
   To use the component in your project import it and place it within some
-  container <code>&lt;div&gt;</code>
-  . UnitPlayground will fill its parent container. Example:
+  container. UnitPlayground will fill its parent container. Example:
 </p>
 <h4>
-  <a href="#pagesvelte"><strong><code>+page.svelte</code></strong></a>
+  <code><pre>+page.svelte</pre></code>
 </h4>
-<pre><code>
-&lt;script&gt;
-import UnitPlayground from 'unitplayground'
-&lt;/script&gt;
 
-&lt;div class="base"&gt;
-  &lt;UnitPlayground/&gt;
-&lt;/div&gt;
+<Code language={javascript} code={upCode} />
 
-&lt;style&gt;
-.base {'{'}
-  max-width: 100%;
-  width: 90vw;
-  height: 50vh;
-{'}'}
-&lt;/style&gt;
-
-</code></pre>
-<h2 id="about">About</h2>
+<h2 class="mt-10" id="about">About</h2>
 <p>What is this package able to deliver?</p>
 <p>Stay tuned</p>
 <h2>Acknowledgements</h2>

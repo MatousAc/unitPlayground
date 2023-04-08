@@ -26,9 +26,9 @@ import TextMedia from '$comp/TextMedia.svelte'
 </TextMedia>
 
 <p>
-  Unit playground is a tool that encourages a deeper understanding of units. The
-  Unit Playground aims to aid problem solvers by providing instant unit
-  feedback, hints, and rearrangeable equations.
+  Unitplayground is a tool that encourages a deeper understanding of units. It
+  aims to aid problem solvers by providing instant unit feedback, hints, and
+  rearrangeable equations.
 </p>
 <p>
   As shown above, users can enter quantities and units on the canvass. To take

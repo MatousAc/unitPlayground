@@ -17,6 +17,7 @@
   --theme-background: var(--background);
   --theme-text: var(--text);
   --h1: #213c52;
+  --theme: 'light';
 }
 .skeleton.dark {
   --background: #0c0910;
@@ -37,6 +38,7 @@
   --theme-background: var(--background);
   --theme-text: var(--text);
   --h1: var(--accent);
+  --theme: 'dark';
 }
 
 @media (prefers-color-scheme: light) {
@@ -59,6 +61,7 @@
     --theme-background: var(--background);
     --theme-text: var(--text);
     --h1: #213c52;
+    --theme: 'light';
   }
 }
 
@@ -82,5 +85,6 @@
     --theme-background: var(--background);
     --theme-text: var(--text);
     --h1: var(--accent);
+    --theme: 'dark';
   }
 }
