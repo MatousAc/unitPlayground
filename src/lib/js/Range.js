@@ -35,6 +35,10 @@ export default class Range {
     else return this.insertEnd(source, replacement)
   }
 
+  extract(str) {
+    return str.slice(this.start, this.end)
+  }
+
   distance = (a, b) => Math.abs(a - b)
 
   toString() {

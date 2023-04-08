@@ -49,7 +49,6 @@ export const positionFromOffset = (source, offsetLatex) => {
     '\\left\\lbrace',
     '}{',
     '{',
-    '}',
     '^',
     ' '
   ]
@@ -69,7 +68,7 @@ export const positionFromOffset = (source, offsetLatex) => {
       fullLatex = fullLatex.slice(1)
     }
 
-    let p = matchTo(offsetLatex, fullLatex, ['\\', '^', '{', '}'])
+    let p = matchTo(offsetLatex, fullLatex, ['\\', '^', '{'])
     offsetLatex = offsetLatex.slice(p)
     fullLatex = fullLatex.slice(p)
     position += p
@@ -139,19 +138,33 @@ const rangeFromPositionAndOpSplit = (pos, last, splitArray) => {
 }
 
 const getFractionPieces = (source, range) => {
-  const re =
-    /(?<before>[^{}]*)\\frac{(?<numerator>(?:(?:\\frac{.*}{.*})+|\\sqrt{.*}|[^{}]+|\{\\Huge\s*\\placeholder\{\}\})+)}{(?<denominator>(?:(?:\\frac{.*}{.*})+|\\sqrt{.*}|[^{}]+)+|\{\\Huge\s*\\placeholder{}\})}(?<after>[^{}]*)/d
+  let start = range.start
+  // match before
+  let toMatch = '\\frac{'
+  const bi = range.extract(source).indexOf(toMatch) + range.start
 
-  let fraction = source.slice(range.start, range.end)
-  let groups = fraction.match(re, range.start, range.end).indices.groups
-
-  for (let group in groups) {
-    groups[group] = new Range(
-      groups[group][0] + range.start,
-      groups[group][1] + range.start
-    )
+  const before = new Range(start, bi)
+  start = bi + toMatch.length
+  // match numerator
+  let depth = 1
+  let i = start
+  while (depth > 0) {
+    if (source[i] == '{') depth++
+    if (source[i] == '}') depth--
+    i++
   }
-  return groups
+  const numerator = new Range(start, i - 1)
+  // match denominator
+  start = ++i
+  depth = 1
+  while (depth > 0) {
+    if (source[i] == '{') depth++
+    if (source[i] == '}') depth--
+    i++
+  }
+  const denominator = new Range(start, i - 1)
+  const after = new Range(i, range.end)
+  return { before, numerator, denominator, after }
 }
 
 const rangeFromPositionPieces = (pos, frac) => {
