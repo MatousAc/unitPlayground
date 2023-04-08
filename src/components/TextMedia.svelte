@@ -2,7 +2,7 @@
 export let reverse = false
 </script>
 
-<div class="textMedia lg:flex justify-space-between my-20">
+<div class="textMedia lg:flex justify-space-between mb-20">
   {#if !reverse}
     <div class="m-5 lg:w-2/5 lg:mr-12 lg:mt-5">
       <slot name="text" />

@@ -15,7 +15,7 @@ import { theme } from '$js/stores'
 
 <main class="skeleton {$theme} flex flex-col">
   <Bar />
-  <div class="w-full md:w-4/5 text-lg mx-auto md:px-8 max-w-7xl">
+  <div class="w-full md:w-4/5 text-xl mx-auto md:px-8 my-10 md:my-20 max-w-7xl">
     <slot />
   </div>
   <Footer />
@@ -30,7 +30,7 @@ import { theme } from '$js/stores'
   min-height: 100vh;
 }
 
-:global(.skeleton > div a) {
+:global(.skeleton > div a:not(.noColor)) {
   color: var(--accent);
 }
 </style>

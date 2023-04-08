@@ -7,7 +7,7 @@ import TextMedia from '$comp/TextMedia.svelte'
     <h1 class="text-4xl font-bold text-center" style="color: var(--h1);">
       UnitPlayground
     </h1>
-    <p class="mt-4 text-center font-semibold">let the units guide you</p>
+    <p class="text-center font-semibold lg:!mx-0">let the units guide you</p>
 
     <div class="my-8 text-lg">
       <p class="!m-0">
