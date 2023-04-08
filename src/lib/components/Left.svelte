@@ -128,6 +128,7 @@ const handleKeydown = e => {
 
 <!-- svelte-ignore a11y-autofocus -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- define custom virtual keyboard so unit input with '\' is possible on mobile -->
 <math-field
   bind:this={left}
   on:input={process}

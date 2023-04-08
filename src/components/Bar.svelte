@@ -12,13 +12,13 @@ let ul
 // links
 const links = [
   { title: 'Playground', href: '/playground', target: '_self' },
-  { title: 'Info', href: '/info', target: '_self' },
-  { title: 'Contact', href: '/contact', target: '_self' },
+  { title: 'Docs', href: '/docs', target: '_self' },
   {
     title: 'npm',
     href: 'https://www.npmjs.com/package/unitplayground',
     target: '_blank'
-  }
+  },
+  { title: 'Contact', href: '/contact', target: '_self' }
 ]
 
 const mediaQueryHandler = e => {
@@ -101,7 +101,8 @@ nav ul.links li {
 
 /* link underline animation for large displays */
 @media only screen and (min-width: 768px) {
-  li:after {
+  li:after,
+  .logo:hover:after {
     content: '';
     position: absolute;
     bottom: var(--nav-underline-distance);
@@ -113,7 +114,12 @@ nav ul.links li {
     transition: transform 0.3s;
     transform: scaleX(0);
   }
-  li:hover:after {
+  .logo:hover:after {
+    width: 7%;
+    transform-origin: right;
+  }
+  li:hover:after,
+  .logo:hover:after {
     transform: scaleX(1);
   }
   ul.right li:after {
@@ -129,6 +135,7 @@ nav ul.links li {
     transform-origin: right;
   }
 }
+
 /* mobile icon animation */
 .mobile-icon {
   width: 25px;
