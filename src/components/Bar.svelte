@@ -13,12 +13,12 @@ let ul
 const links = [
   { title: 'Playground', href: '/playground', target: '_self' },
   { title: 'Info', href: '/info', target: '_self' },
+  { title: 'Contact', href: '/contact', target: '_self' },
   {
-    title: 'npm Package',
+    title: 'npm',
     href: 'https://www.npmjs.com/package/unitplayground',
     target: '_blank'
-  },
-  { title: 'Contact', href: '/contact', target: '_self' }
+  }
 ]
 
 const mediaQueryHandler = e => {

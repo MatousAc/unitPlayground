@@ -5,7 +5,7 @@ import Logo from './Logo.svelte'
 <div class="footer w-full flex items-center py-2 px-4 justify-between mt-auto">
   <h2 class="text-xl">UnitPlayground</h2>
 
-  <p class="hidden md:block text-base">Copyright © 2023, Ac Hybl.</p>
+  <p class="hidden md:block text-base">Copyright © 2023, Ac Hýbl.</p>
 
   <!-- logo -->
   <a class="logo p-4" href="/">

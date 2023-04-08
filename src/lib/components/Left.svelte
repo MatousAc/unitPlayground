@@ -48,11 +48,13 @@ const ejectTargetRange = (range, e) => {
   let ejectedFragment = left.value.slice(range.start, range.end)
   if (ejectedFragment === ph) return // don't eject placeholders
   left.value = range.replace(left.value, ph)
-  let playground = left.parentNode.parentNode.parentNode
+  let eq = left.parentNode.parentNode
+  let { height: eqHeight } = eq.getBoundingClientRect()
+  let playground = eq.parentNode
   new Fragment({
     props: {
       x: e.x - playground.offsetLeft - 30,
-      y: e.y - playground.offsetTop - 100,
+      y: e.y - playground.offsetTop - eqHeight * 1.2,
       initVal: ejectedFragment
     },
     target: playground

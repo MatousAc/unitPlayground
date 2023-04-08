@@ -15,7 +15,7 @@ import { theme } from '$js/stores'
 
 <main class="skeleton {$theme} flex flex-col">
   <Bar />
-  <div class="content width-full px-2 mx-auto md:py-8 md:px-10">
+  <div class="w-full md:w-4/5 text-lg mx-auto md:p-8 max-w-8xl">
     <slot />
   </div>
   <Footer />
@@ -28,10 +28,5 @@ import { theme } from '$js/stores'
   color: var(--text);
 
   min-height: 100vh;
-}
-
-.content {
-  max-width: 1300px;
-  width: 90vw;
 }
 </style>
