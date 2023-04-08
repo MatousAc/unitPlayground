@@ -15,24 +15,25 @@ let scalar, precision, simplify, system
 settings.subscribe(s => ({ scalar, precision, simplify, system } = s))
 user.subscribe(async u => {
   if (!(isAuthed = u !== undefined)) return
-
+  profileImage = false
+  // fixme: how can I reliably get profile images?
   // below we attempt to get a user's profile image
-  let userData = getIDData()
-  profileImage = userData.avatar_url
-  fetch(profileImage, { mode: 'no-cors' })
-    .then(response => {
-      if (response.ok) {
-        // make blob to reference
-        const blob = response.blob()
-        const objectUrl = URL.createObjectURL(blob)
-        profileImage = objectUrl
-      } else {
-        profileImage = false
-      }
-    })
-    .catch(e => {
-      profileImage = false
-    })
+  // let userData = getIDData()
+  // profileImage = userData.avatar_url
+  // fetch(profileImage, { mode: 'no-cors' })
+  //   .then(response => {
+  //     if (response.ok) {
+  //       // make blob to reference
+  //       const blob = response.blob()
+  //       const objectUrl = URL.createObjectURL(blob)
+  //       profileImage = objectUrl
+  //     } else {
+  //       profileImage = false
+  //     }
+  //   })
+  //   .catch(e => {
+  //     profileImage = false
+  //   })
 })
 
 const showNewUnitModal = () => {
