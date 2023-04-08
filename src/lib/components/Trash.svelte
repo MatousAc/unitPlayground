@@ -15,7 +15,7 @@ let trash
 
 <style>
 .trashIcon {
-  --scale: 8em;
+  --scale: 25rem;
   position: absolute;
   bottom: calc(var(--scale) * -1);
   right: calc(50% - var(--scale) - 0.5em);
@@ -38,7 +38,7 @@ let trash
 .trashIcon:has(~ .equation.dragging),
 .trashIcon:has(~ .fragment.dragging) {
   padding-top: calc(0.07 * var(--scale));
-  font-size: 2.3em;
+  font-size: 2.5rem;
 }
 
 :global(.trashIcon:hover ~ .equation.dragging) {
