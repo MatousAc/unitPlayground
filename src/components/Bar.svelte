@@ -11,14 +11,10 @@ let ul
 
 // links
 const links = [
-  { title: 'Playground', href: '/playground', target: '_self' },
-  { title: 'Docs', href: '/docs', target: '_self' },
-  {
-    title: 'npm',
-    href: 'https://www.npmjs.com/package/unitplayground',
-    target: '_blank'
-  },
-  { title: 'Contact', href: '/contact', target: '_self' }
+  { title: 'Home', href: '/' },
+  { title: 'Playground', href: '/playground' },
+  { title: 'Docs', href: '/docs' },
+  { title: 'Contact', href: '/contact' }
 ]
 
 const mediaQueryHandler = e => {
@@ -59,7 +55,7 @@ onMount(() => {
   >
     {#each links as link}
       <li>
-        <a class="py-2 px-4 md:p-6 block" href={link.href} target={link.target}>
+        <a class="py-2 px-4 md:p-6 block" href={link.href}>
           {link.title}
         </a>
       </li>
@@ -101,8 +97,7 @@ nav ul.links li {
 
 /* link underline animation for large displays */
 @media only screen and (min-width: 768px) {
-  li:after,
-  .logo:hover:after {
+  li:after {
     content: '';
     position: absolute;
     bottom: var(--nav-underline-distance);
@@ -114,12 +109,8 @@ nav ul.links li {
     transition: transform 0.3s;
     transform: scaleX(0);
   }
-  .logo:hover:after {
-    width: 7%;
-    transform-origin: right;
-  }
-  li:hover:after,
-  .logo:hover:after {
+
+  li:hover:after {
     transform: scaleX(1);
   }
   ul.right li:after {

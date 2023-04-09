@@ -1,6 +1,6 @@
 <div>
   <h1>Privacy Policy for UnitPlayground</h1>
-
+  <!-- 
   <p>Wow! Look at you. You're actually reading the privacy policy.</p>
   <p>
     The gist of it is that I don't really want your data. I don't use it, store
@@ -8,7 +8,7 @@
     to authenticate so that I can store their settings or their past work in a
     database.
   </p>
-  <p>Of course, if you're into the legal mumbo-jumbo, it's right here:</p>
+  <p>Of course, if you're into the legal mumbo-jumbo, it's right here:</p> -->
 
   <p>
     At UnitPlayground, accessible from <a href="unitplayground.com">

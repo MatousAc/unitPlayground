@@ -26,6 +26,14 @@ import UnitPlayground from 'unitplayground'
   understanding of units. This "unit playground" aims to aid problem solvers by
   providing instant unit feedback, hints, and rearrangeable equations.
 </p>
+<p>
+  Check out my <a href="https://www.npmjs.com/package/unitplayground">
+    npm package
+  </a>
+  and
+  <a href="/docs/privacyPolicy">privacy policy</a>
+  .
+</p>
 <p />
 <div class="flex my-4">
   <a href="https://www.npmjs.com/package/unitplayground">
