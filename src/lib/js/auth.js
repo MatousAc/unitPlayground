@@ -2,6 +2,7 @@ import { writable, get } from 'svelte/store'
 import { createClient } from '@supabase/supabase-js'
 import {
   // fixme env vars should be built into package
+  // czech out https://www.npmjs.com/package/env-cmd
   PUBLIC_SUPABASE_ANON_KEY,
   PUBLIC_SUPABASE_URL
 } from '$env/static/public'
@@ -26,21 +27,11 @@ export const getIDData = () => {
 }
 
 export const signIn = async () => {
-  const { data, error } = await supabase.auth.signInWithOAuth(
-    {
-      provider: 'google',
-      scopes: ['email'],
-      login_hint: ''
-    },
-    {
-      // redirectTo: window.location.href,
-      prompt: 'select_account'
-    }
-  )
-
-  if (error) {
-    console.error('Error signing in with Google:', error)
-  }
+  const encodedUrl = encodeURIComponent(window.location.href)
+  window.location.href =
+    PUBLIC_SUPABASE_URL +
+    '/auth/v1/authorize?provider=google&redirect_to=' +
+    encodedUrl
 }
 
 export const signOut = async () => {

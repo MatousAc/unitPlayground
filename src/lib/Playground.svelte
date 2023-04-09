@@ -18,7 +18,6 @@ onMount(() => {
   const { data: authListener } = supabase.auth.onAuthStateChange(
     (event, session) => {
       $user = session?.user
-      // console.log($user)
     },
     { initial: true }
   )
