@@ -1,15 +1,7 @@
 import { writable, get } from 'svelte/store'
 import { createClient } from '@supabase/supabase-js'
-import {
-  // fixme env vars should be built into package
-  // czech out https://www.npmjs.com/package/env-cmd
-  PUBLIC_SUPABASE_ANON_KEY,
-  PUBLIC_SUPABASE_URL
-} from '$env/static/public'
-export const supabase = createClient(
-  PUBLIC_SUPABASE_URL,
-  PUBLIC_SUPABASE_ANON_KEY
-)
+import { supabaseUrl, supabaseAnonKey } from './publicEnv'
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export const user = writable(undefined)
 export const isAuthed = () => get(user) !== undefined
@@ -29,9 +21,7 @@ export const getIDData = () => {
 export const signIn = async () => {
   const encodedUrl = encodeURIComponent(window.location.href)
   window.location.href =
-    PUBLIC_SUPABASE_URL +
-    '/auth/v1/authorize?provider=google&redirect_to=' +
-    encodedUrl
+    supabaseUrl + '/auth/v1/authorize?provider=google&redirect_to=' + encodedUrl
 }
 
 export const signOut = async () => {
