@@ -14,12 +14,15 @@ import TextMedia from '$comp/TextMedia.svelte'
         Learn to appreciate units of measurement and construct equations in an
         interactive way.
       </p>
-      <button
-        class="startBtn float-right my-5 text-white font-bold py-2 px-4 rounded"
-        on:click={() => (window.location.href = '/playground')}
-      >
-        Start Here
-      </button>
+      <div class="flex justify-between items-center my-5">
+        <a href="/docs/privacyPolicy">Privacy Policy</a>
+        <button
+          class="startBtn text-white font-bold py-2 px-4 rounded"
+          on:click={() => (window.location.href = '/playground')}
+        >
+          Start Here
+        </button>
+      </div>
     </div>
   </div>
   <img slot="media" alt="" src="/generalUse.gif" />

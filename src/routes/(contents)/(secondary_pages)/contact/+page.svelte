@@ -9,7 +9,7 @@
       here
     </a>
     . Otherwise, just
-    <a href="mailto:mashua2468@gmail.com">email me</a>
+    <a href="mailto:matoush@southern.edu">email me at matoush@southern.edu</a>
     .
   </p>
   <h1>Info</h1>
