@@ -1,19 +1,11 @@
 // useful f(x)s
-import { get } from 'svelte/store'
+import { getContext } from 'svelte'
 import { unitmath } from '$pj/stores'
 import settings from '$pj/settings'
 import { typeOf } from '$pj/helpers'
-import {
-  NonError,
-  Fail,
-  Hint,
-  MissingOperand,
-  UnitMismatch,
-  UnrecognizedUnit
-} from '$pj/error'
+import * as E from '$pj/error'
 export const eqKey = Symbol() // each equation has a context
 
-// let LTX = ''
 let sigFigs, useScalar, simplify, system, unit
 settings.subscribe(s => {
   useScalar = s.scalar
@@ -24,44 +16,16 @@ settings.subscribe(s => {
 unitmath.subscribe(um => (unit = um))
 
 // json AST => single result
-export const getResultUnits = (json, currentResult) => {
-  if (inProgress(json)) return currentResult
+export const getResultUnits = json => {
+  if (inProgress(json)) throw new E.NonError()
 
   let result = ''
-  try {
-    // LTX = ''
-    let value = converge(json)
-    if (simplify) value = value.simplify()
-    result = toLaTeX(value)
-  } catch (e) {
-    switch (e.constructor) {
-      case NonError:
-        // console.warn(e.message)
-        break
-      case UnitMismatch:
-        console.error(e.message)
-        break
-      case UnrecognizedUnit:
-        console.error(e.message)
-        console.error('Define new unit?')
-        break
-      case MissingOperand:
-        console.error(e.message)
-        break
-      case Hint:
-        console.error(e.message)
-        console.error('You might wanna czech this one out')
-        break
-      case Fail:
-        console.error(e.message)
-        console.error('User failed.')
-        break
-      default:
-        console.error(e)
-    }
-  }
+  let value = converge(json)
+  if (simplify) value = value.simplify()
+  result = toLaTeX(value)
 
-  return result == '' ? currentResult : '=' + result
+  if (!result) throw new NonError()
+  return result
 }
 
 // recursively processes json AST, returns a Unit
@@ -95,12 +59,14 @@ export const converge = ast => {
           return eval(`a.${op.toLowerCase().substring(0, 3)}(b)`)
         } catch (e) {
           if (e.message.includes('dimensions do not match')) {
-            throw new UnitMismatch(e.message)
+            throw new E.DimensionMismatch(e.message)
+          } else if (e.message.includes('both units must have values')) {
+            throw new E.ValueMissingOnUnit(e.message)
           } else throw e
         }
       })
     case 'Sequence':
-      if (ast.length == 1) throw new NonError()
+      if (ast.length == 1) throw new E.NonError()
       return ast.slice(1).forEach(member => {
         converge(member) // till we hit an error
       })
@@ -171,22 +137,24 @@ const toLaTeX = u => {
 
 function inProgress(json) {
   let str = JSON.stringify(json)
+  if (str.includes('Nothing') || str.includes('\\placeholder{}')) {
+    throw new E.FillPH()
+  }
+
   return (
     str == '' ||
-    str.includes('Nothing') ||
     str.includes('HorizontalSpacing') ||
-    str.includes('\\placeholder{}') ||
     str.includes('["Delimiter"]')
-  ) // might be nice to handle various errors here
+  )
 }
 
 // handed an ast, this determines the proper error
 const handleError = ast => {
-  console.log('Error AST', ast)
+  // console.log('Error AST', ast)
   if (ast[0] === 'Error') {
     if (typeOf(ast[1]) === 'array') handleError(ast[1])
     else if (typeOf(ast[1]) === 'string') {
-      if (ast[1] === "'missing'") throw new MissingOperand()
+      if (ast[1] === "'missing'") throw new E.MissingOperand()
     }
   } else if (ast[0] === 'ErrorCode') {
     let code = ast[1]
@@ -194,7 +162,7 @@ const handleError = ast => {
       case "'unexpected-command'":
         let re = /["|']\\(?<name>.*)["|']/
         let badUnit = ast[2].match(re).groups.name
-        throw new UnrecognizedUnit(badUnit)
+        throw new E.UnrecognizedUnit(badUnit)
       default:
         return ''
     }

@@ -1,6 +1,8 @@
 <script>
+import { get } from 'svelte/store'
 import { signIn, signOut, user, getIDData } from '$/lib/js/auth'
 import settings, { updateSettings } from '$pj/settings'
+import { playground } from '$pj/stores'
 import Row from '$pc/Row.svelte'
 import Switch from '$pc/Switch.svelte'
 import ThemeSwitcher from '$pc/ThemeSwitcher.svelte'
@@ -9,7 +11,7 @@ import Button from '$pc/Button.svelte'
 import NewUnit from '$pc/NewUnit.svelte'
 import Profile from '$pc/Profile.svelte'
 
-let dis, profileImage, isAuthed
+let profileImage, isAuthed
 let visible = false
 let scalar, precision, simplify, system
 settings.subscribe(s => ({ scalar, precision, simplify, system } = s))
@@ -37,15 +39,15 @@ user.subscribe(async u => {
 })
 
 const showNewUnitModal = () => {
-  new NewUnit({ target: dis.parentNode })
+  new NewUnit({ target: get(playground) })
 }
 const seeProfile = () => {
-  new Profile({ target: dis.parentNode })
+  new Profile({ target: get(playground) })
 }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div bind:this={dis} class="settingsWrapper">
+<div class="settingsWrapper">
   <span
     style="padding: 0.4rem;"
     class="material-symbols-rounded settingsIcon{visible ? ' visible' : ''}"
@@ -188,9 +190,9 @@ const seeProfile = () => {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: var(--textClr);
+  background-color: var(--text);
   box-shadow: 0px 5px 8px 0 grey;
-  color: var(--backClr);
+  color: var(--background);
   padding: 1em 2.5em 1em 1em;
   transform: translateY(-105%);
   transition-duration: 0.3s;

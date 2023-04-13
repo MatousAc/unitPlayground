@@ -6,7 +6,7 @@ import { unitMacros } from '$pj/stores'
 import { getRandomSubarray, isMobile } from '$pj/helpers'
 import { engine, parse } from '$pj/computeEngine'
 import { converge } from '$pj/equation'
-import { Fail, MissingOperand, UnitMismatch, UnrecognizedUnit } from '$pj/error'
+import * as E from '$pj/error'
 import Modal from '$pc/Modal.svelte'
 import Row from '$pc/Row.svelte'
 import Button from '$pc/Button.svelte'
@@ -34,7 +34,8 @@ onMount(() => {
 })
 
 /// for processing new unit info ///
-let { nameStr = '', units = '', name = '' } = {}
+export let nameStr = ''
+let { name = '', units = '' } = {}
 let { prefixGroup, attributes = {}, longestUnit = 0 } = {}
 
 const setSampleUnits = () => {
@@ -46,10 +47,10 @@ const setSampleUnits = () => {
     isAmountValid = true
   } catch (e) {
     switch (e.constructor) {
-      case UnitMismatch:
-      case UnrecognizedUnit:
-      case MissingOperand:
-      case Fail:
+      case E.DimensionMismatch:
+      case E.UnrecognizedUnit:
+      case E.MissingOperand:
+      case E.Fail:
         console.error(e.message)
         amount.style.backgroundColor = '#ffd5d5'
         isAmountValid = false

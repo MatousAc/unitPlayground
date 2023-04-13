@@ -6,6 +6,7 @@ import { eqKey } from '$pj/equation'
 import { swallow } from '$pj/trash'
 import { logUserActivity } from '$pj/dataCollection'
 import { isAuthed } from '$pj/auth'
+import { playground } from '$pj/stores'
 import Hint from '$pc/Hint.svelte'
 import Left from '$pc/Left.svelte'
 import Right from '$pc/Right.svelte'
@@ -16,7 +17,8 @@ import Row from '$pc/Row.svelte'
 export let initVal = ''
 const l = writable(initVal)
 const r = writable('')
-setContext(eqKey, { l, r })
+const hintInfo = writable({ message: '', data: {} })
+setContext(eqKey, { l, r, hintInfo })
 export let x, y
 let initPosition = {
   // place center of eq on user's click
@@ -24,15 +26,14 @@ let initPosition = {
   y: y - 25
 }
 // internal vars
-let equation,
-  showHint = false
+let equation
 let dragBounds = 'parent'
 
 /// destruction f(x)s ///
 const suicide = () => {
   // avoid neodrag bounds error
   dragBounds = undefined
-  equation.parentNode.removeChild(equation)
+  get(playground).removeChild(equation)
 }
 
 const isEmpty = () => {
@@ -56,12 +57,6 @@ const destroyIfInTrash = e => {
     suicide()
   }
 }
-
-const handleKey = e => {
-  if (e.keyCode === 120) {
-    showHint = !showHint
-  }
-}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -70,7 +65,6 @@ const handleKey = e => {
   on:click|stopPropagation
   on:blur={process}
   on:neodrag:end={destroyIfInTrash}
-  on:keydown={handleKey}
   class="equation"
   use:draggable={{
     bounds: dragBounds,
@@ -86,9 +80,7 @@ const handleKey = e => {
     <Left on:blur={process} />
     <Right on:blur={process} />
   </Row>
-  {#if showHint}
-    <Hint />
-  {/if}
+  <Hint />
 </div>
 
 <style>
@@ -103,11 +95,6 @@ const handleKey = e => {
   transition: border, background-color 0.5s;
   border-color: var(--textClrFaded);
   background-color: white;
-}
-
-.equation:hover,
-:global(.equation.dragging) {
-  border-color: var(--textClr);
-  background-color: transparent;
+  transform-style: preserve-3d;
 }
 </style>

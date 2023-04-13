@@ -7,8 +7,13 @@ import Equation from '$pc/Equation.svelte'
 import Settings from '$pc/Settings.svelte'
 import Trash from '$pc/Trash.svelte'
 import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
+import { playground } from '$pj/stores'
 
 onMount(() => {
+  // set value of playground store
+  playground.set(pg)
+
+  // log user session length
   window.addEventListener('beforeunload', async e => {
     if (!isAuthed()) return
     logSessionLength()
@@ -27,10 +32,10 @@ onMount(() => {
   }
 })
 
-let playground
+let pg
 const createEquation = e => {
   if (!canPlay()) {
-    new AuthenticationRequired({ target: playground })
+    new AuthenticationRequired({ target: pg })
     return
   }
   new Equation({
@@ -39,7 +44,7 @@ const createEquation = e => {
       x: e.offsetX,
       y: e.offsetY
     },
-    target: playground
+    target: pg
   })
 }
 </script>
@@ -54,7 +59,7 @@ const createEquation = e => {
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-  bind:this={playground}
+  bind:this={pg}
   on:click={createEquation}
   class="fillParent playground {$settings.theme}"
   style="font-size: {$settings.font}px;"
@@ -63,12 +68,6 @@ const createEquation = e => {
   <Trash />
 </div>
 
-<!-- {#if !session}
-  <h1>I am not logged in</h1>
-{:else}
-  <h1>Welcome {session.user.email}</h1>
-  <p>I am logged in!</p>
-{/if} -->
 <style>
 .playground {
   width: 100%;
@@ -76,26 +75,26 @@ const createEquation = e => {
   font-family: Roboto, Arial, sans-serif;
 
   position: relative;
-  background-color: var(--backClr);
-  color: var(--textClr);
+  background-color: var(--background);
+  color: var(--text);
   transition-duration: 1s;
   overflow: hidden;
 }
 
 .playground.light {
-  --backClr: #ffffff;
-  --textClr: #242424;
-  --textClrFaded: #605f5f;
-  --safeClr: #76bed0;
-  --dangerClr: #f55d3e;
-  --accent1Clr: #f7cb15;
+  --background: #ffffff;
+  --text: #242424;
+  --textFaded: #605f5f;
+  --safe: #76bed0;
+  --error: #f75b57;
+  --warning: #f7cb15;
   box-shadow: inset 0px 0px 6px 1px grey;
 }
 .playground.dark {
-  --backClr: black;
-  --textClr: white;
-  --safeClr: #136f63;
-  --dangerClr: #d00000;
-  --accent1Clr: #3f88c5;
+  --background: black;
+  --text: white;
+  --safe: #136f63;
+  --error: #d00000;
+  --warning: #3f88c5;
 }
 </style>

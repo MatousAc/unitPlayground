@@ -2,7 +2,7 @@
 import { onMount, getContext } from 'svelte'
 import { get } from 'svelte/store'
 import { isAuthed } from '$pj/auth'
-import { unitMacros } from '$pj/stores'
+import { playground, unitMacros } from '$pj/stores'
 import { isMobile } from '$pj/helpers'
 import { eqKey } from '$pj/equation'
 import { engine, restartEngine } from '$pj/computeEngine'
@@ -18,9 +18,9 @@ import {
 import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
 
 // each equation has a separate context
-const { l, r } = getContext(eqKey)
+const { l, hint } = getContext(eqKey)
 // internal vars
-let left, playground
+let left
 
 onMount(() => {
   left.setOptions({
@@ -37,7 +37,6 @@ onMount(() => {
     })
   })
   left.value = get(l)
-  playground = left.parentNode.parentNode.parentNode
 })
 
 const process = () => {
@@ -50,14 +49,13 @@ const ejectTargetRange = (range, e) => {
   left.value = range.replace(left.value, ph)
   let eq = left.parentNode.parentNode
   let { height: eqHeight } = eq.getBoundingClientRect()
-  let playground = eq.parentNode
   new Fragment({
     props: {
-      x: e.x - playground.offsetLeft - 30,
-      y: e.y - playground.offsetTop - eqHeight * 1.2,
+      x: e.x - get(playground).offsetLeft - 30,
+      y: e.y - get(playground).offsetTop - eqHeight * 1.2,
       initVal: ejectedFragment
     },
-    target: playground
+    target: get(playground)
   })
   process()
 }

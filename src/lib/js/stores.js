@@ -55,3 +55,6 @@ export const parseDict = writable([
   ...starterParse,
   ...filterCEParsingInfo(starterParse)
 ])
+
+/// make a global reference to the playground element ///
+export const playground = writable('')

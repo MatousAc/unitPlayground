@@ -8,7 +8,7 @@ let trash
 <span
   bind:this={trash}
   class="material-symbols-rounded trashIcon"
-  on:click|stopPropagation={() => vomit(trash.parentNode)}
+  on:click|stopPropagation={vomit}
 >
   delete
 </span>
@@ -23,7 +23,7 @@ let trash
   z-index: 2;
   transition-duration: 0.4s;
   border: 2px solid;
-  color: var(--dangerClr);
+  color: var(--error);
   padding: var(--scale);
   padding-top: 0.2em;
   border-radius: 100%;
@@ -42,7 +42,7 @@ let trash
 }
 
 :global(.trashIcon:hover ~ .equation.dragging) {
-  border-color: var(--dangerClr) !important;
-  color: var(--dangerClr) !important;
+  border-color: var(--error) !important;
+  color: var(--error) !important;
 }
 </style>

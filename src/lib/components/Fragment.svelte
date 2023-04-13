@@ -1,7 +1,8 @@
 <script>
 import { onMount } from 'svelte'
+import { get } from 'svelte/store'
 import { draggable } from '@neodrag/svelte'
-import { unitMacros } from '$pj/stores'
+import { playground, unitMacros } from '$pj/stores'
 import { swallow } from '$pj/trash'
 
 /// vars ///
@@ -9,7 +10,6 @@ export let x, y, initVal
 let fragment, wrapper
 let initPosition = { x: x, y: y }
 let dragBounds = 'parent'
-let playground
 
 onMount(() => {
   fragment.setOptions({
@@ -21,7 +21,6 @@ onMount(() => {
     fragment.setOptions({ macros: val })
   })
   fragment.value = initVal
-  playground = fragment.parentNode.parentNode
 })
 
 /// destruction f(x)s ///
@@ -56,7 +55,7 @@ const equationFromPosition = (x, y) => {
 }
 
 const getCenterXY = e => {
-  let { top, left } = playground.getBoundingClientRect()
+  let { top, left } = get(playground).getBoundingClientRect()
   let { height, width } = wrapper.getBoundingClientRect()
   let x = e.detail.offsetX + left + width / 2
   let y = e.detail.offsetY + top + height / 2

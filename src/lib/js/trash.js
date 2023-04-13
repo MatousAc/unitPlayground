@@ -2,6 +2,7 @@
 import { writable, get } from 'svelte/store'
 import Equation from '$pc/Equation.svelte'
 import Fragment from '$pc/Fragment.svelte'
+import { playground } from '$pj/stores'
 
 // FIXME store trash stack in supabase
 // also store current playground in supabase
@@ -13,7 +14,7 @@ export const swallow = component => {
   })
 }
 
-export const vomit = dest => {
+export const vomit = () => {
   let last = get(trashStack).pop()
   let props = {
     props: {
@@ -21,7 +22,7 @@ export const vomit = dest => {
       y: last.offsetY,
       initVal: last.value
     },
-    target: dest
+    target: get(playground)
   }
   switch (last.component) {
     case 'Equation':

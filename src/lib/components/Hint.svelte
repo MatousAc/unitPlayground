@@ -1,57 +1,68 @@
 <script>
-import { onMount } from 'svelte'
-import { fade } from 'svelte/transition'
+import { onMount, getContext } from 'svelte'
+import { get } from 'svelte/store'
+import { fly } from 'svelte/transition'
+import { eqKey } from '$pj/equation'
+import { playground } from '$pj/stores'
+import NewUnit from '$pc/NewUnit.svelte'
+
 export let x = 2.8
-export let message = '"ft" and "kg" cannot be added together'
-export let color = 'red'
+const { hintInfo } = getContext(eqKey)
+let info = { message: '', data: {} }
 
-let visible = false
-
-function toggle() {
-  visible = !visible
-}
-
+let lastCalledTime = 0
+let hintDelay = 1500
 onMount(() => {
-  const handle = document.querySelector('.hint-rect')
-  handle.style.left = `${x}rem`
+  hintInfo.subscribe(async h => {
+    if (!h.message || info?.message) info = h
+    setTimeout(() => {
+      if (Date.now() - lastCalledTime >= hintDelay) info = h
+    }, hintDelay)
+  })
 })
+
+function slide(node, { delay = 0, duration = 400, x = 0, y = 0 }) {
+  return fly(node, { delay, duration, x, y, opacity: 0 })
+}
 </script>
 
-<div class="hint">
-  {#if visible}
-    <div transition:fade class="hint-message">
-      {message}
-    </div>
-  {/if}
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="hint-rect" style="background-color: {color};" on:click={toggle} />
-</div>
+{#if info.message}
+  <div
+    class="hint"
+    transition:slide={{ x: 0, y: 50 }}
+    style="background-color: var(--{info.data.color});"
+  >
+    {@html info.message}
+    {#if info.data?.button}
+      <button
+        on:click={() =>
+          new NewUnit({
+            props: {
+              nameStr: info.data.unitName
+            },
+            target: get(playground)
+          })}
+        style="text-decoration: underline; position: relative; z-index: 1;"
+      >
+        Create new unit?
+      </button>
+    {/if}
+  </div>
+{/if}
 
 <style>
 .hint {
+  /* position on top behind */
+  font-size: 0.7em;
+  transform: translateZ(-10px);
   position: absolute;
-  bottom: 100%;
-  width: fit-content;
+  height: max-content;
+  bottom: 80%;
+  width: 100%;
+  /* style */
+  padding: 0.3rem 0.8rem 7%;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
   left: 0;
-}
-
-.hint-message {
-  max-width: 85%;
-  position: relative;
-  bottom: 0.3rem;
-  margin: 0 auto;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.2rem;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.hint-rect {
-  position: absolute;
-  width: 3rem;
-  height: 0.4rem;
-  cursor: pointer;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
 }
 </style>
