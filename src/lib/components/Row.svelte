@@ -68,4 +68,11 @@ export let align = 'center'
 .align-right {
   align-items: right;
 }
+
+/* responsive design */
+@media only screen and (max-width: 767px) {
+  .hide-sm {
+    display: none;
+  }
+}
 </style>

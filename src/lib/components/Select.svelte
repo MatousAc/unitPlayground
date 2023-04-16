@@ -9,7 +9,7 @@ export let pill = true
 </script>
 
 <Row justify="space-between">
-  <label for={name} style="margin-right: 0.5rem;">
+  <label class="hide-sm" for={name} style="margin-right: 0.5rem;">
     {label}
   </label>
   <select
@@ -31,7 +31,15 @@ select {
   background-color: inherit;
   border: 2px solid currentColor;
 }
+
 select > option {
   color: black;
+}
+
+/* responsive design */
+@media only screen and (max-width: 767px) {
+  .hide-sm {
+    display: none;
+  }
 }
 </style>

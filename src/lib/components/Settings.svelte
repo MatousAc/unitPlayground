@@ -91,7 +91,7 @@ const seeProfile = () => {
           {#if profileImage}
             <img class="profileImage" alt="" src={profileImage} />
           {:else}
-            <span class="material-symbols-rounded" style="font-size: 2.3rem">
+            <span class="material-symbols-rounded account_circle">
               account_circle
             </span>
           {/if}
@@ -149,7 +149,7 @@ const seeProfile = () => {
           on:change={() => updateSettings({ scalar })}
         />
       </Row>
-      <Row>
+      <Row class="hide-sm">
         <span style="margin: 3px; white-space: nowrap;">Simplify</span>
         <Switch
           name="simplify"
@@ -216,11 +216,8 @@ const seeProfile = () => {
   margin-left: 1rem;
 }
 
-/* responsive design */
-@media only screen and (max-width: 767px) {
-  .hide-sm {
-    display: none;
-  }
+.account_circle {
+  font-size: 2.3rem;
 }
 
 /* specific input styling */
@@ -243,5 +240,25 @@ const seeProfile = () => {
 .settings .profileImage {
   width: 33px;
   border-radius: 1em;
+}
+
+/* responsive design */
+@media only screen and (max-width: 767px) {
+  .hide-sm {
+    display: none;
+  }
+
+  :global(.settings > .general > *:not(:first-child)),
+  :global(.settings > .functional > *:not(:first-child)) {
+    margin-left: 0.5rem;
+  }
+
+  .account_circle {
+    font-size: 1.8rem;
+  }
+
+  .settings > div > * {
+    padding: 0.2em 0 !important;
+  }
 }
 </style>
