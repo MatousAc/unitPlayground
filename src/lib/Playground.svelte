@@ -85,16 +85,16 @@ const createEquation = e => {
   --background: #ffffff;
   --text: #242424;
   --textFaded: #605f5f;
-  --safe: #74d779;
-  --error: #f75b57;
-  --warning: #ffdb44;
+  --safe: #00814d;
+  --warning: #e8b100;
+  --error: #750025;
   box-shadow: inset 0px 0px 6px 1px grey;
 }
 .playground.dark {
   --background: black;
   --text: white;
   --safe: #136f63;
-  --error: #d00000;
   --warning: #3f88c5;
+  --error: #d00000;
 }
 </style>

@@ -5,7 +5,7 @@ export class NonError {
     this.message = 'Stop parsing for now.'
     this.stack = new Error().stack
     this.data = {}
-    this.data.color = 'safe'
+    this.data.background = 'safe'
   }
 }
 
@@ -15,7 +15,7 @@ export class Fail {
     this.message = message
     this.stack = new Error().stack
     this.data = {}
-    this.data.color = 'error'
+    this.data.background = 'error'
   }
 }
 
@@ -25,7 +25,7 @@ export class Hint {
     this.message = message
     this.stack = new Error().stack
     this.data = {}
-    this.data.color = 'safe'
+    this.data.background = 'safe'
   }
 }
 
@@ -33,7 +33,7 @@ export class Hint {
 export class Err extends Hint {
   constructor(message) {
     super(message)
-    this.data.color = 'error'
+    this.data.background = 'error'
   }
 }
 
@@ -78,7 +78,7 @@ export class MissingOperand extends Err {
 export class Warning extends Hint {
   constructor(message) {
     super(message)
-    this.data.color = 'warning'
+    this.data.background = 'warning'
   }
 }
 
@@ -95,7 +95,7 @@ export class UnrecognizedUnit extends Warning {
 export class Note extends Hint {
   constructor(message) {
     super(message)
-    this.data.color = 'safe'
+    this.data.background = 'safe'
   }
 }
 export class FillPH extends Note {

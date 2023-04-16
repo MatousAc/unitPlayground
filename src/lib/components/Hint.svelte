@@ -14,12 +14,25 @@ let lastCalledTime = 0
 let hintDelay = 1500
 onMount(() => {
   hintInfo.subscribe(async h => {
-    if (!h.message || info?.message) info = h
+    if (!h.message || info?.message) updateData(h)
     setTimeout(() => {
-      if (Date.now() - lastCalledTime >= hintDelay) info = h
+      if (Date.now() - lastCalledTime >= hintDelay) updateData(h)
     }, hintDelay)
   })
 })
+
+const updateData = h => {
+  info = h
+  switch (info.data.background) {
+    case 'safe':
+    case 'warning':
+    case 'error':
+      info.data.color = 'background'
+      break
+    default:
+      info.data.color = 'text'
+  }
+}
 
 function slide(node, { delay = 0, duration = 400, x = 0, y = 0 }) {
   return fly(node, { delay, duration, x, y, opacity: 0 })
@@ -30,7 +43,8 @@ function slide(node, { delay = 0, duration = 400, x = 0, y = 0 }) {
   <div
     class="hint"
     transition:slide={{ x: 0, y: 50 }}
-    style="background-color: var(--{info.data.color});"
+    style="background-color: var(--{info.data.background}); color:var(--{info
+      .data.color});"
   >
     {@html info.message}
     {#if info.data?.button}
@@ -60,7 +74,7 @@ function slide(node, { delay = 0, duration = 400, x = 0, y = 0 }) {
   bottom: 80%;
   width: 100%;
   /* style */
-  padding: 0.3rem 0.8rem 12%;
+  padding: 0.5rem 0.8rem 12%;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
   left: 0;

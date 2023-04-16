@@ -56,7 +56,7 @@ export let name
 }
 
 input:checked + .slider {
-  background-color: #66bb6a;
+  background-color: var(--safe);
 }
 
 input:checked + .slider:before {
