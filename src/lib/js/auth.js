@@ -12,7 +12,6 @@ export const isSAU = () => {
   let match = email.match(/^\S+@southern\.edu$/)
   return match !== null
 }
-export const canPlay = () => isAuthed() && isSAU()
 export const getIDData = () => {
   if (!isAuthed()) return false
   else return get(user).identities[0].identity_data

@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte'
-import { supabase, user, isAuthed, canPlay } from '$pj/auth'
+import { supabase, user, isAuthed } from '$pj/auth'
 import settings from '$pj/settings'
 import { logSessionLength } from '$pj/dataCollection'
 import Equation from '$pc/Equation.svelte'
@@ -34,7 +34,7 @@ onMount(() => {
 
 let pg
 const createEquation = e => {
-  if (!canPlay()) {
+  if (!isAuthed()) {
     new AuthenticationRequired({ target: pg })
     return
   }

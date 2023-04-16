@@ -14,13 +14,8 @@ import Col from '$pc/Col.svelte'
   <div slot="body">
     <Col justify="space-between">
       <div>
-        UnitPlayground is in its experimental phase. In order to perform the
-        experiment, users must authenticate with a <b>southern.edu</b>
-        email.
-      </div>
-      <div>
-        All other Google accounts will be allowed in three weeks when the
-        experiment is over.
+        Please authenticate with a Google account so that your settings can be
+        stored.
       </div>
     </Col>
   </div>

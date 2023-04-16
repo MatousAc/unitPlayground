@@ -1,6 +1,6 @@
 // this file defines a store for app settings
 import { writable, get } from 'svelte/store'
-import { supabase, user, isAuthed, canPlay } from '$pj/auth'
+import { supabase, user, isAuthed } from '$pj/auth'
 
 const settings = writable({
   scalar: true,
@@ -12,7 +12,7 @@ const settings = writable({
 })
 
 user.subscribe(async u => {
-  if (!canPlay()) return
+  if (!isAuthed()) return
   console.log(`user ${get(user).email} is currently logged in`)
   let sets
   if (!(sets = await fetchSettings(u))) {
