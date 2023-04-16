@@ -91,7 +91,14 @@ export class UnrecognizedUnit extends Warning {
   }
 }
 
-export class FillPH extends Warning {
+// notes
+export class Note extends Hint {
+  constructor(message) {
+    super(message)
+    this.data.color = 'safe'
+  }
+}
+export class FillPH extends Note {
   constructor(message) {
     super(`Fill the placeholder.`)
     this.name = this.constructor.name

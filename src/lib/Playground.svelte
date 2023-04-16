@@ -85,7 +85,7 @@ const createEquation = e => {
   --background: #ffffff;
   --text: #242424;
   --textFaded: #605f5f;
-  --safe: #76bed0;
+  --safe: #74d779;
   --error: #f75b57;
   --warning: #ffdb44;
   box-shadow: inset 0px 0px 6px 1px grey;
