@@ -60,7 +60,7 @@ function slide(node, { delay = 0, duration = 400, x = 0, y = 0 }) {
   bottom: 80%;
   width: 100%;
   /* style */
-  padding: 0.3rem 0.8rem 7%;
+  padding: 0.3rem 0.8rem 12%;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
   left: 0;
