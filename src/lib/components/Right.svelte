@@ -47,8 +47,13 @@ const reCalculate = async () => {
       case E.MissingOperand:
       case E.Fail:
       case E.Err:
-      default:
+      case E.FillPH:
+      case E.Warning:
+      case E.Hint:
         hintInfo.set({ message: e.message, data: e.data })
+        break
+      default:
+        console.log(e)
     }
   }
 }

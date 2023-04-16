@@ -26,7 +26,7 @@ onMount(() => {
 /// destruction f(x)s ///
 const suicide = () => {
   dragBounds = undefined
-  playground.removeChild(wrapper)
+  get(playground).removeChild(wrapper)
 }
 
 const destroyIfInTrash = e => {
@@ -134,5 +134,6 @@ const drop = e => {
 :global(.fragment.dragging) {
   border-color: transparent;
   background-color: transparent;
+  z-index: 1;
 }
 </style>

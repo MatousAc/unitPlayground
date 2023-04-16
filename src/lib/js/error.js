@@ -4,6 +4,8 @@ export class NonError {
     this.name = this.constructor.name
     this.message = 'Stop parsing for now.'
     this.stack = new Error().stack
+    this.data = {}
+    this.data.color = 'safe'
   }
 }
 
@@ -12,6 +14,8 @@ export class Fail {
     this.name = this.constructor.name
     this.message = message
     this.stack = new Error().stack
+    this.data = {}
+    this.data.color = 'error'
   }
 }
 
@@ -21,6 +25,7 @@ export class Hint {
     this.message = message
     this.stack = new Error().stack
     this.data = {}
+    this.data.color = 'safe'
   }
 }
 

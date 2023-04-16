@@ -97,4 +97,8 @@ const destroyIfInTrash = e => {
   background-color: white;
   transform-style: preserve-3d;
 }
+
+:global(.equation.dragging) {
+  z-index: 1;
+}
 </style>

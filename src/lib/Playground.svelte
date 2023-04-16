@@ -87,7 +87,7 @@ const createEquation = e => {
   --textFaded: #605f5f;
   --safe: #76bed0;
   --error: #f75b57;
-  --warning: #f7cb15;
+  --warning: #ffdb44;
   box-shadow: inset 0px 0px 6px 1px grey;
 }
 .playground.dark {
