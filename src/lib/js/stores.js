@@ -17,7 +17,6 @@ settings.subscribe(s => {
   unitmath.update(um =>
     um.config({
       system: s.system,
-      precision: s.precision,
       simplifyThreshold: 2,
       // fixme: check if this works once we update unitmath
       formatPrefixDefault: true

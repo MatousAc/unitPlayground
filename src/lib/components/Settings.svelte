@@ -13,8 +13,8 @@ import Profile from '$pc/Profile.svelte'
 
 let profileImage, isAuthed
 let visible = false
-let scalar, precision, simplify, system
-settings.subscribe(s => ({ scalar, precision, simplify, system } = s))
+let scalar, decimals, simplify, system
+settings.subscribe(s => ({ scalar, decimals, simplify, system } = s))
 user.subscribe(async u => {
   if (!(isAuthed = u !== undefined)) return
   profileImage = false
@@ -129,12 +129,12 @@ const seeProfile = () => {
         />
       </Row>
       <Row>
-        <label style="margin: 3px;" for="precision">Precision</label>
+        <label style="margin: 3px;" for="decimals">Decimals</label>
         <input
-          name="precision"
-          class="precision"
-          on:change={() => updateSettings({ precision })}
-          bind:value={precision}
+          name="decimals"
+          class="decimals"
+          on:change={() => updateSettings({ decimals })}
+          bind:value={decimals}
           type="number"
           step="1"
           min="0"
@@ -229,7 +229,7 @@ const seeProfile = () => {
 .font-selector > button {
   margin: 0 0.4rem;
 }
-.precision {
+.decimals {
   max-width: 4ch;
   margin: 3px;
   border-radius: 1em;

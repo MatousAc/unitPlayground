@@ -6,10 +6,10 @@ import { typeOf } from '$pj/helpers'
 import * as E from '$pj/error'
 export const eqKey = Symbol() // each equation has a context
 
-let sigFigs, useScalar, simplify, system, unit
+let decimals, useScalar, simplify, system, unit
 settings.subscribe(s => {
   useScalar = s.scalar
-  sigFigs = s.precision
+  decimals = s.decimals
   simplify = s.simplify
   system = s.system
 })
@@ -102,13 +102,23 @@ const power = arr => {
   })
 }
 
+const round = num => {
+  const factor = 10 ** decimals
+  const roundedNum = Math.round(num * factor) / factor
+  const [wholePart, fractionalPart] = roundedNum.toString().split('.')
+  const roundedFractionalPart = fractionalPart
+    ? fractionalPart.padEnd(decimals, '0')
+    : '0'.repeat(decimals)
+  return `${wholePart}.${roundedFractionalPart}`
+}
+
 // formats a Unit object as LaTeX
 const toLaTeX = u => {
   u = unit(u.toString()) // so we format with prefixes
   let scalar = u.getValue()
   let units = u.units
   // scalar string generation
-  scalar = useScalar && scalar ? scalar.toFixed(sigFigs) : ''
+  scalar = useScalar && scalar ? round(scalar) : ''
   if (units.length == 0) return scalar
 
   // getting the right unit format for Latex
