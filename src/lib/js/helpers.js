@@ -1,3 +1,33 @@
+import { get } from 'svelte/store'
+import settings from '$pj/settings'
+
+// rounding f(x)
+export const roundUnitStr = quantity => {
+  const decimals = get(settings).decimals
+  let re = /(?<scalar>[\d\.]+)?\s?(?<unit>.+)?/
+  let m = quantity.match(re).groups
+  let num = parseFloat(m.scalar)
+  let unit = m.unit ? m.unit : ''
+  const factor = 10 ** decimals
+  const roundedNum = Math.round(num * factor) / factor
+  const [wholePart, fractionalPart] = roundedNum.toString().split('.')
+  const roundedFractionalPart = fractionalPart
+    ? fractionalPart.padEnd(decimals, '0')
+    : '0'.repeat(decimals)
+  return `${wholePart}.${roundedFractionalPart} ${unit}`.trim()
+}
+
+export const roundScalar = num => {
+  const decimals = get(settings).decimals
+  const factor = 10 ** decimals
+  const roundedNum = Math.round(num * factor) / factor
+  const [wholePart, fractionalPart] = roundedNum.toString().split('.')
+  const roundedFractionalPart = fractionalPart
+    ? fractionalPart.padEnd(decimals, '0')
+    : '0'.repeat(decimals)
+  return `${wholePart}.${roundedFractionalPart}`
+}
+
 // a typeOf f(x)
 export const typeOf = obj => {
   if (obj.units != undefined) return 'unit'

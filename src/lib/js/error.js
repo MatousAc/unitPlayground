@@ -1,3 +1,5 @@
+import { roundUnitStr } from '$pj/helpers.js'
+
 // custom error types
 export class NonError {
   constructor(message) {
@@ -41,7 +43,11 @@ export class InvalidOperands extends Err {
   opsRE = /Cannot\s(\w+)\s(.*)\sand\s(.*):/
   constructor(errormessage, message) {
     let m = errormessage.match(/Cannot\s(\w+)\s(.*)\sand\s(.*):/)
-    super(`Can't ${m[1]} <b>${m[2]}</b> and <b>${m[3]}</b>${message}`)
+    super(
+      `Can't ${m[1]} <b>${roundUnitStr(m[2])}</b> and <b>${roundUnitStr(
+        m[3]
+      )}</b>${message}`
+    )
     this.name = this.constructor.name
   }
 }

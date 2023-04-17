@@ -1,9 +1,9 @@
 // useful f(x)s
-import { getContext } from 'svelte'
 import { unitmath } from '$pj/stores'
 import settings from '$pj/settings'
 import { typeOf } from '$pj/helpers'
 import * as E from '$pj/error'
+import { roundScalar } from '$pj/helpers'
 export const eqKey = Symbol() // each equation has a context
 
 let decimals, useScalar, simplify, system, unit
@@ -102,23 +102,13 @@ const power = arr => {
   })
 }
 
-const round = num => {
-  const factor = 10 ** decimals
-  const roundedNum = Math.round(num * factor) / factor
-  const [wholePart, fractionalPart] = roundedNum.toString().split('.')
-  const roundedFractionalPart = fractionalPart
-    ? fractionalPart.padEnd(decimals, '0')
-    : '0'.repeat(decimals)
-  return `${wholePart}.${roundedFractionalPart}`
-}
-
 // formats a Unit object as LaTeX
 const toLaTeX = u => {
   u = unit(u.toString()) // so we format with prefixes
   let scalar = u.getValue()
   let units = u.units
   // scalar string generation
-  scalar = useScalar && scalar ? round(scalar) : ''
+  scalar = useScalar && scalar ? roundScalar(scalar) : ''
   if (units.length == 0) return scalar
 
   // getting the right unit format for Latex
