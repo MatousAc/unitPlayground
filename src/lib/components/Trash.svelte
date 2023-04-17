@@ -24,6 +24,7 @@ let trash
   transition-duration: 0.4s;
   border: 2px solid;
   color: var(--error);
+  filter: brightness(2);
   padding: var(--scale);
   padding-top: 0.2em;
   border-radius: 100%;

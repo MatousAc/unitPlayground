@@ -72,12 +72,25 @@ export const filterCEParsingInfo = unitParse => {
   return defaultParse
 }
 
+const isAlpha = units => {
+  let re = /^[a-zA-Z]+$/
+  for (let unit of units) {
+    if (!re.test(unit)) {
+      return false
+    }
+  }
+  return true
+}
+
 /// user defined units ///
 // adding a new unit requires these updates
 export const addUnit = async (name, attrs) => {
   let definedUnit = getDefinedUnit([name, ...attrs.aliases])
   if (definedUnit) {
     await alert(`The unit "${definedUnit}" is already defined.`)
+    return false
+  } else if (!isAlpha([name, ...attrs.aliases])) {
+    await alert(`Only letters are allowed in unit names.`)
     return false
   }
   userUnits.update(units => {

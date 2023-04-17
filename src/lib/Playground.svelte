@@ -93,8 +93,8 @@ const createEquation = e => {
 .playground.dark {
   --background: black;
   --text: white;
-  --safe: #136f63;
-  --warning: #3f88c5;
-  --error: #d00000;
+  --safe: #08b91f;
+  --warning: #ffd324;
+  --error: #ff3939;
 }
 </style>
