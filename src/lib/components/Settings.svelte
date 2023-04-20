@@ -235,6 +235,7 @@ const seeProfile = () => {
   border-radius: 1em;
   padding-left: 0.8rem;
   outline: none;
+  color: var(--text);
 }
 
 .settings .profileImage {
