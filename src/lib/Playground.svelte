@@ -84,6 +84,7 @@ const createEquation = e => {
 .playground.light {
   --background: #ffffff;
   --text: #242424;
+  --settingsText: #ffffff;
   --textFaded: #605f5f;
   --safe: #00814d;
   --warning: #e8b100;
@@ -92,6 +93,7 @@ const createEquation = e => {
 }
 .playground.dark {
   --background: black;
+  --settingsText: #000000;
   --text: white;
   --safe: #08b91f;
   --warning: #ffd324;
