@@ -61,7 +61,7 @@ const createEquation = e => {
 <div
   bind:this={pg}
   on:click={createEquation}
-  class="fillParent @container playground {$settings.theme}"
+  class="fillParent playground {$settings.theme}"
   style="font-size: {$settings.font}px;"
 >
   <Settings />
