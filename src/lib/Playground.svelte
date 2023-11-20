@@ -34,10 +34,11 @@ onMount(() => {
 
 let pg
 const createEquation = e => {
-  if (!isAuthed()) {
-    new AuthenticationRequired({ target: pg })
-    return
-  }
+  // uncomment if we want to force authentication:
+  // if (!isAuthed()) {
+  //   new AuthenticationRequired({ target: pg })
+  //   return
+  // }
   new Equation({
     // credit to Johan Jaeger for the props syntax
     props: {
