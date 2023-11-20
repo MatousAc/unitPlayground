@@ -25,7 +25,7 @@ button {
   justify-content: center;
 }
 
-@media only screen and (min-width: 768px) {
+@container playground (min-width: 768px) {
   button.outlined {
     border: 2px solid currentColor;
     border-radius: 2em;

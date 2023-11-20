@@ -37,7 +37,7 @@ select > option {
 }
 
 /* responsive design */
-@media only screen and (max-width: 767px) {
+@container playground (max-width: 767px) {
   .hide-sm {
     display: none;
   }

@@ -27,7 +27,7 @@ let iconMap = {
   <span class="material-symbols-rounded icon">
     {iconMap[selectedTheme]}
   </span>
-  <span class="label ml-2 md:ml-4">{selectedTheme} theme</span>
+  <span class="hide-sm label ml-2 md:ml-4">{selectedTheme} theme</span>
 </button>
 
 <style>
@@ -52,6 +52,9 @@ span.label {
 @media only screen and (max-width: 767px) {
   .hide-sm {
     display: none;
+  }
+  button {
+    border: none;
   }
 }
 </style>
