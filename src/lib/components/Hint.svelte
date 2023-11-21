@@ -42,7 +42,7 @@ function slide(node, { delay = 0, duration = 400, x = 0, y = 0 }) {
 {#if info.message}
   <div
     class="hint"
-    transition:slide={{ x: 0, y: 50 }}
+    transition:slide|global={{ x: 0, y: 50 }}
     style="background-color: var(--{info.data.background}); color:var(--{info
       .data.color});"
   >
