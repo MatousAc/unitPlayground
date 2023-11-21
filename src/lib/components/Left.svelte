@@ -1,21 +1,21 @@
 <script>
 import { onMount, getContext } from 'svelte'
 import { get } from 'svelte/store'
-import { isAuthed } from '$pj/auth'
-import { playground, unitMacros } from '$pj/stores'
-import { isMobile } from '$pj/helpers'
-import { eqKey } from '$pj/equation'
-import { engine, restartEngine } from '$pj/computeEngine'
-import Range from '$pj/Range.js'
-import Fragment from '$pc/Fragment.svelte'
+import { isAuthed } from 'pj/auth'
+import { playground, unitMacros } from 'pj/stores'
+import { isMobile } from 'pj/helpers'
+import { eqKey } from 'pj/equation'
+import { engine, restartEngine } from 'pj/computeEngine'
+import Range from 'pj/Range.js'
+import Fragment from 'pc/Fragment.svelte'
 import {
   ejectionRangeFromOffset,
   positionFromOffset,
   nearestPhRange,
   ph,
   phRE
-} from '$pj/left'
-import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
+} from 'pj/left'
+import AuthenticationRequired from 'pc/AuthenticationRequired.svelte'
 
 // each equation has a separate context
 const { l, hint } = getContext(eqKey)

@@ -1,4 +1,4 @@
-import { supabase, user } from '$pj/auth'
+import { supabase, user } from 'pj/auth'
 import { readable, get } from 'svelte/store'
 
 export const startTime = readable(new Date())

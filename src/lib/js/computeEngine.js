@@ -1,6 +1,6 @@
 // @ts-ignore
 import { ComputeEngine } from '@cortex-js/compute-engine'
-import { parseDict } from '$pj/stores'
+import { parseDict } from 'pj/stores'
 
 export let engine
 let parseInfo

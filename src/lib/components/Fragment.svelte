@@ -2,8 +2,8 @@
 import { onMount } from 'svelte'
 import { get } from 'svelte/store'
 import { draggable } from '@neodrag/svelte'
-import { playground, unitMacros } from '$pj/stores'
-import { swallow } from '$pj/trash'
+import { playground, unitMacros } from 'pj/stores'
+import { swallow } from 'pj/trash'
 
 /// vars ///
 export let x, y, initVal

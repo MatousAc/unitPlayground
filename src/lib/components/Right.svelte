@@ -1,11 +1,11 @@
 <script>
 import { onMount, getContext } from 'svelte'
 import { get } from 'svelte/store'
-import { unitmath, unitMacros, parseDict } from '$pj/stores'
-import { eqKey, getResultUnits } from '$pj/equation'
-import { isMobile } from '$pj/helpers'
-import { parse } from '$pj/computeEngine'
-import * as E from '$pj/error'
+import { unitmath, unitMacros, parseDict } from 'pj/stores'
+import { eqKey, getResultUnits } from 'pj/equation'
+import { isMobile } from 'pj/helpers'
+import { parse } from 'pj/computeEngine'
+import * as E from 'pj/error'
 
 let right
 const { l, r, hintInfo } = getContext(eqKey)

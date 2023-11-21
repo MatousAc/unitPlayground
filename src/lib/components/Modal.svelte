@@ -2,9 +2,9 @@
 // @ts-nocheck
 import { get } from 'svelte/store'
 import { fade } from 'svelte/transition'
-import Button from '$pc/Button.svelte'
-import Row from '$pc/Row.svelte'
-import { playground } from '$pj/stores'
+import Button from 'pc/Button.svelte'
+import Row from 'pc/Row.svelte'
+import { playground } from 'pj/stores'
 
 let modal
 export const close = () => get(playground).removeChild(modal)

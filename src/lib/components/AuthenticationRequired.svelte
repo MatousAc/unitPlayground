@@ -1,9 +1,9 @@
 <script>
-import { signIn } from '$pj/auth'
-import Modal from '$pc/Modal.svelte'
-import Row from '$pc/Row.svelte'
-import Button from '$pc/Button.svelte'
-import Col from '$pc/Col.svelte'
+import { signIn } from 'pj/auth'
+import Modal from 'pc/Modal.svelte'
+import Row from 'pc/Row.svelte'
+import Button from 'pc/Button.svelte'
+import Col from 'pc/Col.svelte'
 </script>
 
 <Modal>

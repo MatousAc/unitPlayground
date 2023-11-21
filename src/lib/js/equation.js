@@ -1,9 +1,9 @@
 // useful f(x)s
-import { unitmath } from '$pj/stores'
-import settings from '$pj/settings'
-import { typeOf } from '$pj/helpers'
-import * as E from '$pj/error'
-import { roundScalar } from '$pj/helpers'
+import { unitmath } from 'pj/stores'
+import settings from 'pj/settings'
+import { typeOf } from 'pj/helpers'
+import * as E from 'pj/error'
+import { roundScalar } from 'pj/helpers'
 export const eqKey = Symbol() // each equation has a context
 
 let decimals, useScalar, simplify, system, unit

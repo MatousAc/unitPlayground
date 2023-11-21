@@ -1,13 +1,13 @@
 <script>
 import { onMount } from 'svelte'
-import { supabase, user, isAuthed } from '$pj/auth'
-import settings from '$pj/settings'
-import { logSessionLength } from '$pj/dataCollection'
-import Equation from '$pc/Equation.svelte'
-import Settings from '$pc/Settings.svelte'
-import Trash from '$pc/Trash.svelte'
-import AuthenticationRequired from '$pc/AuthenticationRequired.svelte'
-import { playground } from '$pj/stores'
+import { supabase, user, isAuthed } from 'pj/auth'
+import settings from 'pj/settings'
+import { logSessionLength } from 'pj/dataCollection'
+import Equation from 'pc/Equation.svelte'
+import Settings from 'pc/Settings.svelte'
+import Trash from 'pc/Trash.svelte'
+import AuthenticationRequired from 'pc/AuthenticationRequired.svelte'
+import { playground } from 'pj/stores'
 
 onMount(() => {
   // set value of playground store

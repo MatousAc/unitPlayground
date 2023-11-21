@@ -2,9 +2,9 @@
 import { onMount, getContext } from 'svelte'
 import { get } from 'svelte/store'
 import { fly } from 'svelte/transition'
-import { eqKey } from '$pj/equation'
-import { playground } from '$pj/stores'
-import NewUnit from '$pc/NewUnit.svelte'
+import { eqKey } from 'pj/equation'
+import { playground } from 'pj/stores'
+import NewUnit from 'pc/NewUnit.svelte'
 
 export let x = 2.8
 const { hintInfo } = getContext(eqKey)

@@ -1,4 +1,4 @@
-import Range from '$pj/Range.js'
+import Range from 'pj/Range.js'
 
 export const ph = '{\\Huge\\placeholder{}}'
 export const phRE = /\{\\Huge\s*\\placeholder\{\}\}/

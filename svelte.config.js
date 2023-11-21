@@ -18,8 +18,9 @@ export default {
       $css: './src/css',
       $comp: './src/components',
       $js: './src/js',
-      $pc: './src/lib/components',
-      $pj: './src/lib/js'
+      // not using '$' with package path vars
+      pc: './src/lib/components',
+      pj: './src/lib/js'
     }
   },
   preprocess: vitePreprocess()

@@ -1,15 +1,15 @@
 <script>
 import { get } from 'svelte/store'
 import { signIn, signOut, user, getIDData } from '$/lib/js/auth'
-import settings, { updateSettings } from '$pj/settings'
-import { playground } from '$pj/stores'
-import Row from '$pc/Row.svelte'
-import Switch from '$pc/Switch.svelte'
-import ThemeSwitcher from '$pc/ThemeSwitcher.svelte'
-import Select from '$pc/Select.svelte'
-import Button from '$pc/Button.svelte'
-import NewUnit from '$pc/NewUnit.svelte'
-import Profile from '$pc/Profile.svelte'
+import settings, { updateSettings } from 'pj/settings'
+import { playground } from 'pj/stores'
+import Row from 'pc/Row.svelte'
+import Switch from 'pc/Switch.svelte'
+import ThemeSwitcher from 'pc/ThemeSwitcher.svelte'
+import Select from 'pc/Select.svelte'
+import Button from 'pc/Button.svelte'
+import NewUnit from 'pc/NewUnit.svelte'
+import Profile from 'pc/Profile.svelte'
 
 let profileImage, isAuthed
 let visible = false

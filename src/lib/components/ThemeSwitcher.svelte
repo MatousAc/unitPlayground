@@ -1,7 +1,7 @@
 <script>
-import settings, { updateSettings } from '$pj/settings'
-import Button from '$pc/Button.svelte'
-import Row from '$pc/Row.svelte'
+import settings, { updateSettings } from 'pj/settings'
+import Button from 'pc/Button.svelte'
+import Row from 'pc/Row.svelte'
 
 let iconMap = {
   system: 'computer',

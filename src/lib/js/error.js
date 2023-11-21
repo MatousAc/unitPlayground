@@ -1,4 +1,4 @@
-import { roundUnitStr } from '$pj/helpers.js'
+import { roundUnitStr } from 'pj/helpers.js'
 
 // custom error types
 export class NonError {

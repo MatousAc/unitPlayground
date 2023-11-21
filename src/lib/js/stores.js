@@ -2,13 +2,13 @@
 /// unitmath Setup ///
 import { writable } from 'svelte/store'
 import units from 'unitmath'
-import settings from '$pj/settings'
+import settings from 'pj/settings'
 import {
   aliasPrefixCombos,
   makeMacros,
   makeParse,
   filterCEParsingInfo
-} from '$pj/unitEngine'
+} from 'pj/unitEngine'
 
 // start with library default
 export let unitmath = writable(units)

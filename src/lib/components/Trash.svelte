@@ -1,5 +1,5 @@
 <script>
-import { vomit } from '$pj/trash'
+import { vomit } from 'pj/trash'
 
 let trash
 </script>

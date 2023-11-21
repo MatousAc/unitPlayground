@@ -1,6 +1,6 @@
 // this file defines a store for app settings
 import { writable, get } from 'svelte/store'
-import { supabase, user, isAuthed } from '$pj/auth'
+import { supabase, user, isAuthed } from 'pj/auth'
 
 const settings = writable({
   scalar: true,

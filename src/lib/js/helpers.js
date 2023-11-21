@@ -1,5 +1,5 @@
 import { get } from 'svelte/store'
-import settings from '$pj/settings'
+import settings from 'pj/settings'
 
 // rounding f(x)
 export const roundUnitStr = quantity => {

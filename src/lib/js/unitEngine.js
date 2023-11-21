@@ -2,9 +2,9 @@
 // @ts-ignore
 import { ComputeEngine } from '@cortex-js/compute-engine'
 import { get } from 'svelte/store'
-import Prefix from '$pj/Prefix'
-import { supabase, user, isAuthed } from '$pj/auth'
-import { unitMacros, parseDict, userUnits, unitmath } from '$pj/stores'
+import Prefix from 'pj/Prefix'
+import { supabase, user, isAuthed } from 'pj/auth'
+import { unitMacros, parseDict, userUnits, unitmath } from 'pj/stores'
 
 /// processing f(x)s ///
 export const aliasPrefixCombos = (name, attrs) => {
